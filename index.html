@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2Apps - All Applications</title>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.min.js"></script>
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.worker.min.js';
+</script>
+
+<!-- Tesseract OCR -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+
+<!-- Styles -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+body{background:#f4f4f8;color:#333;line-height:1.6;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#1e90ff;color:#fff;position:sticky;top:0;z-index:100;}
+.navbar .logo{font-size:1.5rem;font-weight:bold;}
+.nav-links{display:flex;gap:15px;list-style:none;}
+.nav-links li a{color:#fff;font-weight:500;transition:.3s;text-decoration:none;}
+.nav-links li a:hover{color:#ffeb3b;}
+.dark-mode-toggle{background:none;border:none;font-size:1.2rem;cursor:pointer;color:#fff;}
+.hero{text-align:center;padding:60px 20px;background:linear-gradient(135deg,#1e90ff,#3742fa);color:#fff;}
+.hero h1{font-size:2.5rem;margin-bottom:20px;}
+.section{padding:50px 20px;max-width:1200px;margin:0 auto;}
+.section h2{text-align:center;margin-bottom:30px;color:#1e90ff;font-size:2rem;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.card{background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);padding:20px;text-align:center;transition:transform .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 25px rgba(0,0,0,0.2);}
+.card img{width:80px;margin-bottom:15px;}
+.card h3{margin-bottom:10px;color:#3742fa;}
+button.launch-btn{width:100%;padding:10px;background:#1e90ff;color:#fff;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
+button.launch-btn:hover{background:#3742fa;}
+footer{text-align:center;padding:20px;background:#1e90ff;color:#fff;margin-top:50px;}
+body.dark-mode{background:#121212;color:#ddd;}
+body.dark-mode .navbar{background:#1b1b1b;}
+body.dark-mode .nav-links li a{color:#ddd;}
+body.dark-mode .nav-links li a:hover{color:#ffeb3b;}
+body.dark-mode .hero{background:linear-gradient(135deg,#0d0d0d,#1b1b1b);}
+body.dark-mode .card{background:#1f1f1f;box-shadow:0 8px 20px rgba(0,0,0,0.5);}
+body.dark-mode .card h3{color:#1e90ff;}
+body.dark-mode button.launch-btn{background:#3742fa;}
+body.dark-mode button.launch-btn:hover{background:#1e90ff;}
+@media (max-width:768px){.hero h1{font-size:2rem;}.nav-links{flex-direction:column;gap:10px;}}
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.7);opacity:0;transition:opacity .3s;}
+.modal.show{display:block;opacity:1;}
+.modal-content{background-color:#fff;margin:5% auto;padding:20px;border-radius:12px;width:90%;max-width:500px;position:relative;transform:translateY(-20px);transition:transform .3s;}
+.modal.show .modal-content{transform:translateY(0);}
+body.dark-mode .modal-content{background:#1f1f1f;color:#ddd;}
+.modal .close{color:#aaa;position:absolute;top:10px;right:20px;font-size:28px;cursor:pointer;}
+.modal .close:hover{color:#000;}
+input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
+.result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
+.buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+<div class="logo">Way2Apps</div>
+<ul class="nav-links">
+<li><a href="#top-apps">Top Apps</a></li>
+<li><a href="#family">Family</a></li>
+<li><a href="#student">Student</a></li>
+<li><a href="#fun">Fun</a></li>
+<li><a href="#languages">Languages</a></li>
+<li><a href="#info">Info</a></li>
+</ul>
+<button class="dark-mode-toggle">🌙</button>
+</nav>
+
+<header class="hero">
+<h1>All your smart, useful, and fun web applications — in one place.</h1>
+</header>
+
+<!-- Top Apps -->
+<section id="top-apps" class="section">
+<h2>Top Apps</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/age.png"><h3>Age Calculator</h3><button class="launch-btn" onclick="openModal('ageModal')">Launch</button></div>
+<div class="card"><img src="assets/images/pdf-text.png"><h3>PDF to Text</h3><button class="launch-btn" onclick="openModal('pdfToTextModal')">Launch</button></div>
+<div class="card"><img src="assets/images/image-text.png"><h3>Image to Text</h3><button class="launch-btn" onclick="openModal('imageTextModal')">Launch</button></div>
+<div class="card"><img src="assets/images/calories.png"><h3>Calories Calculator</h3><button class="launch-btn" onclick="openModal('caloriesModal')">Launch</button></div>
+<div class="card"><img src="assets/images/bmi.png"><h3>BMI Checker</h3><button class="launch-btn" onclick="openModal('bmiModal')">Launch</button></div>
+<div class="card"><img src="assets/images/child-growth.png"><h3>Child Growth</h3><button class="launch-btn" onclick="openModal('childGrowthModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Family -->
+<section id="family" class="section">
+<h2>Family Apps</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/baby.png"><h3>Baby Milestone</h3><button class="launch-btn" onclick="openModal('babyModal')">Launch</button></div>
+<div class="card"><img src="assets/images/cry.png"><h3>Baby Cry Analyzer</h3><button class="launch-btn" onclick="openModal('cryModal')">Launch</button></div>
+<div class="card"><img src="assets/images/health.png"><h3>Health Tracker</h3><button class="launch-btn" onclick="openModal('healthModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Student -->
+<section id="student" class="section">
+<h2>Student Apps</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/data.png"><h3>Data Visualizer</h3><button class="launch-btn" onclick="openModal('dataModal')">Launch</button></div>
+<div class="card"><img src="assets/images/3d.png"><h3>3D PDF Generator</h3><button class="launch-btn" onclick="openModal('pdf3DModal')">Launch</button></div>
+<div class="card"><img src="assets/images/quiz.png"><h3>Quiz Game</h3><button class="launch-btn" onclick="openModal('quizModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Fun -->
+<section id="fun" class="section">
+<h2>Fun Apps</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/game.png"><h3>Fun Game</h3><button class="launch-btn" onclick="openModal('funGameModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Languages -->
+<section id="languages" class="section">
+<h2>Language Learning</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/personality.png"><h3>Personality</h3><button class="launch-btn" onclick="openModal('personalityModal')">Launch</button></div>
+<div class="card"><img src="assets/images/fun-profile.png"><h3>Fun Profile</h3><button class="launch-btn" onclick="openModal('funProfileModal')">Launch</button></div>
+<div class="card"><img src="assets/images/planets.png"><h3>Planets Explorer</h3><button class="launch-btn" onclick="openModal('planetsModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Info -->
+<section id="info" class="section">
+<h2>News & Info</h2>
+<div class="card-grid">
+<div class="card"><img src="assets/images/news.png"><h3>News & Info</h3><button class="launch-btn" onclick="openModal('newsModal')">Launch</button></div>
+</div>
+</section>
+
+<!-- Modals (Top Apps) -->
+<div id="ageModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('ageModal')">&times;</span>
+<h3>Age Calculator</h3>
+<label>Birth Date:</label><input type="date" id="birthDate">
+<label>Current Date:</label><input type="date" id="currentDate" value="">
+<button onclick="calculateAge()">Calculate</button>
+<p class="result" id="ageResult"></p>
+</div>
+</div>
+
+<div id="pdfToTextModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('pdfToTextModal')">&times;</span>
+<h3>PDF to Text</h3>
+<input type="file" id="pdfFile" accept="application/pdf">
+<button onclick="convertPDF()">Convert</button>
+<p class="result" id="pdfTextResult">Extracted text will appear here</p>
+<div class="buttons">
+<button onclick="copyResult('pdfTextResult')">Copy</button>
+<button onclick="exportText('pdfTextResult')">Export Texte</button>
+</div>
+</div>
+</div>
+
+<div id="imageTextModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('imageTextModal')">&times;</span>
+<h3>Image to Text</h3>
+<input type="file" id="imageFile" accept="image/*">
+<button onclick="extractImageText()">Extract Text</button>
+<p class="result" id="imageResult"></p>
+<button id="downloadImageText" style="display:none;" onclick="downloadText('imageResult','image_text.txt')">Download as .txt</button>
+</div>
+</div>
+
+<div id="caloriesModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('caloriesModal')">&times;</span>
+<h3>Calories Calculator</h3>
+<label>Weight (kg):</label><input type="number" id="weight">
+<label>Height (cm):</label><input type="number" id="height">
+<label>Age:</label><input type="number" id="ageCal">
+<button onclick="calculateCalories()">Calculate</button>
+<p class="result" id="caloriesResult"></p>
+</div>
+</div>
+
+<div id="bmiModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('bmiModal')">&times;</span>
+<h3>BMI Checker</h3>
+<label>Weight (kg):</label><input type="number" id="bmiWeight">
+<label>Height (cm):</label><input type="number" id="bmiHeight">
+<button onclick="calculateBMI()">Check BMI</button>
+<p class="result" id="bmiResult"></p>
+</div>
+</div>
+
+<div id="childGrowthModal" class="modal">
+<div class="modal-content"><span class="close" onclick="closeModal('childGrowthModal')">&times;</span>
+<h3>Child Growth</h3>
+<label>Birth Date:</label><input type="date" id="childBirth">
+<label>Measurement Date:</label><input type="date" id="childMeasure" value="">
+<button onclick="calculateChildGrowth()">Calculate</button>
+<p class="result" id="childGrowthResult"></p>
+</div>
+</div>
+
+<footer>© 2025 Way2Apps | All Rights Reserved</footer>
+
+<script>
+document.querySelector('.dark-mode-toggle').addEventListener('click',()=>document.body.classList.toggle('dark-mode'));
+document.getElementById('currentDate').value=new Date().toISOString().split('T')[0];
+
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+window.onclick=function(event){document.querySelectorAll('.modal').forEach(modal=>{if(event.target==modal)modal.classList.remove('show');});}
+
+// Age Calculator
+function calculateAge(){
+  const b=document.getElementById('birthDate').value;
+  const c=document.getElementById('currentDate').value;
+  if(!b||!c){alert('Enter dates');return;}
+  const bd=new Date(b),cd=new Date(c);
+  let y=cd.getFullYear()-bd.getFullYear(),m=cd.getMonth()-bd.getMonth(),d=cd.getDate()-bd.getDate();
+  if(d<0){m--;d+=new Date(cd.getFullYear(),cd.getMonth(),0).getDate();}
+  if(m<0){y--;m+=12;}
+  document.getElementById('ageResult').innerText=`${y} ans ${m} mois ${d} jours`;
+}
+
+// PDF to Text
+async function convertPDF(){
+  const file=document.getElementById('pdfFile').files[0];
+  if(!file){alert('Select a PDF');return;}
+  const arrayBuffer=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+  let textContent='';
+  for(let i=1;i<=pdf.numPages;i++){
+    const page=await pdf.getPage(i);
+    const content=await page.getTextContent();
+    textContent+=content.items.map(item=>item.str).join(' ')+'\n\n';
+  }
+  document.getElementById('pdfTextResult').innerText=textContent;
+}
+
+// Image to Text
+function extractImageText(){
+  const file=document.getElementById('imageFile').files[0];
+  if(!file){alert('Select an image');return;}
+  document.getElementById('imageResult').innerText="Processing...";
+  Tesseract.recognize(file,'eng',{logger:m=>console.log(m)}).then(({data:{text}})=>{
+    document.getElementById('imageResult').innerText=text;
+    document.getElementById('downloadImageText').style.display='inline-block';
+  });
+}
+
+// Download Text
+function downloadText(elementId, filename){
+  const text=document.getElementById(elementId).innerText;
+  const blob=new Blob([text],{type:'text/plain'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download=filename;
+  link.click();
+}
+
+// Copy
+function copyResult(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>alert("Copied!"));}
+
+// Export Text
+function exportText(id){const text=document.getElementById(id).innerText; const blob=new Blob([text],{type:"text/plain;charset=utf-8"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download="result.txt"; link.click();}
+
+// Calories
+function calculateCalories(){
+  const w=parseFloat(document.getElementById('weight').value);
+  const h=parseFloat(document.getElementById('height').value);
+  const a=parseFloat(document.getElementById('ageCal').value);
+  if(isNaN(w)||isNaN(h)||isNaN(a)){alert('Enter valid values');return;}
+  document.getElementById('caloriesResult').innerText=`Calories: ${(10*w+6.25*h-5*a+5).toFixed(0)} kcal/day`;
+}
+
+// BMI
+function calculateBMI(){
+  const w=parseFloat(document.getElementById('bmiWeight').value);
+  const h=parseFloat(document.getElementById('bmiHeight').value)/100;
+  if(isNaN(w)||isNaN(h)||h===0){alert('Enter valid values');return;}
+  document.getElementById('bmiResult').innerText=`BMI: ${(w/(h*h)).toFixed(1)}`;
+}
+
+// Child Growth
+function calculateChildGrowth(){
+  const b=document.getElementById('childBirth').value;
+  const m=document.getElementById('childMeasure').value;
+  if(!b||!m){alert('Enter dates');return;}
+  const bd=new Date(b),md=new Date(m);
+  let y=md.getFullYear()-bd.getFullYear(),mo=md.getMonth()-bd.getMonth(),d=md.getDate()-bd.getDate();
+  if(d<0){mo--;d+=new Date(md.getFullYear(),md.getMonth(),0).getDate();}
+  if(mo<0){y--;mo+=12;}
+  document.getElementById('childGrowthResult').innerText=`${y} ans ${mo} mois ${d} jours`;
+}
+</script>
+</body>
+</html>
