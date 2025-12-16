@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Way2Apps - All Applications</title>
 
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.min.js"></script>
 <script>
@@ -83,8 +88,14 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 <h2>Top Apps</h2>
 <div class="card-grid">
 <div class="card"><img src="assets/images/age.png"><h3>Age Calculator</h3><button class="launch-btn" onclick="openModal('ageModal')">Launch</button></div>
-<div class="card"><img src="assets/images/pdf-text.png"><h3>PDF to Text</h3><button class="launch-btn" onclick="openModal('pdfToTextModal')">Launch</button></div>
 <div class="card"><img src="assets/images/image-text.png"><h3>Image to Text</h3><button class="launch-btn" onclick="openModal('imageTextModal')">Launch</button></div>
+<!-- Text Tools Hub Card -->
+<div class="card">
+  <img src="assets/images/text-tools.png">
+  <h3>Text Tools Hub</h3>
+  <button class="launch-btn" onclick="openModal('textToolsModal')">Launch</button>
+</div>
+
 <div class="card"><img src="assets/images/calories.png"><h3>Calories Calculator</h3><button class="launch-btn" onclick="openModal('caloriesModal')">Launch</button></div>
 <div class="card"><img src="assets/images/bmi.png"><h3>BMI Checker</h3><button class="launch-btn" onclick="openModal('bmiModal')">Launch</button></div>
 <div class="card"><img src="assets/images/child-growth.png"><h3>Child Growth</h3><button class="launch-btn" onclick="openModal('childGrowthModal')">Launch</button></div>
@@ -148,18 +159,6 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 </div>
 </div>
 
-<div id="pdfToTextModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('pdfToTextModal')">&times;</span>
-<h3>PDF to Text</h3>
-<input type="file" id="pdfFile" accept="application/pdf">
-<button onclick="convertPDF()">Convert</button>
-<p class="result" id="pdfTextResult">Extracted text will appear here</p>
-<div class="buttons">
-<button onclick="copyResult('pdfTextResult')">Copy</button>
-<button onclick="exportText('pdfTextResult')">Export Texte</button>
-</div>
-</div>
-</div>
 
 <div id="imageTextModal" class="modal">
 <div class="modal-content"><span class="close" onclick="closeModal('imageTextModal')">&times;</span>
@@ -171,36 +170,109 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 </div>
 </div>
 
-<div id="caloriesModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('caloriesModal')">&times;</span>
-<h3>Calories Calculator</h3>
-<label>Weight (kg):</label><input type="number" id="weight">
-<label>Height (cm):</label><input type="number" id="height">
-<label>Age:</label><input type="number" id="ageCal">
-<button onclick="calculateCalories()">Calculate</button>
-<p class="result" id="caloriesResult"></p>
-</div>
+<!-- Text Tools Hub Modal -->
+<div id="textToolsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('textToolsModal')">&times;</span>
+    <h3>Text Tools Hub</h3>
+
+    <textarea id="textInput" rows="6" placeholder="Paste your text here..." oninput="updateCounter()"></textarea>
+    <p id="textCounter">Words: 0 | Characters: 0</p>
+
+    <div class="buttons">
+      <button onclick="toUpper()">UPPERCASE</button>
+      <button onclick="toLower()">lowercase</button>
+      <button onclick="capitalizeText()">Capitalize</button>
+      <button onclick="removeExtraSpaces()">Clean Text</button>
+      <button onclick="removeDuplicateLines()">Remove Duplicates</button>
+      <button onclick="textToSlug()">Text → Slug</button>
+      <button onclick="clearText()">Clear</button>
+    </div>
+
+    <p class="result" id="textResult"></p>
+
+    <div class="buttons">
+      <button onclick="copyResult('textResult')">Copy</button>
+      <button onclick="downloadText('textResult','text-tools.txt')">Download</button>
+    </div>
+  </div>
 </div>
 
-<div id="bmiModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('bmiModal')">&times;</span>
-<h3>BMI Checker</h3>
-<label>Weight (kg):</label><input type="number" id="bmiWeight">
-<label>Height (cm):</label><input type="number" id="bmiHeight">
-<button onclick="calculateBMI()">Check BMI</button>
-<p class="result" id="bmiResult"></p>
+
+<!-- Calories Calculator Modal -->
+<div id="caloriesModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('caloriesModal')">&times;</span>
+    <h3>Calories Calculator</h3>
+
+    <label>Weight (kg):</label>
+    <input type="number" id="weight" placeholder="Ex: 70" min="1" max="300">
+
+    <label>Height (cm):</label>
+    <input type="number" id="height" placeholder="Ex: 175" min="50" max="250">
+
+    <label>Age:</label>
+    <input type="number" id="ageCal" placeholder="Ex: 25" min="1" max="120">
+
+    <button onclick="calculateCalories()" class="launch-btn">Calculate</button>
+
+    <p class="result" id="caloriesResult"></p>
+  </div>
 </div>
+
+
+<!-- BMI Checker Modal -->
+<div id="bmiModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('bmiModal')">&times;</span>
+    <h3>BMI Checker</h3>
+    <label>Weight (kg):</label>
+    <input type="number" id="bmiWeight" placeholder="Enter your weight">
+    <label>Height (cm):</label>
+    <input type="number" id="bmiHeight" placeholder="Enter your height">
+    <button onclick="calculateBMI()">Check BMI</button>
+    <p class="result" id="bmiResult"></p>
+  </div>
 </div>
 
 <div id="childGrowthModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('childGrowthModal')">&times;</span>
-<h3>Child Growth</h3>
-<label>Birth Date:</label><input type="date" id="childBirth">
-<label>Measurement Date:</label><input type="date" id="childMeasure" value="">
-<button onclick="calculateChildGrowth()">Calculate</button>
-<p class="result" id="childGrowthResult"></p>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('childGrowthModal')">&times;</span>
+    <h3>Child Growth Tracker</h3>
+
+    <label>Gender:</label>
+    <select id="childGender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <label>Birth Date:</label>
+    <input type="date" id="childBirth">
+
+    <label>Measurement Date:</label>
+    <input type="date" id="childMeasure" value="">
+
+    <label>Weight (kg):</label>
+    <input type="number" id="childWeight">
+
+    <label>Height (cm):</label>
+    <input type="number" id="childHeight">
+
+    <button onclick="addMeasurement()">Add Measurement</button>
+    <button onclick="resetMeasurements()">Reset</button>
+
+    <div id="childGrowthReport" style="margin-top:15px;">
+      <p class="result" id="childGrowthResult"></p>
+      <p id="childGrowthStatus"></p>
+      <p id="childGrowthAdvice"></p>
+      <canvas id="growthChart" width="400" height="250"></canvas>
+    </div>
+
+    <button onclick="exportGrowthPDF()">Download PDF</button>
+  </div>
 </div>
-</div>
+
+
 
 <footer>© 2025 Way2Apps | All Rights Reserved</footer>
 
@@ -224,20 +296,69 @@ function calculateAge(){
   document.getElementById('ageResult').innerText=`${y} ans ${m} mois ${d} jours`;
 }
 
-// PDF to Text
-async function convertPDF(){
-  const file=document.getElementById('pdfFile').files[0];
-  if(!file){alert('Select a PDF');return;}
-  const arrayBuffer=await file.arrayBuffer();
-  const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
-  let textContent='';
-  for(let i=1;i<=pdf.numPages;i++){
-    const page=await pdf.getPage(i);
-    const content=await page.getTextContent();
-    textContent+=content.items.map(item=>item.str).join(' ')+'\n\n';
-  }
-  document.getElementById('pdfTextResult').innerText=textContent;
+// Copy text
+function copyResult(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
 }
+
+// Download text as file
+function downloadText(elementId, filename){
+  const text = document.getElementById(elementId).innerText;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
+
+
+// Copy result
+function copyResult(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+}
+
+// Download result
+function downloadText(elementId, filename){
+  const text = document.getElementById(elementId).innerText;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
+
+// Modal open/close
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+window.onclick=function(event){document.querySelectorAll('.modal').forEach(modal=>{if(event.target==modal)modal.classList.remove('show');});}
+
+
+
+// Copy & Download
+function copyResult(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+}
+
+function downloadText(elementId, filename){
+  const text = document.getElementById(elementId).innerText;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
+
+// Modal functions
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+window.onclick = function(event){
+  document.querySelectorAll('.modal').forEach(modal=>{
+    if(event.target==modal) modal.classList.remove('show');
+  });
+};
 
 // Image to Text
 function extractImageText(){
@@ -248,6 +369,87 @@ function extractImageText(){
     document.getElementById('imageResult').innerText=text;
     document.getElementById('downloadImageText').style.display='inline-block';
   });
+}
+
+// Word & Character Counter
+function updateCounter(){
+  const t = document.getElementById('textInput').value;
+  const words = t.trim().split(/\s+/).filter(Boolean).length;
+  const chars = t.length;
+  document.getElementById('textCounter').innerText = `Words: ${words} | Characters: ${chars}`;
+}
+
+// Clear Text
+function clearText(){
+  document.getElementById('textInput').value = '';
+  document.getElementById('textResult').innerText = '';
+  document.getElementById('textCounter').innerText = 'Words: 0 | Characters: 0';
+}
+
+// Convert text to UPPERCASE
+function toUpper(){
+  const t = document.getElementById('textInput').value;
+  document.getElementById('textResult').innerText = t.toUpperCase();
+}
+
+// Convert text to lowercase
+function toLower(){
+  const t = document.getElementById('textInput').value;
+  document.getElementById('textResult').innerText = t.toLowerCase();
+}
+
+// Capitalize each word
+function capitalizeText(){
+  const t = document.getElementById('textInput').value;
+  document.getElementById('textResult').innerText =
+    t.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// Clean Text (remove extra spaces but keep lines)
+function removeExtraSpaces(){
+  const t = document.getElementById('textInput').value;
+  const lines = t.split('\n').map(line => line.replace(/\s+/g,' ').trim());
+  document.getElementById('textResult').innerText = lines.join('\n');
+}
+
+// Remove duplicate lines (ignore case, trim spaces)
+function removeDuplicateLines(){
+  const t = document.getElementById('textInput').value;
+  const lines = t.split('\n').map(line => line.trim());
+  const uniqueLines = [...new Set(lines.map(line => line.toLowerCase()))];
+  document.getElementById('textResult').innerText = uniqueLines.join('\n');
+}
+
+// Convert text to Slug (safe, no errors)
+function textToSlug(){
+  const t = document.getElementById('textInput').value;
+
+  // Normalize text to remove accents
+  const normalized = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // Keep only letters, numbers, dash, and spaces
+  const cleaned = normalized.replace(/[^a-zA-Z0-9\s-]/g, '');
+
+  // Replace multiple spaces with a single dash and convert to lowercase
+  const slug = cleaned.trim().replace(/\s+/g, '-').toLowerCase();
+
+  document.getElementById('textResult').innerText = slug;
+}
+
+// Copy result to clipboard
+function copyResult(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+}
+
+// Download result as .txt file
+function downloadText(elementId, filename){
+  const text = document.getElementById(elementId).innerText;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
 }
 
 // Download Text
@@ -266,34 +468,179 @@ function copyResult(id){navigator.clipboard.writeText(document.getElementById(id
 // Export Text
 function exportText(id){const text=document.getElementById(id).innerText; const blob=new Blob([text],{type:"text/plain;charset=utf-8"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download="result.txt"; link.click();}
 
-// Calories
+// Calories Calculator
 function calculateCalories(){
   const w=parseFloat(document.getElementById('weight').value);
   const h=parseFloat(document.getElementById('height').value);
   const a=parseFloat(document.getElementById('ageCal').value);
-  if(isNaN(w)||isNaN(h)||isNaN(a)){alert('Enter valid values');return;}
-  document.getElementById('caloriesResult').innerText=`Calories: ${(10*w+6.25*h-5*a+5).toFixed(0)} kcal/day`;
+
+  if(isNaN(w)||isNaN(h)||isNaN(a)||w<=0||h<=0||a<=0){
+    alert('Enter valid values'); 
+    return;
+  }
+
+  const calories = 10*w + 6.25*h - 5*a + 5; // BMR for men
+  document.getElementById('caloriesResult').innerText = `Calories: ${calories.toFixed(0)} kcal/day`;
 }
 
-// BMI
-function calculateBMI(){
-  const w=parseFloat(document.getElementById('bmiWeight').value);
-  const h=parseFloat(document.getElementById('bmiHeight').value)/100;
-  if(isNaN(w)||isNaN(h)||h===0){alert('Enter valid values');return;}
-  document.getElementById('bmiResult').innerText=`BMI: ${(w/(h*h)).toFixed(1)}`;
+// فتح وإغلاق المودال
+function openModal(id){
+  document.getElementById(id).classList.add('show');
 }
+function closeModal(id){
+  document.getElementById(id).classList.remove('show');
+}
+window.onclick = function(event){
+  document.querySelectorAll('.modal').forEach(modal => {
+    if(event.target == modal) modal.classList.remove('show');
+  });
+}
+
+// حساب BMI
+function calculateBMI(){
+  const weight = parseFloat(document.getElementById('bmiWeight').value);
+  const height = parseFloat(document.getElementById('bmiHeight').value) / 100; // تحويل cm إلى m
+
+  if(isNaN(weight) || isNaN(height) || height === 0){
+    alert('Enter valid values!');
+    return;
+  }
+
+  const bmi = weight / (height * height);
+  let category = '';
+
+  if(bmi < 18.5) category = 'Underweight';
+  else if(bmi < 24.9) category = 'Normal weight';
+  else if(bmi < 29.9) category = 'Overweight';
+  else category = 'Obesity';
+
+  document.getElementById('bmiResult').innerText = `BMI: ${bmi.toFixed(1)} (${category})`;
+}
+
 
 // Child Growth
-function calculateChildGrowth(){
-  const b=document.getElementById('childBirth').value;
-  const m=document.getElementById('childMeasure').value;
-  if(!b||!m){alert('Enter dates');return;}
-  const bd=new Date(b),md=new Date(m);
-  let y=md.getFullYear()-bd.getFullYear(),mo=md.getMonth()-bd.getMonth(),d=md.getDate()-bd.getDate();
-  if(d<0){mo--;d+=new Date(md.getFullYear(),md.getMonth(),0).getDate();}
-  if(mo<0){y--;mo+=12;}
-  document.getElementById('childGrowthResult').innerText=`${y} ans ${mo} mois ${d} jours`;
+let growthData = [];
+let growthChart = null;
+
+// WHO Growth Standards (simplified example)
+const whoGrowth = {
+  male: {0:{weight:3.3,height:49.9},1:{weight:4.5,height:54.7},2:{weight:5.6,height:58.4},3:{weight:6.4,height:61.4},6:{weight:7.9,height:67.6},12:{weight:9.6,height:76.1},24:{weight:12.2,height:87.8},36:{weight:14.3,height:96.1}},
+  female: {0:{weight:3.2,height:49.1},1:{weight:4.2,height:53.7},2:{weight:5.1,height:57.1},3:{weight:5.8,height:59.8},6:{weight:7.3,height:65.7},12:{weight:9.1,height:74.0},24:{weight:11.5,height:85.7},36:{weight:13.9,height:95.0}}
+};
+
+function addMeasurement() {
+  const gender = document.getElementById('childGender').value;
+  const b = document.getElementById('childBirth').value;
+  const m = document.getElementById('childMeasure').value;
+  const w = parseFloat(document.getElementById('childWeight').value);
+  const h = parseFloat(document.getElementById('childHeight').value);
+
+  if(!b || !m || isNaN(w) || isNaN(h)) { alert('Enter all valid values'); return; }
+
+  const bd = new Date(b), md = new Date(m);
+  if(md < bd){ alert('Measurement date must be after birth'); return; }
+
+  let y = md.getFullYear() - bd.getFullYear();
+  let mo = md.getMonth() - bd.getMonth();
+  let d = md.getDate() - bd.getDate();
+  if(d < 0){ mo--; d += new Date(md.getFullYear(), md.getMonth(),0).getDate(); }
+  if(mo < 0){ y--; mo += 12; }
+  const ageMonths = y*12 + mo;
+
+  const heightM = h/100;
+  const bmi = w / (heightM*heightM);
+
+  // WHO comparison
+  const who = whoGrowth[gender];
+  let nearestAge = Object.keys(who).reduce((prev,curr)=>Math.abs(curr-ageMonths)<Math.abs(prev-ageMonths)?curr:prev);
+  const whoWeight = who[nearestAge].weight;
+  const whoHeight = who[nearestAge].height;
+
+  let status='', advice='';
+  if(w < whoWeight*0.9 || h < whoHeight*0.95) {
+    status = 'Below Average';
+    advice = 'Underweight: Encourage healthy growth, consult pediatrician.';
+  } else if(w <= whoWeight*1.1 && h <= whoHeight*1.05) {
+    status = 'Normal';
+    advice = 'Growth is on track.';
+  } else {
+    status = 'Above Average';
+    advice = 'Overweight/Risk of Obesity: Monitor diet and activity.';
+  }
+
+  growthData.push({ageMonths, weight:w, height:h, bmi, status, advice});
+
+  const latest = growthData[growthData.length-1];
+  document.getElementById('childGrowthResult').innerText = 
+    `Age: ${latest.ageMonths} months\nWeight: ${latest.weight} kg\nHeight: ${latest.height} cm\nBMI: ${latest.bmi.toFixed(1)}\nWHO Avg Weight: ${whoWeight} kg, Height: ${whoHeight} cm`;
+  
+  const statusEl = document.getElementById('childGrowthStatus');
+  statusEl.innerText = `Growth Status: ${latest.status}`;
+  statusEl.style.color = (latest.status==='Normal')?'green':(latest.status==='Below Average')?'orange':'red';
+
+  document.getElementById('childGrowthAdvice').innerText = `Advice: ${latest.advice}`;
+
+  renderGrowthChart(gender);
 }
+
+function renderGrowthChart(gender) {
+  const ctx = document.getElementById('growthChart').getContext('2d');
+  const labels = growthData.map(d=>`${d.ageMonths} mo`);
+  const weightData = growthData.map(d=>d.weight);
+  const heightData = growthData.map(d=>d.height);
+
+  const who = whoGrowth[gender];
+  const whoLabels = Object.keys(who);
+  const whoWeightLine = whoLabels.map(m=>who[m].weight);
+  const whoHeightLine = whoLabels.map(m=>who[m].height);
+
+  if(growthChart) growthChart.destroy();
+
+  growthChart = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels: labels,
+      datasets:[
+        {label:'Weight (kg)', data: weightData, borderColor: 'blue', backgroundColor:'transparent', tension:0.3, pointRadius:6},
+        {label:'Height (cm)', data: heightData, borderColor:'green', backgroundColor:'transparent', tension:0.3, pointRadius:6},
+        {label:'WHO Avg Weight', data: whoWeightLine, borderColor:'blue', borderDash:[5,5], fill:false, tension:0.1, pointRadius:0},
+        {label:'WHO Avg Height', data: whoHeightLine, borderColor:'green', borderDash:[5,5], fill:false, tension:0.1, pointRadius:0}
+      ]
+    },
+    options:{responsive:true, scales:{y:{beginAtZero:true}}}
+  });
+}
+
+function resetMeasurements() {
+  if(confirm('Reset all measurements?')) {
+    growthData = [];
+    if(growthChart) growthChart.destroy();
+    document.getElementById('childGrowthResult').innerText = '';
+    document.getElementById('childGrowthStatus').innerText = '';
+    document.getElementById('childGrowthAdvice').innerText = '';
+  }
+}
+
+function exportGrowthPDF() {
+  const report = document.getElementById('childGrowthReport');
+  if (!report) { alert('No report to export'); return; }
+
+  html2canvas(report).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('ChildGrowthReport.pdf');
+  });
+}
+
 </script>
+
+
+
 </body>
 </html>
