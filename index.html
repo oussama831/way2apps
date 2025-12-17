@@ -328,30 +328,24 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 <div id="cryModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('cryModal')">&times;</span>
-    <h2>Baby Cry Analyzer</h2>
+    <h3>Baby Cry Analyzer</h3>
 
-    <!-- 1. اختيار ملف -->
+    <!-- Upload or Record -->
     <label>Select Audio File:</label>
     <input type="file" id="audioFile" accept="audio/*">
-    <button id="analyzeFileBtn">Analyze File</button>
+    <br><br>
+    <button id="recordBtn">🎤 Record Cry</button>
+    <button id="stopRecordBtn" disabled>⏹ Stop</button>
 
-    <hr>
+    <br><br>
+    <button id="analyzeBtn">Analyze Cry</button>
 
-    <!-- 2. تسجيل مباشر -->
-    <label>Or Record Directly:</label>
-    <button id="startRecording">Start Recording</button>
-    <button id="stopRecording" disabled>Stop Recording</button>
-    <audio id="recordedAudio" controls style="display:none;"></audio>
-    <button id="analyzeRecordingBtn" style="display:none;">Analyze Recording</button>
+    <div class="result" id="cryResult"></div>
 
-    <hr>
+    <h4>Analysis History</h4>
+    <div class="result" id="cryHistory" style="max-height:200px;overflow:auto;"></div>
 
-    <!-- النتيجة الحالية -->
-    <div class="result" id="cryResult" style="margin-top:15px;"></div>
-
-    <!-- السجل المباشر -->
-    <h3>Analysis History</h3>
-    <div id="cryHistory" style="max-height:200px; overflow:auto; border:1px solid #ccc; padding:10px; border-radius:6px;"></div>
+    <button id="exportPdfBtn">Export PDF</button>
   </div>
 </div>
 
@@ -796,90 +790,74 @@ function exportBabyMilestonesPDF() {
   });
 }
 //analyse bebe
-let cryHistory = [];
-let mediaRecorder;
-let recordedChunks = [];
+let audioBlob = null;
+let mediaRecorder = null;
+let audioChunks = [];
 
-// ==========================
-// تحليل ملف من الجهاز
-// ==========================
-document.getElementById('analyzeFileBtn').addEventListener('click', () => {
-  const file = document.getElementById('audioFile').files[0];
-  if (!file) { alert('Please select an audio file'); return; }
-
-  analyzeCry(file);
-});
-
-// ==========================
 // تسجيل مباشر
-// ==========================
-document.getElementById('startRecording').addEventListener('click', async () => {
-  recordedChunks = [];
+document.getElementById('recordBtn').onclick = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   mediaRecorder = new MediaRecorder(stream);
-  mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+  audioChunks = [];
+
+  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
   mediaRecorder.onstop = () => {
-    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
-    const audioURL = URL.createObjectURL(blob);
-    const audioEl = document.getElementById('recordedAudio');
-    audioEl.src = audioURL;
-    audioEl.style.display = 'block';
-    document.getElementById('analyzeRecordingBtn').style.display = 'inline-block';
-    document.getElementById('analyzeRecordingBtn').onclick = () => analyzeCry(blob);
+    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+    alert('Recording saved!');
   };
+
   mediaRecorder.start();
-  document.getElementById('startRecording').disabled = true;
-  document.getElementById('stopRecording').disabled = false;
-});
+  document.getElementById('recordBtn').disabled = true;
+  document.getElementById('stopRecordBtn').disabled = false;
+};
 
-document.getElementById('stopRecording').addEventListener('click', () => {
+// إيقاف التسجيل
+document.getElementById('stopRecordBtn').onclick = () => {
   mediaRecorder.stop();
-  document.getElementById('startRecording').disabled = false;
-  document.getElementById('stopRecording').disabled = true;
-});
+  document.getElementById('recordBtn').disabled = false;
+  document.getElementById('stopRecordBtn').disabled = true;
+};
 
-// ==========================
-// تحليل الصوت (ملف أو تسجيل)
-// ==========================
-function analyzeCry(fileOrBlob) {
-  // مثال مؤقت للتحليل
-  const status = 'Crying softly';
-  const estimation = 'Comfort or Attention';
+// تحليل الصوت مع تحديد السبب
+document.getElementById('analyzeBtn').onclick = () => {
+  const fileInput = document.getElementById('audioFile').files[0];
+  const file = audioBlob || fileInput;
+  if(!file){ alert('Select or record audio first'); return; }
 
-  // عرض النتيجة الحالية مباشرة
-  document.getElementById('cryResult').innerHTML =
-    `Status: ${status}<br>Estimation: ${estimation}`;
+  // محاكاة التحليل
+  const statusOptions = ['Crying softly', 'Crying loudly', 'Fussy', 'Sleeping'];
+  const causeOptions = ['Comfort/Attention', 'Hungry', 'Thirsty', 'Sleepy', 'Discomfort'];
 
-  // إضافة السجل مع التاريخ والوقت
-  const now = new Date().toLocaleString();
-  cryHistory.push({ date: now, status, estimation });
+  const status = statusOptions[Math.floor(Math.random()*statusOptions.length)];
+  const estimation = causeOptions[Math.floor(Math.random()*causeOptions.length)];
+  const duration = (Math.random()*10 + 5).toFixed(2)+'s';
+  const volume = (Math.random()*10).toFixed(2);
+  const pitch = (Math.random()*20).toFixed(2)+' Hz';
 
-  renderCryHistory();
-}
+  const resultText = `Status: ${status}\nEstimation: ${estimation}`;
+  document.getElementById('cryResult').innerText = resultText;
 
-// ==========================
-// عرض السجل المباشر
-// ==========================
-function renderCryHistory() {
+  // حفظ التاريخ مع التاريخ والوقت
+  const date = new Date().toLocaleString();
   const historyEl = document.getElementById('cryHistory');
-  if (cryHistory.length === 0) {
-    historyEl.innerHTML = 'No analyses yet.';
-    return;
-  }
-  historyEl.innerHTML = cryHistory.map((a, i) =>
-    `<strong>${i+1}. ${a.date}</strong><br>
-     Status: ${a.status}<br>
-     Estimation: ${a.estimation}<hr>`).join('');
-}
+  historyEl.innerHTML = `<strong>Date:</strong> ${date}<br>${resultText}<br><hr>` + historyEl.innerHTML;
+};
 
-// ==========================
-// فتح/إغلاق المودال
-// ==========================
-function openModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-window.onclick = function(event){
-  document.querySelectorAll('.modal').forEach(modal => {
-    if(event.target == modal) modal.classList.remove('show');
+// تصدير PDF
+document.getElementById('exportPdfBtn').onclick = ()=>{
+  const historyEl = document.getElementById('cryHistory');
+  if(!historyEl.innerText){alert('No analysis history to export'); return;}
+
+  html2canvas(historyEl).then(canvas=>{
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation:'portrait',
+      unit:'px',
+      format:[canvas.width,canvas.height]
+    });
+    pdf.addImage(imgData,'PNG',0,0,canvas.width,canvas.height);
+    pdf.save('BabyCryAnalysis.pdf');
   });
 };
 // ==========================
