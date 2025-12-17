@@ -324,6 +324,38 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
   </div>
 </div>
 
+<!-- Baby Cry Analyzer Modal -->
+<div id="cryModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('cryModal')">&times;</span>
+    <h2>Baby Cry Analyzer</h2>
+
+    <!-- 1. اختيار ملف -->
+    <label>Select Audio File:</label>
+    <input type="file" id="audioFile" accept="audio/*">
+    <button id="analyzeFileBtn">Analyze File</button>
+
+    <hr>
+
+    <!-- 2. تسجيل مباشر -->
+    <label>Or Record Directly:</label>
+    <button id="startRecording">Start Recording</button>
+    <button id="stopRecording" disabled>Stop Recording</button>
+    <audio id="recordedAudio" controls style="display:none;"></audio>
+    <button id="analyzeRecordingBtn" style="display:none;">Analyze Recording</button>
+
+    <hr>
+
+    <!-- النتيجة الحالية -->
+    <div class="result" id="cryResult" style="margin-top:15px;"></div>
+
+    <!-- السجل المباشر -->
+    <h3>Analysis History</h3>
+    <div id="cryHistory" style="max-height:200px; overflow:auto; border:1px solid #ccc; padding:10px; border-radius:6px;"></div>
+  </div>
+</div>
+
+
 
 <footer>© 2025 Way2Apps | All Rights Reserved</footer>
 
@@ -346,6 +378,7 @@ function calculateAge(){
   if(m<0){y--;m+=12;}
   document.getElementById('ageResult').innerText=`${y} ans ${m} mois ${d} jours`;
 }
+
 
 // Copy text
 function copyResult(id){
@@ -762,7 +795,93 @@ function exportBabyMilestonesPDF() {
     pdf.save('BabyMilestones.pdf');
   });
 }
+//analyse bebe
+let cryHistory = [];
+let mediaRecorder;
+let recordedChunks = [];
 
+// ==========================
+// تحليل ملف من الجهاز
+// ==========================
+document.getElementById('analyzeFileBtn').addEventListener('click', () => {
+  const file = document.getElementById('audioFile').files[0];
+  if (!file) { alert('Please select an audio file'); return; }
+
+  analyzeCry(file);
+});
+
+// ==========================
+// تسجيل مباشر
+// ==========================
+document.getElementById('startRecording').addEventListener('click', async () => {
+  recordedChunks = [];
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  mediaRecorder = new MediaRecorder(stream);
+  mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+    const audioURL = URL.createObjectURL(blob);
+    const audioEl = document.getElementById('recordedAudio');
+    audioEl.src = audioURL;
+    audioEl.style.display = 'block';
+    document.getElementById('analyzeRecordingBtn').style.display = 'inline-block';
+    document.getElementById('analyzeRecordingBtn').onclick = () => analyzeCry(blob);
+  };
+  mediaRecorder.start();
+  document.getElementById('startRecording').disabled = true;
+  document.getElementById('stopRecording').disabled = false;
+});
+
+document.getElementById('stopRecording').addEventListener('click', () => {
+  mediaRecorder.stop();
+  document.getElementById('startRecording').disabled = false;
+  document.getElementById('stopRecording').disabled = true;
+});
+
+// ==========================
+// تحليل الصوت (ملف أو تسجيل)
+// ==========================
+function analyzeCry(fileOrBlob) {
+  // مثال مؤقت للتحليل
+  const status = 'Crying softly';
+  const estimation = 'Comfort or Attention';
+
+  // عرض النتيجة الحالية مباشرة
+  document.getElementById('cryResult').innerHTML =
+    `Status: ${status}<br>Estimation: ${estimation}`;
+
+  // إضافة السجل مع التاريخ والوقت
+  const now = new Date().toLocaleString();
+  cryHistory.push({ date: now, status, estimation });
+
+  renderCryHistory();
+}
+
+// ==========================
+// عرض السجل المباشر
+// ==========================
+function renderCryHistory() {
+  const historyEl = document.getElementById('cryHistory');
+  if (cryHistory.length === 0) {
+    historyEl.innerHTML = 'No analyses yet.';
+    return;
+  }
+  historyEl.innerHTML = cryHistory.map((a, i) =>
+    `<strong>${i+1}. ${a.date}</strong><br>
+     Status: ${a.status}<br>
+     Estimation: ${a.estimation}<hr>`).join('');
+}
+
+// ==========================
+// فتح/إغلاق المودال
+// ==========================
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+window.onclick = function(event){
+  document.querySelectorAll('.modal').forEach(modal => {
+    if(event.target == modal) modal.classList.remove('show');
+  });
+};
 // ==========================
 // Modal Functions
 // ==========================
