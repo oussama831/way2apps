@@ -63,6 +63,12 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 .result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
 .buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
 </style>
+<style>
+.modal .close:hover{color:#000;}
+input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
+.result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
+.buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+</style>
 </head>
 <body>
 
@@ -272,6 +278,34 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
   </div>
 </div>
 
+<!-- Baby Milestone Modal -->
+<div id="babyModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('babyModal')">&times;</span>
+    <h3>Baby Milestone Tracker</h3>
+
+    <label>Baby Name:</label>
+    <input type="text" id="babyName" placeholder="Enter baby name">
+
+    <label>Birth Date:</label>
+    <input type="date" id="babyBirth">
+
+    <label>Milestone Date:</label>
+    <input type="date" id="milestoneDate">
+
+    <label>Milestone Description:</label>
+    <textarea id="milestoneDesc" rows="4" placeholder="Describe the milestone..."></textarea>
+
+    <button onclick="addBabyMilestone()">Add Milestone</button>
+    <button onclick="resetBabyMilestones()">Reset</button>
+
+    <div id="babyMilestoneReport" style="margin-top:15px;">
+      <p class="result" id="babyMilestoneList"></p>
+    </div>
+
+    <button onclick="exportBabyMilestonesPDF()">Download PDF</button>
+  </div>
+</div>
 
 
 <footer>© 2025 Way2Apps | All Rights Reserved</footer>
@@ -635,6 +669,97 @@ function exportGrowthPDF() {
     });
     pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
     pdf.save('ChildGrowthReport.pdf');
+  });
+}
+
+
+
+// ==========================
+// Baby Milestone Data
+// ==========================
+let babyMilestones = [];
+
+// ==========================
+// Add Milestone
+// ==========================
+function addBabyMilestone() {
+  const name = document.getElementById('babyName').value.trim();
+  const birth = document.getElementById('babyBirth').value;
+  const date = document.getElementById('milestoneDate').value;
+  const desc = document.getElementById('milestoneDesc').value.trim();
+
+  if (!name || !birth || !date || !desc) {
+    alert('Please fill all fields');
+    return;
+  }
+
+  const milestone = { name, birth, date, desc };
+  babyMilestones.push(milestone);
+
+  renderBabyMilestones();
+}
+
+// ==========================
+// Reset Milestones
+// ==========================
+function resetBabyMilestones() {
+  if (confirm('Reset all milestones?')) {
+    babyMilestones = [];
+    renderBabyMilestones();
+  }
+}
+
+// ==========================
+// Render Milestone List
+// ==========================
+function renderBabyMilestones() {
+  const listEl = document.getElementById('babyMilestoneList');
+  if (babyMilestones.length === 0) {
+    listEl.innerHTML = 'No milestones added yet.';
+    return;
+  }
+  listEl.innerHTML = babyMilestones.map((m, i) => 
+    `<strong>${i+1}. ${m.name}</strong> | Birth: ${m.birth} | Date: ${m.date}<br>Milestone: ${m.desc}<br><hr>`
+  ).join('');
+}
+
+// ==========================
+// Export PDF
+// ==========================
+function exportBabyMilestonesPDF() {
+  const report = document.getElementById('babyMilestoneReport');
+  if (!report) { alert('No report to export'); return; }
+
+  // Make sure modal is visible before capturing
+  report.parentElement.style.display = 'block';
+
+  html2canvas(report).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('BabyMilestones.pdf');
+  });
+}
+
+// ==========================
+// Modal Functions
+// ==========================
+function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+window.onclick = function(event) {
+  document.querySelectorAll('.modal').forEach(modal => {
+    if (event.target == modal) modal.classList.remove('show');
   });
 }
 
