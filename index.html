@@ -19,6 +19,10 @@
 
 <!-- Tesseract OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+<!-- QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+
 
 <!-- Styles -->
 <style>
@@ -74,7 +78,29 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
 .result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
 .buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+
+/* --- MODAL NOTES --- */
+modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);font-family:Arial,sans-serif;}
+.modal-content{background-color:#fff;margin:6% auto;padding:25px 30px;border-radius:15px;width:90%;max-width:500px;box-shadow:0 8px 20px rgba(0,0,0,0.4);position:relative;transform:translateY(-60px);opacity:0;transition:all 0.4s ease-in-out;}
+.modal.show .modal-content{transform:translateY(0);opacity:1;}
+.close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;transition:color 0.2s;}
+.close:hover{color:#000;}
+.modal-content h2{text-align:center;font-size:1.7em;margin-top:0;color:#333;text-shadow:0 1px 2px rgba(0,0,0,0.2);}
+.input-row{display:flex;gap:8px;align-items:center;margin:8px 0;}
+.input-row input{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:1em;}
+.input-row input:focus{border-color:#28a745;box-shadow:0 0 6px rgba(40,167,69,0.4);outline:none;}
+.deleteRowBtn{background:#dc3545;color:#fff;border:none;border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:bold;font-size:0.9em;transition:0.3s;}
+.deleteRowBtn:hover{background:#c82333;transform:scale(1.1);}
+#addRowBtn{margin:10px 0;padding:8px 12px;border:none;border-radius:8px;background:#0d6efd;color:#fff;cursor:pointer;font-weight:bold;transition:0.3s;}
+#addRowBtn:hover{background:#0b5ed7;transform:scale(1.05);}
+.modal-content button{width:48%;padding:12px 0;margin:10px 1%;border:none;border-radius:10px;cursor:pointer;font-weight:bold;font-size:1em;transition:all 0.3s ease;box-shadow:0 3px 8px rgba(0,0,0,0.25);}
+#calcBtn{background:linear-gradient(90deg,#28a745,#20c997);color:#fff;}
+#calcBtn:hover{background:linear-gradient(90deg,#20c997,#28a745);transform:translateY(-3px) scale(1.03);box-shadow:0 6px 12px rgba(0,0,0,0.35);}
+#clearBtn{background:linear-gradient(90deg,#dc3545,#e4606d);color:#fff;}
+#clearBtn:hover{background:linear-gradient(90deg,#e4606d,#dc3545);transform:translateY(-3px) scale(1.03);box-shadow:0 6px 12px rgba(0,0,0,0.35);}
+#gradeResult{margin-top:18px;padding:14px;border-radius:10px;background-color:#f7f7f7;text-align:center;font-weight:bold;font-size:1.15em;color:#333;box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);}
 </style>
+
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDSZNR07XT"></script>
@@ -111,18 +137,19 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 <h2>Top Apps</h2>
 <div class="card-grid">
 <div class="card"><img src="assets/images/age.png"><h3>Age Calculator</h3><button class="launch-btn" onclick="openModal('ageModal')">Launch</button></div>
-<div class="card"><img src="assets/images/image-text.png"><h3>Image to Text</h3><button class="launch-btn" onclick="openModal('imageTextModal')">Launch</button></div>
+<div class="card"><img src="assets/images/grade-Modal.png"><h3>Global Grade Calculator</h3><button class="launch-btn" onclick="openModal('gradeModal')">Launch</button></div>
+<div class="card"><img src="assets/images/image-text.png"><h3>Convert Image to Text</h3><button class="launch-btn" onclick="openModal('imageTextModal')">Launch</button></div>
+<div class="card"><img src="assets/images/qr-Container.png"><h3>Convert Text to QR</h3><button class="launch-btn" onclick="openModal('qrContainerModal')">Launch</button></div>
 <!-- Text Tools Hub Card -->
-<div class="card">
-  <img src="assets/images/text-tools.png">
-  <h3>Text Tools Hub</h3>
-  <button class="launch-btn" onclick="openModal('textToolsModal')">Launch</button>
-</div>
-
 <div class="card"><img src="assets/images/calories.png"><h3>Calories Calculator</h3><button class="launch-btn" onclick="openModal('caloriesModal')">Launch</button></div>
 <div class="card"><img src="assets/images/bmi.png"><h3>BMI Checker</h3><button class="launch-btn" onclick="openModal('bmiModal')">Launch</button></div>
+<div class="card"><img src="assets/images/cry.png"><h3>Baby Cry Analyzer</h3><button class="launch-btn" onclick="openModal('cryModal')">Launch</button></div>
 <div class="card"><img src="assets/images/child-growth.png"><h3>Child Growth</h3><button class="launch-btn" onclick="openModal('childGrowthModal')">Launch</button></div>
+
+
 </div>
+
+
 </section>
 
 <!-- Family -->
@@ -130,7 +157,6 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 <h2>Family Apps</h2>
 <div class="card-grid">
 <div class="card"><img src="assets/images/baby.png"><h3>Baby Milestone</h3><button class="launch-btn" onclick="openModal('babyModal')">Launch</button></div>
-<div class="card"><img src="assets/images/cry.png"><h3>Baby Cry Analyzer</h3><button class="launch-btn" onclick="openModal('cryModal')">Launch</button></div>
 <div class="card"><img src="assets/images/health.png"><h3>Health Tracker</h3><button class="launch-btn" onclick="openModal('healthModal')">Launch</button></div>
 </div>
 </section>
@@ -139,6 +165,7 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
 <section id="student" class="section">
 <h2>Student Apps</h2>
 <div class="card-grid">
+<div class="card"><img src="assets/images/text-tools.png"><h3>Text Tools Hub</h3><button class="launch-btn" onclick="openModal('textToolsModal')">Launch</button></div>
 <div class="card"><img src="assets/images/data.png"><h3>Data Visualizer</h3><button class="launch-btn" onclick="openModal('dataModal')">Launch</button></div>
 <div class="card"><img src="assets/images/3d.png"><h3>3D PDF Generator</h3><button class="launch-btn" onclick="openModal('pdf3DModal')">Launch</button></div>
 <div class="card"><img src="assets/images/quiz.png"><h3>Quiz Game</h3><button class="launch-btn" onclick="openModal('quizModal')">Launch</button></div>
@@ -349,7 +376,54 @@ input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px s
   </div>
 </div>
 
+<!-- Global Grade Calculator Modal -->
+<div id="gradeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeGradeModal()">&times;</span>
+    <h2 id="title">🌍 Global Grade Calculator</h2>
 
+    <select id="gradeSystem">
+      <option value="20">/20</option>
+      <option value="10">/10</option>
+      <option value="100">/100</option>
+      <option value="4">GPA (4.0)</option>
+    </select>
+
+    <div id="gradesContainer">
+      <div class="input-row">
+        <input type="number" placeholder="Grade" min="0" class="grade">
+        <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+        <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+      </div>
+      <div class="input-row">
+        <input type="number" placeholder="Grade" min="0" class="grade">
+        <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+        <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+      </div>
+    </div>
+
+    <button id="addRowBtn" onclick="addGradeRow()">+ Add Grade</button>
+    <button onclick="calculateGlobalGrade()" id="calcBtn">Calculate</button>
+    <button onclick="clearGrades()" id="clearBtn">Clear</button>
+
+    <div id="gradeResult"></div>
+  </div>
+</div>
+
+<div id="qrContainerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('qrContainerModal')">&times;</span>
+    <h2>QR Code Generator & Scanner</h2>
+    <input type="text" id="qrInput" placeholder="Enter text or URL">
+    <br>
+    <button id="generateBtn">Generate QR</button>
+    <button id="downloadBtn">Download QR</button>
+    <button id="scanBtn">Scan QR</button>
+    <div id="qrCode"></div>
+    <video id="video" class="hidden"></video>
+    <div id="scanResult"></div>
+  </div>
+</div>
 
 <footer>© 2025 Way2Apps | All Rights Reserved</footer>
 
@@ -860,12 +934,103 @@ document.getElementById('exportPdfBtn').onclick = ()=>{
     pdf.save('BabyCryAnalysis.pdf');
   });
 };
+
+const gradeModal=document.getElementById("gradeModal");
+const gradesContainer=document.getElementById("gradesContainer");
+const gradeSystem=document.getElementById("gradeSystem");
+const gradeResult=document.getElementById("gradeResult");
+
+// Open/close modal
+function openGradeModal(){gradeModal.style.display="block";setTimeout(()=>gradeModal.classList.add("show"),10);}
+function closeGradeModal(){gradeModal.classList.remove("show");setTimeout(()=>gradeModal.style.display="none",400);}
+window.onclick=function(event){if(event.target===gradeModal) closeGradeModal();}
+
+// Add new row
+function addGradeRow(){
+  const row=document.createElement("div");
+  row.classList.add("input-row");
+  row.innerHTML=`<input type="number" placeholder="Grade" min="0" class="grade">
+                 <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+                 <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>`;
+  gradesContainer.appendChild(row);
+}
+
+// Delete specific row
+function deleteGradeRow(btn){gradesContainer.removeChild(btn.parentElement);}
+
+// Calculate grades
+function calculateGlobalGrade(){
+  const max=parseFloat(gradeSystem.value);
+  const grades=[...document.querySelectorAll(".grade")].map(i=>parseFloat(i.value));
+  const coeffs=[...document.querySelectorAll(".coeff")].map(i=>parseFloat(i.value)||1);
+  let total=0,totalCoeff=0;
+  grades.forEach((g,i)=>{if(!isNaN(g)){total+=g*coeffs[i];totalCoeff+=coeffs[i];}});
+  if(totalCoeff===0){gradeResult.innerHTML="⚠️ Enter at least one grade";return;}
+  let avg=total/totalCoeff,resultHTML="";
+  if(max===4){resultHTML=`<p><strong>GPA:</strong> ${avg.toFixed(2)} / 4.0</p>`;resultHTML+=`<p><strong>Status:</strong> ${avg>=2?"Pass ✅":"Fail ❌"}</p>`;}
+  else{const percent=(avg/max)*100,status=percent>=50?"Pass ✅":"Fail ❌";resultHTML=`<p><strong>Average:</strong> ${avg.toFixed(2)} / ${max}</p><p><strong>Percentage:</strong> ${percent.toFixed(1)}%</p><p><strong>Status:</strong> ${status}</p>`;}
+  gradeResult.innerHTML=resultHTML;
+}
+
+// Clear all
+function clearGrades(){
+  gradesContainer.innerHTML=`<div class="input-row">
+    <input type="number" placeholder="Grade" min="0" class="grade">
+    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+  </div>`;
+  gradeResult.innerHTML="";
+}
+
+//QR
+const qrBtn = document.getElementById("generateBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+const scanBtn = document.getElementById("scanBtn");
+const qrInput = document.getElementById("qrInput");
+const qrCodeDiv = document.getElementById("qrCode");
+const video = document.getElementById("video");
+const scanResult = document.getElementById("scanResult");
+
+let qr;
+
+// Generate QR
+qrBtn.addEventListener("click", () => {
+  const text = qrInput.value.trim();
+  if(!text){ alert("Enter text or URL!"); return; }
+  qrCodeDiv.innerHTML = "";
+  qr = new QRCode(qrCodeDiv, { text: text, width:180, height:180, colorDark:"#000", colorLight:"#fff", correctLevel:QRCode.CorrectLevel.H });
+});
+
+// Download QR
+downloadBtn.addEventListener("click", () => {
+  if(!qrCodeDiv.querySelector("img")) { alert("Generate QR first!"); return; }
+  const img = qrCodeDiv.querySelector("img").src;
+  const a = document.createElement("a");
+  a.href = img;
+  a.download = "QRCode.png";
+  a.click();
+});
+
+// Scan QR
+let html5QrCode;
+scanBtn.addEventListener("click", () => {
+  scanResult.innerHTML = "";
+  video.classList.remove("hidden");
+  html5QrCode = new Html5Qrcode("video");
+  Html5Qrcode.getCameras().then(cameras => {
+    if(cameras && cameras.length){
+      html5QrCode.start(cameras[0].id, {fps:10, qrbox:250}, qrCodeMessage => {
+        scanResult.innerHTML = `<strong>QR Content:</strong> ${qrCodeMessage}`;
+        html5QrCode.stop();
+        video.classList.add("hidden");
+      }).catch(err => console.error(err));
+    }
+  }).catch(err => console.error(err));
+});
+
 // ==========================
 // Modal Functions
 // ==========================
-function openModal(id) {
-  document.getElementById(id).classList.add('show');
-}
 
 function closeModal(id) {
   document.getElementById(id).classList.remove('show');
