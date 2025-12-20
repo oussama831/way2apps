@@ -377,9 +377,10 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
 </div>
 
 <!-- Global Grade Calculator Modal -->
+<!-- Global Grade Calculator Modal -->
 <div id="gradeModal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeGradeModal()">&times;</span>
+    <span class="close" onclick="closeModal('gradeModal')">&times;</span>
     <h2 id="title">🌍 Global Grade Calculator</h2>
 
     <select id="gradeSystem">
@@ -395,11 +396,6 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
         <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
         <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
       </div>
-      <div class="input-row">
-        <input type="number" placeholder="Grade" min="0" class="grade">
-        <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-        <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
-      </div>
     </div>
 
     <button id="addRowBtn" onclick="addGradeRow()">+ Add Grade</button>
@@ -409,6 +405,7 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
     <div id="gradeResult"></div>
   </div>
 </div>
+
 
 <div id="qrContainerModal" class="modal">
   <div class="modal-content">
@@ -935,51 +932,120 @@ document.getElementById('exportPdfBtn').onclick = ()=>{
   });
 };
 
-const gradeModal=document.getElementById("gradeModal");
-const gradesContainer=document.getElementById("gradesContainer");
-const gradeSystem=document.getElementById("gradeSystem");
-const gradeResult=document.getElementById("gradeResult");
+// فتح وإغلاق المودال (عام لكل المودالات)
+function openModal(id){ document.getElementById(id).classList.add('show'); }
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+window.onclick = function(event){
+  document.querySelectorAll('.modal').forEach(modal => {
+    if(event.target == modal) modal.classList.remove('show');
+  });
+}
+
+// إضافة صف جديد
+function addGradeRow(){
+  const container = document.getElementById('gradesContainer');
+  const row = document.createElement('div');
+  row.className = 'input-row';
+  row.innerHTML = `
+    <input type="number" placeholder="Grade" min="0" class="grade">
+    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+  `;
+  container.appendChild(row);
+}
+
+// حذف صف
+function deleteGradeRow(btn){
+  const row = btn.parentElement;
+  row.remove();
+}
+
+// حساب المعدل العام
+const gradeModal = document.getElementById("gradeModal");
+const gradesContainer = document.getElementById("gradesContainer");
+const gradeSystem = document.getElementById("gradeSystem");
+const gradeResult = document.getElementById("gradeResult");
 
 // Open/close modal
-function openGradeModal(){gradeModal.style.display="block";setTimeout(()=>gradeModal.classList.add("show"),10);}
-function closeGradeModal(){gradeModal.classList.remove("show");setTimeout(()=>gradeModal.style.display="none",400);}
-window.onclick=function(event){if(event.target===gradeModal) closeGradeModal();}
+function openGradeModal() {
+  gradeModal.style.display = "block";
+  setTimeout(() => gradeModal.classList.add("show"), 10);
+}
+
+function closeGradeModal() {
+  gradeModal.classList.remove("show");
+  setTimeout(() => gradeModal.style.display = "none", 400);
+}
+
+window.onclick = function(event) {
+  if (event.target === gradeModal) closeGradeModal();
+}
 
 // Add new row
-function addGradeRow(){
-  const row=document.createElement("div");
+function addGradeRow() {
+  const row = document.createElement("div");
   row.classList.add("input-row");
-  row.innerHTML=`<input type="number" placeholder="Grade" min="0" class="grade">
-                 <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-                 <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>`;
+  row.innerHTML = `
+    <input type="number" placeholder="Grade" min="0" class="grade">
+    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+  `;
   gradesContainer.appendChild(row);
 }
 
 // Delete specific row
-function deleteGradeRow(btn){gradesContainer.removeChild(btn.parentElement);}
+function deleteGradeRow(btn) {
+  gradesContainer.removeChild(btn.parentElement);
+}
 
 // Calculate grades
-function calculateGlobalGrade(){
-  const max=parseFloat(gradeSystem.value);
-  const grades=[...document.querySelectorAll(".grade")].map(i=>parseFloat(i.value));
-  const coeffs=[...document.querySelectorAll(".coeff")].map(i=>parseFloat(i.value)||1);
-  let total=0,totalCoeff=0;
-  grades.forEach((g,i)=>{if(!isNaN(g)){total+=g*coeffs[i];totalCoeff+=coeffs[i];}});
-  if(totalCoeff===0){gradeResult.innerHTML="⚠️ Enter at least one grade";return;}
-  let avg=total/totalCoeff,resultHTML="";
-  if(max===4){resultHTML=`<p><strong>GPA:</strong> ${avg.toFixed(2)} / 4.0</p>`;resultHTML+=`<p><strong>Status:</strong> ${avg>=2?"Pass ✅":"Fail ❌"}</p>`;}
-  else{const percent=(avg/max)*100,status=percent>=50?"Pass ✅":"Fail ❌";resultHTML=`<p><strong>Average:</strong> ${avg.toFixed(2)} / ${max}</p><p><strong>Percentage:</strong> ${percent.toFixed(1)}%</p><p><strong>Status:</strong> ${status}</p>`;}
-  gradeResult.innerHTML=resultHTML;
+function calculateGlobalGrade() {
+  const max = parseFloat(gradeSystem.value);
+  const grades = [...document.querySelectorAll(".grade")].map(i => parseFloat(i.value));
+  const coeffs = [...document.querySelectorAll(".coeff")].map(i => parseFloat(i.value) || 1);
+
+  let total = 0, totalCoeff = 0;
+  grades.forEach((g, i) => {
+    if (!isNaN(g)) {
+      total += g * coeffs[i];
+      totalCoeff += coeffs[i];
+    }
+  });
+
+  if (totalCoeff === 0) {
+    gradeResult.innerHTML = "⚠️ Enter at least one grade";
+    return;
+  }
+
+  const avg = total / totalCoeff;
+  let resultHTML = "";
+
+  if (max === 4) { // GPA
+    resultHTML = `<p><strong>GPA:</strong> ${avg.toFixed(2)} / 4.0</p>`;
+    resultHTML += `<p><strong>Status:</strong> ${avg >= 2 ? "Pass ✅" : "Fail ❌"}</p>`;
+  } else {
+    const percent = (avg / max) * 100;
+    const status = percent >= 50 ? "Pass ✅" : "Fail ❌";
+    resultHTML = `
+      <p><strong>Average:</strong> ${avg.toFixed(2)} / ${max}</p>
+      <p><strong>Percentage:</strong> ${percent.toFixed(1)}%</p>
+      <p><strong>Status:</strong> ${status}</p>
+    `;
+  }
+
+  gradeResult.innerHTML = resultHTML;
 }
 
 // Clear all
-function clearGrades(){
-  gradesContainer.innerHTML=`<div class="input-row">
-    <input type="number" placeholder="Grade" min="0" class="grade">
-    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
-  </div>`;
-  gradeResult.innerHTML="";
+function clearGrades() {
+  gradesContainer.innerHTML = `
+    <div class="input-row">
+      <input type="number" placeholder="Grade" min="0" class="grade">
+      <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
+      <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
+    </div>
+  `;
+  gradeResult.innerHTML = "";
 }
 
 //QR
@@ -1027,6 +1093,7 @@ scanBtn.addEventListener("click", () => {
     }
   }).catch(err => console.error(err));
 });
+
 
 // ==========================
 // Modal Functions
