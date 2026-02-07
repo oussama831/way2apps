@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Grade Calculator - Way2Apps</title>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: #1e90ff;
+    color: #fff;
+}
+.navbar .logo { font-size: 1.6rem; font-weight: bold; }
+.nav-links { list-style: none; display: flex; gap: 20px; }
+.nav-links li a { color: #fff; text-decoration: none; transition: 0.3s; }
+.nav-links li a:hover { color: #ffeb3b; transform: scale(1.05); }
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg,#1e90ff,#3742fa);
+    color: #fff;
+}
+.hero h1 { font-size: 2.5rem; margin-bottom: 15px; }
+.hero p { font-size: 1.2rem; }
+
+/* Cards */
+.section {
+    max-width: 900px;
+    margin: 40px auto;
+    display: grid;
+    gap: 25px;
+    padding: 0 20px;
+}
+.card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+}
+.card::before {
+    content: attr(data-icon);
+    font-size: 2rem;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th { background-color: #1e90ff; color: white; }
+tfoot td { font-weight: bold; }
+
+.code {
+    background: #f0f0f0;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-family: monospace;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #1e90ff;
+    color: #fff;
+    margin-top: 50px;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">Way2Apps</div>
+    <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#gradeModal" class="launch-btn">Start Calculator</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+    <h1>Global Grade Calculator</h1>
+    <p>Learn how to calculate your average grades easily and clearly!</p>
+</header>
+
+<!-- Sections -->
+<section class="section">
+
+    <div class="card" data-icon="💡">
+        <h2>Application Overview</h2>
+        <p>This calculator helps you compute your overall average grade easily. Enter each subject's grade and its coefficient, and get the weighted average.</p>
+    </div>
+
+    <div class="card" data-icon="📊">
+        <h2>How It Works</h2>
+        <ul>
+            <li>Enter the grade for each subject (out of 20).</li>
+            <li>Specify the coefficient (weight) for each subject.</li>
+            <li>Weighted Average = (Grade × Coefficient) ÷ Sum of Coefficients.</li>
+        </ul>
+    </div>
+
+    <div class="card" data-icon="📝">
+        <h2>Example</h2>
+        <p>Grades out of 20:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Grade (/20)</th>
+                    <th>Coefficient</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Math</td>
+                    <td>15</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Physics</td>
+                    <td>12</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>English</td>
+                    <td>17</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td>—</td>
+                    <td>6</td>
+                </tr>
+            </tfoot>
+        </table>
+        <p class="code">Calculation: 15×2 + 12×3 + 17×1 = 83</p>
+        <p class="code">Weighted Average: 83 ÷ 6 ≈ 13.83 /20</p>
+    </div>
+
+</section>
+
+<!-- Footer -->
+<footer>
+    © 2025 Way2Apps | All Rights Reserved
+</footer>
+
+</body>
+</html>
