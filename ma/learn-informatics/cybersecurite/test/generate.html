@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2Apps Certificate Generator</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<!-- PDF & QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+
+body{
+font-family:'Times New Roman', serif;
+background:#f3f4f8;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.container{
+width:950px;
+text-align:center;
+}
+
+/* ===== شهادة ===== */
+
+#certificate{
+display:none;
+width:1230px;
+height:794px;
+background:white;
+border:15px solid #1a5bb8;
+box-sizing:border-box;
+position:relative;
+margin:0 auto;
+overflow:hidden;
+}
+
+/* watermark */
+
+#certificate::before{
+content:"Way2Apps";
+position:absolute;
+font-size:120px;
+color:rgba(0,0,0,0.04);
+top:40%;
+left:50%;
+transform:translate(-50%,-50%) rotate(-25deg);
+}
+
+/* اخفاء watermark فقط أثناء PDF */
+
+#certificate.hide-watermark::before{
+content:none !important;
+}
+
+.logo{
+position:absolute;
+top:40px;
+left:60px;
+width:120px;
+}
+
+.seal{
+position:absolute;
+top:40px;
+right:60px;
+width:120px;
+}
+
+.title{
+font-size:46px;
+color:#1a5bb8;
+margin-top:80px;
+text-align:center;
+}
+
+.name{
+font-size:40px;
+margin:25px 0;
+font-weight:bold;
+text-align:center;
+}
+
+.text{
+font-size:22px;
+margin:15px 0;
+text-align:center;
+}
+
+.signature{
+position:absolute;
+bottom:80px;
+right:120px;
+text-align:center;
+}
+
+.signature img{
+width:180px;
+}
+
+#qrcode{
+position:absolute;
+bottom:60px;
+left:100px;
+}
+
+button{
+padding:15px 40px;
+font-size:18px;
+background:#1a5bb8;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:20px;
+}
+
+button:hover{
+background:#0f3f85;
+}
+
+.message{
+margin-top:20px;
+font-size:20px;
+color:red;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Cybersecurity Certificate</h1>
+
+<!-- ===== شهادة ===== -->
+
+<div id="certificate">
+
+<img src="https://way2apps.com/assets/logo.png" class="logo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Gold_Seal.svg/512px-Gold_Seal.svg.png" class="seal">
+
+<h2 class="title">Certificate of Completion</h2>
+
+<p class="text">This is to certify that</p>
+
+<div class="name" id="certName"></div>
+
+<p class="text">has successfully completed the professional course</p>
+<p class="text"><b>Cybersecurity Training Program</b></p>
+
+<p class="text" id="certDate"></p>
+
+<div id="qrcode"></div>
+
+<div class="signature">
+<img src="https://i.imgur.com/4NZ6uLY.png">
+<p><b></b></p>
+<p>Founder - Way2Apps</p>
+</div>
+
+</div>
+
+<!-- رسالة منع الدخول -->
+
+<div id="blocked" class="message" style="display:none;">
+⚠️ You must pass the test first
+<br>
+<button onclick="window.location.href='test.html'">
+Back To Test
+</button>
+</div>
+
+<button id="downloadBtn" style="display:none;" onclick="downloadCertificate()">
+Download Certificate PDF
+</button>
+
+</div>
+
+<script>
+
+/* ===== Firebase Config ===== */
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "YOUR_PROJECT.firebaseapp.com",
+databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+projectId: "YOUR_PROJECT",
+storageBucket: "YOUR_PROJECT.appspot.com",
+messagingSenderId: "YOUR_SENDER_ID",
+appId: "YOUR_APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+/* ===== قراءة البيانات من URL ===== */
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const name = urlParams.get('name');
+const cid = urlParams.get('cid');
+
+if(!name || !cid){
+
+document.getElementById("blocked").style.display="block";
+
+}else{
+
+const cert = document.getElementById("certificate");
+
+cert.style.display="block";
+
+document.getElementById("downloadBtn").style.display="inline-block";
+
+document.getElementById("certName").innerText=name;
+document.getElementById("certDate").innerText="Date: "+new Date().toLocaleDateString();
+
+/* ===== QR ===== */
+
+new QRCode(document.getElementById("qrcode"),{
+text:"https://way2apps.com/verify.html?cid="+cid,
+width:130,
+height:130
+});
+
+/* ===== حفظ في Firebase ===== */
+
+db.ref("Certificates/"+cid).set({
+name:name,
+course:"Cybersecurity Training Program",
+date:new Date().toLocaleDateString(),
+pdfLink:"https://way2apps.com/certificates/"+cid+".pdf"
+});
+
+}
+
+/* ===== تحميل PDF ===== */
+
+function downloadCertificate(){
+
+const element=document.getElementById("certificate");
+
+/* اخفاء watermark */
+element.classList.add("hide-watermark");
+
+html2pdf().set({
+
+margin:0,
+filename:name+"-"+cid+".pdf",
+
+image:{
+type:'jpeg',
+quality:1
+},
+
+html2canvas:{
+scale:4,
+useCORS:true,
+scrollX:0,
+scrollY:0,
+windowWidth:1123,
+windowHeight:794
+},
+
+jsPDF:{
+unit:'px',
+format:[1123,794],
+orientation:'landscape'
+}
+
+}).from(element).save().then(()=>{
+
+/* رجوع watermark */
+element.classList.remove("hide-watermark");
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
