@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2Apps - Learn Informatics</title>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f5f6fa;
+    color: #333;
+  }
+  header {
+    background: linear-gradient(135deg, #2c7be5, #1a5bb8);
+    color: white;
+    text-align: center;
+    padding: 70px 20px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 42px;
+    letter-spacing: 1px;
+  }
+  header p {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+
+  /* Navbar الأقسام */
+  nav {
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  nav a {
+    padding: 12px 28px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 25px;
+    transition: 0.3s;
+  }
+  nav a:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  /* Cards لكل قسم */
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+  }
+  .card {
+    background: white;
+    width: 270px;
+    padding: 25px 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    text-align: center;
+    transition: 0.4s;
+  }
+  .card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  }
+  .card h3 {
+    color: #2c7be5;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .card p {
+    font-size: 14px;
+    margin-bottom: 18px;
+    min-height: 55px;
+  }
+  .card a {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #ff6600;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 12px;
+    transition: 0.3s;
+  }
+  .card a:hover {
+    background: #e65c00;
+    transform: scale(1.05);
+  }
+
+  /* ميزات المنصة */
+  .features {
+    margin: 70px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+  }
+  .feature {
+    background: #ffffff;
+    width: 300px;
+    padding: 25px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+  }
+  .feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+  .feature h4 {
+    color: #2c7be5;
+    margin-bottom: 10px;
+  }
+  .feature p {
+    font-size: 14px;
+  }
+
+  /* CTA الشهادة */
+  .cta {
+    margin: 80px 0;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 20px 55px;
+    background: #ff6600;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 15px;
+    transition: 0.3s;
+  }
+  .cta a:hover {
+    background: #e65c00;
+    transform: scale(1.05);
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    background: #2c7be5;
+    color: white;
+    margin-top: 80px;
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .cards, .features {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>تعلم الإعلاميات</h1>
+  <p>منصة Way2Apps لتعلم الحاسوب، البرمجة، الشبكات وأكثر بالعربية</p>
+</header>
+
+<!-- Navbar الأقسام -->
+<nav>
+  <div class="nav-container">
+    <a href="computer/index.html">🖥️ الحاسوب</a>
+    <a href="network/index.html">🌐 الشبكات</a>
+    <a href="office/index.html">📊 البرامج المكتبية</a>
+    <a href="programming/index.html">💻 البرمجة</a>
+    <a href="mobile/index.html">📱 الهاتف</a>
+    <a href="cybersecurite/index.html">🔐 الأمن المعلوماتي</a>
+    <a href="ai/index.html">🤖 الذكاء الاصطناعي</a>
+    <a href="digital-skills/index.html">🧰 المهارات الرقمية</a>
+    <a href="projects/index.html">🎮 المشاريع العملية</a>
+    <a href="test/index.html"> 🏆احصل على شهادتك</a>
+  </div>
+</nav>
+
+
+<div class="container">
+  <h2>استكشف المجالات الرئيسية:</h2>
+
+  <div class="cards">
+    <div class="card">
+      <h3>🖥️ الحاسوب</h3>
+      <p>تعرف على مكونات الحاسوب وكيف يعمل (Ordinateur – Computer)</p>
+      <a href="computer/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>🌐 الشبكات</h3>
+      <p>تعلم أساسيات الشبكات والإنترنت (Réseau – Network)</p>
+      <a href="network/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>📊 البرامج المكتبية</h3>
+      <p>Word و Excel وأدوات الإنتاجية الأخرى</p>
+      <a href="office/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>💻 البرمجة</h3>
+      <p>الخوارزميات ولغات البرمجة مثل Python و C# و SQL</p>
+      <a href="programming/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>📱 الهاتف</h3>
+      <p>تطوير التطبيقات وأنظمة Android و iOS</p>
+      <a href="mobile/index.html">تعلم الآن</a>
+    </div>
+    
+    <div class="card">
+      <h3>🔐 الأمن السيبراني</h3>
+      <p>حماية البيانات والتعامل مع الفيروسات والاختراق</p>
+      <a href="cybersecurite/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>🤖 الذكاء الاصطناعي</h3>
+      <p>مقدمة وأدوات AI وتطبيقاتها العملية</p>
+      <a href="ai/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>🧰 المهارات الرقمية</h3>
+      <p>Git, العمل الحر, Portfolio وأدوات الإنتاجية</p>
+      <a href="digital-skills/index.html">تعلم الآن</a>
+    </div>
+    <div class="card">
+      <h3>🎮 المشاريع العملية</h3>
+      <p>تدريبات عملية ومشاريع تطبيقية لكل قسم</p>
+      <a href="projects/index.html">تعلم الآن</a>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <h4>🎥 فيديوهات تعليمية</h4>
+      <p>مقاطع قصيرة بالعربية والدارجة لتسهيل الفهم لكل قسم</p>
+    </div>
+    <div class="feature">
+      <h4>📝 تدريبات عملية</h4>
+      <p>تمارين وتحديات لكل مجال لتقوية المهارات</p>
+    </div>
+    <div class="feature">
+      <h4>🏆 الشهادات</h4>
+      <p>اجتز الاختبار واحصل على شهادة QR جاهزة للمشاركة</p>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a href="test/index.html">🏆 اجتز الاختبار واحصل على شهادتك</a>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Way2Apps. جميع الحقوق محفوظة.
+</footer>
+
+</body>
+</html>
