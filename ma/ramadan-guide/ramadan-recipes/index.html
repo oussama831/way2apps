@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>وصفات رمضان</title>
+<style>
+body {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:#f4f6fb;
+  direction:rtl;
+  margin:0;
+  text-align:center;
+  color:#333;
+}
+header {
+  background:linear-gradient(135deg,#1e90ff,#3742fa);
+  color:white;
+  padding:30px 20px;
+}
+.container {
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+  margin-top:30px;
+}
+.recipe-card {
+  background:white;
+  border-radius:12px;
+  padding:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  transition:transform .3s;
+}
+.recipe-card:hover {
+  transform:translateY(-5px);
+}
+.recipe-card iframe {
+  width:100%;
+  height:180px;
+  border:none;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+.recipe-card h3 {
+  color:#1e90ff;
+  margin-bottom:8px;
+}
+.recipe-card p {
+  font-size:14px;
+  margin-bottom:10px;
+}
+.actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.actions button {
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.3s;
+  color:white;
+}
+.copy-btn { background:#34a853; }
+.copy-btn:hover { background:#28a745; }
+.share-btn { background:#1a73e8; }
+.share-btn:hover { background:#1664c1; }
+.back {
+  display:inline-block;
+  margin-top:30px;
+  padding:10px 15px;
+  text-decoration:none;
+  background:#1e90ff;
+  color:white;
+  border-radius:8px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍲 وصفات رمضان</h1>
+  <p>تعلم وصفات سهلة وسريعة للإفطار والسحور مع فيديوهات توضيحية</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <!-- وصفة 1 -->
+    <div class="recipe-card">
+      <iframe src="https://www.youtube.com/embed/4wdfnQdYOa4" allowfullscreen></iframe>
+      <h3>شوربة رمضان المميزة</h3>
+      <p>وصفة سهلة وسريعة لتفتح الشهية قبل الإفطار.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('شوربة رمضان المميزة - وصفة سهلة وسريعة')">نسخ الوصفة</button>
+        <button class="share-btn" onclick="shareRecipe('شوربة رمضان المميزة', 'https://www.youtube.com/watch?v=HZuXYAR-zdQ')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- وصفة 2 -->
+    <div class="recipe-card">
+      <iframe src="https://www.youtube.com/embed/VjkfH-gMgus" allowfullscreen></iframe>
+      <h3>سلطة الإفطار المنعشة</h3>
+      <p>سلطة خفيفة وصحية تكمل وجبة الإفطار.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('سلطة الإفطار المنعشة - وصفة صحية')">نسخ الوصفة</button>
+        <button class="share-btn" onclick="shareRecipe('سلطة الإفطار المنعشة','https://www.youtube.com/watch?v=VjkfH-gMgus')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- وصفة 3 -->
+    <div class="recipe-card">
+      <iframe src="https://www.youtube.com/embed/C1e4j7ua53Q" allowfullscreen></iframe>
+      <h3>كباب رمضان السريع</h3>
+      <p>كباب لذيذ وسهل التحضير يناسب العائلة.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('كباب رمضان السريع - وصف سريع')">نسخ الوصفة</button>
+        <button class="share-btn" onclick="shareRecipe('كباب رمضان السريع','https://www.youtube.com/watch?v=C1e4j7ua53Q')">مشاركة</button>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="back">⬅ العودة للرئيسية</a>
+</div>
+
+<script>
+function copyText(text){
+  navigator.clipboard.writeText(text).then(()=>{ alert('تم نسخ الوصفة!'); });
+}
+
+function shareRecipe(title,url){
+  if(navigator.share){
+    navigator.share({title:title,url:url});
+  } else {
+    prompt('انسخ الرابط للمشاركة:', url);
+  }
+}
+</script>
+
+</body>
+</html>
