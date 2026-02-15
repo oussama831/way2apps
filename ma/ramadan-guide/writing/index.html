@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📝 كتابة وتدوين</title>
+<style>
+body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4f6fb; margin:0; text-align:center;}
+header {background: linear-gradient(135deg,#1e90ff,#3742fa); color:white; padding:30px;}
+.container {max-width:1100px; margin:auto; padding:20px;}
+.grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin-top:30px;}
+.card {background:white; padding:20px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition:.3s; cursor:pointer; text-decoration:none; color:#333;}
+.card:hover {transform:translateY(-5px); box-shadow:0 6px 15px rgba(0,0,0,0.2);}
+.card h3 {margin-top:15px; color:#3742fa;}
+iframe {width:100%; height:180px; border:none; border-radius:10px;}
+.back {display:inline-block; margin-top:30px; text-decoration:none; background:#1e90ff; color:white; padding:10px 20px; border-radius:6px;}
+.actions {display:flex; gap:5px; justify-content:center; margin-top:10px;}
+button {padding:5px 10px; border:none; border-radius:5px; cursor:pointer; font-weight:bold;}
+.copy-btn {background:#28a745; color:white;}
+.share-btn {background:#1e90ff; color:white;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📝 كتابة وتدوين</h1>
+  <p>تعلم مهارات الكتابة والتدوين الإبداعي</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <!-- مثال مقال/فيديو 1 -->
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/0srm-kDTASo" allowfullscreen></iframe>
+      <h3>نصائح للكتابة اليومية</h3>
+      <p>طرق عملية لتطوير عادة الكتابة يومياً.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('نصائح للكتابة اليومية - طرق عملية لتطوير عادة الكتابة')">نسخ الوصف</button>
+        <button class="share-btn" onclick="shareContent('نصائح للكتابة اليومية','https://youtu.be/0srm-kDTASo')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- مثال مقال/فيديو 2 -->
+    <div class="card">
+      <iframe src="https://www.youtube.com/embed/c0k0E0-gzd8" allowfullscreen></iframe>
+      <h3>التدوين للمبتدئين</h3>
+      <p>خطوات بسيطة لبدء مدونة ناجحة على الإنترنت.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('التدوين للمبتدئين - خطوات بسيطة لبدء مدونة ناجحة')">نسخ الوصف</button>
+        <button class="share-btn" onclick="shareContent('التدوين للمبتدئين','https://youtu.be/c0k0E0-gzd8')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- أضف المزيد بنفس الطريقة -->
+
+  </div>
+
+  <a href="stories_sections.html" class="back">⬅ العودة للأقسام</a>
+</div>
+
+<script>
+function copyText(text){navigator.clipboard.writeText(text);}
+function shareContent(title,url){window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);}
+</script>
+
+</body>
+</html>
