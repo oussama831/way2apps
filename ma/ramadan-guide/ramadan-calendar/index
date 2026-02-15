@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقويم رمضان المتطور</title>
+
+<style>
+body{
+  font-family:'Segoe UI';
+  background:#f4f6fb;
+  direction:rtl;
+  margin:0;
+  text-align:center;
+}
+
+header{
+  background:linear-gradient(135deg,#1e90ff,#3742fa);
+  color:white;
+  padding:30px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+select{
+  padding:8px;
+  border-radius:6px;
+  margin-top:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:15px;
+  margin-top:30px;
+}
+
+.day{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  transition:.3s;
+}
+
+.day:hover{
+  transform:translateY(-5px);
+}
+
+.completed{
+  background:#2ed573;
+  color:white;
+}
+
+.day small{
+  display:block;
+  margin-top:5px;
+  font-size:12px;
+}
+
+.progress-box{
+  margin-top:30px;
+}
+
+.progress{
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  height:25px;
+}
+
+.progress-bar{
+  height:25px;
+  background:#1e90ff;
+  width:0%;
+  transition:.5s;
+}
+
+.back{
+  display:inline-block;
+  margin-top:20px;
+  text-decoration:none;
+  background:#1e90ff;
+  color:white;
+  padding:8px 15px;
+  border-radius:6px;
+}
+
+.countdown{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📅 تقويم رمضان</h1>
+
+  <label>اختر الدولة:</label><br>
+  <select id="countrySelect"></select>
+
+  <br><br>
+
+  <label>اختر المدينة:</label><br>
+  <select id="citySelect"></select>
+
+  <div class="countdown" id="countdown"></div>
+</header>
+
+<div class="container">
+  <div class="grid" id="calendar"></div>
+
+  <div class="progress-box">
+    <h3>نسبة الإنجاز</h3>
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p id="progressText"></p>
+  </div>
+
+  <a href="index.html" class="back">⬅ العودة للرئيسية</a>
+</div>
+
+<script>
+
+const totalDays = 30;
+const calendar = document.getElementById("calendar");
+const countrySelect = document.getElementById("countrySelect");
+const citySelect = document.getElementById("citySelect");
+const countdownEl = document.getElementById("countdown");
+
+// 🌍 الدول والمدن بالعربية
+const countries = {
+  "المغرب": {
+    value: "Morocco",
+    cities: {
+      "الدار البيضاء": "Casablanca",
+      "الرباط": "Rabat",
+      "مراكش": "Marrakech",
+      "طنجة": "Tangier",
+      "فاس": "Fes",
+      "أكادير": "Agadir"
+    }
+  },
+  "السعودية": {
+    value: "Saudi Arabia",
+    cities: {
+      "مكة المكرمة": "Mecca",
+      "المدينة المنورة": "Medina",
+      "الرياض": "Riyadh",
+      "جدة": "Jeddah"
+    }
+  },
+  "مصر": {
+    value: "Egypt",
+    cities: {
+      "القاهرة": "Cairo",
+      "الإسكندرية": "Alexandria"
+    }
+  }
+};
+
+// تحميل الدول
+function loadCountries(){
+  for(let countryName in countries){
+    const option = document.createElement("option");
+    option.textContent = countryName;
+    option.value = countryName;
+    countrySelect.appendChild(option);
+  }
+  loadCities();
+}
+
+// تحميل المدن
+function loadCities(){
+  citySelect.innerHTML="";
+  const selectedCountryName = countrySelect.value;
+  const selectedCountry = countries[selectedCountryName];
+
+  for(let cityName in selectedCountry.cities){
+    const option = document.createElement("option");
+    option.textContent = cityName;
+    option.value = selectedCountry.cities[cityName];
+    citySelect.appendChild(option);
+  }
+
+  generateCalendar();
+}
+
+// جلب أوقات الصلاة
+async function fetchPrayerTimes(city,country){
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth()+1;
+
+  const url = `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&method=2&month=${month}&year=${year}`;
+
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.data;
+}
+
+async function generateCalendar(){
+  calendar.innerHTML="";
+
+  const selectedCountryName = countrySelect.value;
+  const country = countries[selectedCountryName].value;
+  const city = citySelect.value;
+
+  const times = await fetchPrayerTimes(city,country);
+
+  const todayDate = new Date().getDate();
+
+  for(let i=0;i<totalDays;i++){
+
+    const day = document.createElement("div");
+    day.classList.add("day");
+
+    const fajr = times[i]?.timings.Fajr.split(" ")[0];
+    const maghrib = times[i]?.timings.Maghrib.split(" ")[0];
+
+    day.innerHTML=`
+      <strong>اليوم ${i+1}</strong>
+      <small>الفجر: ${fajr || "--"}</small>
+      <small>المغرب: ${maghrib || "--"}</small>
+    `;
+
+    if(localStorage.getItem("day"+(i+1))==="done"){
+      day.classList.add("completed");
+    }
+
+    day.onclick=function(){
+      day.classList.toggle("completed");
+      if(day.classList.contains("completed")){
+        localStorage.setItem("day"+(i+1),"done");
+      }else{
+        localStorage.removeItem("day"+(i+1));
+      }
+      updateProgress();
+    }
+
+    calendar.appendChild(day);
+
+    // ⏳ عداد اليوم الحالي
+    if(i+1 === todayDate && maghrib){
+      startCountdown(maghrib);
+    }
+  }
+}
+
+function startCountdown(maghribTime){
+  const [hours,minutes] = maghribTime.split(":");
+
+  const interval = setInterval(()=>{
+    const now = new Date();
+    const maghrib = new Date();
+    maghrib.setHours(hours,minutes,0);
+
+    const diff = maghrib - now;
+
+    if(diff <= 0){
+      countdownEl.innerText = "🌙 حان وقت الإفطار!";
+      clearInterval(interval);
+      return;
+    }
+
+    const h = Math.floor(diff / (1000*60*60));
+    const m = Math.floor((diff % (1000*60*60))/(1000*60));
+    const s = Math.floor((diff % (1000*60))/1000);
+
+    countdownEl.innerText = `⏳ باقي على الإفطار: ${h}س ${m}د ${s}ث`;
+  },1000);
+}
+
+function updateProgress(){
+  let done=0;
+  for(let i=1;i<=totalDays;i++){
+    if(localStorage.getItem("day"+i)==="done"){
+      done++;
+    }
+  }
+  let percent=(done/totalDays)*100;
+  document.getElementById("progressBar").style.width=percent+"%";
+  document.getElementById("progressText").innerText=
+  done+" من "+totalDays+" يوم مكتمل";
+}
+
+countrySelect.addEventListener("change",loadCities);
+citySelect.addEventListener("change",generateCalendar);
+
+loadCountries();
+updateProgress();
+
+</script>
+
+</body>
+</html>
