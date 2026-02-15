@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قصص الأنبياء - Way2Apps</title>
+
+<style>
+  body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:#f4f6fb;
+    margin:0;
+    text-align:center;
+    direction:rtl;
+  }
+
+  header {
+    background: linear-gradient(135deg,#1e90ff,#3742fa);
+    color:white;
+    padding:30px 20px;
+  }
+
+  header h1 {
+    margin:0;
+    font-size:2rem;
+  }
+
+  .container {
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+  }
+
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    margin-top:30px;
+  }
+
+  .story-card {
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    transition:.3s;
+  }
+
+  .story-card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+  }
+
+  .story-card iframe {
+    width:100%;
+    height:180px;
+    border:none;
+    border-radius:10px;
+  }
+
+  .story-card h3 {
+    margin:12px 0 8px;
+    color:#3742fa;
+  }
+
+  .story-card p {
+    font-size:14px;
+    color:#555;
+  }
+
+  .actions {
+    margin-top:10px;
+  }
+
+  .actions button {
+    padding:8px 12px;
+    margin:5px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+    color:white;
+    transition:.3s;
+  }
+
+  .copy-btn { background:#28a745; }
+  .copy-btn:hover { background:#218838; }
+
+  .share-btn { background:#1e90ff; }
+  .share-btn:hover { background:#3742fa; }
+
+  .back {
+    display:inline-block;
+    margin-top:25px;
+    text-decoration:none;
+    background:#1e90ff;
+    color:white;
+    padding:10px 18px;
+    border-radius:8px;
+    transition:.3s;
+  }
+
+  .back:hover { background:#3742fa; }
+
+  footer {
+    text-align:center;
+    padding:20px;
+    background:#1e90ff;
+    color:white;
+    margin-top:50px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌟 قصص الأنبياء</h1>
+  <p>استمع وتعلم من حياة الأنبياء والدروس القيمة</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <!-- قصة 1 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/NCn6fkvQdzc" allowfullscreen></iframe>
+      <h3>قصة نبي الله نوح عليه السلام</h3>
+      <p>تعرف على دعوته وبناء السفينة والنجاة من الطوفان.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله نوح - دعوته وبناء السفينة')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة نوح','https://www.youtube.com/watch?v=NCn6fkvQdzc')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- قصة 2 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/QLaCBo_RoKo" allowfullscreen></iframe>
+      <h3>قصة نبي الله يوسف عليه السلام</h3>
+      <p>قصته مع إخوته ورفعه في مصر ودروسه في الصبر والتوكل.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله يوسف - الصبر والتوكل')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة يوسف','https://www.youtube.com/watch?v=QLaCBo_RoKo')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- قصة 3 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/oCXIK4ZF3Mc" allowfullscreen></iframe>
+      <h3>قصة نبي الله موسى عليه السلام</h3>
+      <p>تعرف على دعوته وفرعون ومعجزاته العظيمة.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله موسى - دعوته ومعجزاته')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة موسى','https://www.youtube.com/watch?v=oCXIK4ZF3Mc')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- قصة 4 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/8scYv9i45rc" allowfullscreen></iframe>
+      <h3>قصة نبي الله عيسى عليه السلام</h3>
+      <p>قصته ومعجزاته ودوره في دعوة بني إسرائيل.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله عيسى - معجزاته ودعوته')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة عيسى','https://www.youtube.com/watch?v=8scYv9i45rc')">مشاركة</button>
+      </div>
+    </div>
+
+    <!-- قصة 5 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/oqKzj-RqqrE" allowfullscreen></iframe>
+      <h3>قصة نبي الله محمد صلى الله عليه وسلم</h3>
+      <p>رحلته من مكة إلى المدينة والدروس من السيرة النبوية.</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله محمد - السيرة النبوية')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة محمد','https://www.youtube.com/watch?v=oqKzj-RqqrE')">مشاركة</button>
+      </div>
+    </div>
+    <!-- قصة 6 -->
+    <div class="story-card">
+      <iframe src="https://www.youtube.com/embed/6qo8-POCcbo" allowfullscreen></iframe>
+      <h3>قصة نبي الله سليمان عليه السلام</h3>
+      <p>قصة نبى الله سليمان من الميلاد الى الوفاة وقصته مع مملكة الجان والملكة بلقيس وما قصة هيكل سليمان؟</p>
+      <div class="actions">
+        <button class="copy-btn" onclick="copyText('قصة نبي الله محمد - السيرة النبوية')">نسخ النص</button>
+        <button class="share-btn" onclick="shareRecipe('قصة محمد','https://www.youtube.com/watch?v=6qo8-POCcbo')">مشاركة</button>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="stories.html" class="back">⬅ العودة لصفحة القصص</a>
+</div>
+
+<script>
+function copyText(text){
+  navigator.clipboard.writeText(text);
+  alert("تم نسخ النص!");
+}
+
+function shareRecipe(title, url){
+  if(navigator.share){
+    navigator.share({title:title,url:url});
+  }else{
+    prompt("انسخ الرابط للمشاركة:", url);
+  }
+}
+</script>
+
+<footer>
+  © 2026 Way2Apps - جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
