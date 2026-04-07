@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>تاج الأناقة</title>
+<style>
+body{margin:0;font-family:Arial;background:#111;color:#fff}
+
+header{
+display:flex;justify-content:space-between;align-items:center;padding:15px;background:#000;position:sticky;top:0;z-index:1000
+}
+header nav a{margin:0 15px;color:#fff;text-decoration:none;font-weight:500;transition:0.3s}
+header nav a:hover{color:#fdd835}
+
+.hero{
+background:url("assets/images/hero.jpg") center/cover no-repeat;
+height:350px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+position:relative;
+}
+.hero::after{
+content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5)
+}
+.hero h1,.hero p{position:relative;color:#fff;margin:0}
+.hero h1{font-size:36px;text-shadow:2px 2px 6px rgba(0,0,0,0.7)}
+.hero p{margin-top:10px;font-size:18px;text-shadow:1px 1px 4px rgba(0,0,0,0.7)}
+
+.search{margin:20px;text-align:center}
+.search input{padding:10px;width:70%;max-width:400px;border-radius:5px;border:none}
+
+.filters{text-align:center;margin-bottom:20px}
+.filters button{margin:5px;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;transition:0.3s;background:#333;color:#fff}
+.filters button:hover,.filters button.active{background:#fdd835;color:#000;font-weight:600}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:25px;
+padding:0 20px 50px;
+}
+
+.product-card{
+background:#222;
+border-radius:10px;
+overflow:hidden;
+cursor:pointer;
+text-align:center;
+transition:0.4s;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+position:relative;
+}
+.product-card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+.product-card img{width:100%;display:block;transition:0.3s}
+.product-card h3{margin:10px 0 5px;font-size:17px}
+.product-card h3:hover{color:#fdd835}
+.product-card span{font-weight:bold;color:#fdd835;font-size:16px}
+
+.popup{
+position:fixed;
+top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.8);
+display:none;align-items:center;justify-content:center;z-index:2000
+}
+.popup-content{
+background:#fff;color:#000;padding:25px;width:320px;text-align:center;border-radius:15px;
+animation:popupAnim 0.3s ease-out
+}
+@keyframes popupAnim{
+0%{transform:scale(0.7);opacity:0}
+100%{transform:scale(1);opacity:1}
+}
+.popup select,.popup input{width:100%;padding:10px;margin:10px 0;border-radius:5px;border:1px solid #ccc}
+.popup button{padding:12px;width:100%;margin-top:10px;border:none;border-radius:5px;background:#fdd835;color:#000;font-weight:600;cursor:pointer;transition:0.3s}
+.popup button:hover{background:#e6c200}
+
+@media(max-width:768px){
+.hero h1{font-size:28px}
+.hero p{font-size:16px}
+.products{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
+</style>
+</head>
+<body>
+
+<header>
+<h2>تاج الأناقة</h2>
+<nav>
+<a onclick="goCategory('femme')">Femmes</a>
+<a onclick="goCategory('homme')">Hommes</a>
+<a onclick="goCategory('gifts')">Cadeaux</a>
+</nav>
+</header>
+
+<div class="hero">
+<h1>Découvrez nos accessoires élégants</h1>
+<p>سلاسل، أساور، خواتم، ساعات، هدايا والمزيد</p>
+</div>
+
+<div class="search">
+<input type="text" placeholder="Rechercher..." onkeyup="searchProduct(this.value)">
+</div>
+
+<div class="filters">
+<button class="active" onclick="filter('all')">الكل</button>
+<button onclick="filter('chains')">سلاسل</button>
+<button onclick="filter('bracelets')">أساور</button>
+<button onclick="filter('rings')">خواتم</button>
+<button onclick="filter('watches')">ساعات</button>
+<button onclick="filter('gifts')">هدايا</button>
+</div>
+
+<div class="products">
+
+<!-- FEMMES -->
+<div class="product-card femme chains" data-name="سلسلة نسائية" data-price="120">
+<img src="assets/images/p1.jpg">
+<h3>سلسلة نسائية</h3>
+<span>39 درهم</span>
+</div>
+<div class="product-card femme chains" data-name="سلسلة نسائية" data-price="120">
+<img src="assets/images/p2.jpg">
+<h3>سلسلة نسائية</h3>
+<span>39 درهم</span>
+</div>
+<div class="product-card femme chains" data-name="سلسلة نسائية" data-price="120">
+<img src="assets/images/p3.jpg">
+<h3>سلسلة نسائية</h3>
+<span>39 درهم</span>
+</div>
+<div class="product-card femme bracelets" data-name="سوار نسائي" data-price="90">
+<img src="assets/images/p4.jpg">
+<h3>سوار نسائي</h3>
+<span>39 درهم</span>
+</div>
+
+<!-- HOMMES -->
+<div class="product-card homme watches" data-name="ساعة " data-price="250">
+<img src="assets/images/p5.jpg">
+<h3>ساعة </h3>
+<span>119 درهم</span>
+</div>
+<div class="product-card homme rings" data-name="خاتم " data-price="150">
+<img src="assets/images/p6.jpg">
+<h3>خاتم</h3>
+<span>29 درهم</span>
+</div>
+<div class="product-card homme rings" data-name="حلقات" data-price="150">
+<img src="assets/images/p7.jpg">
+<h3>حلقات</h3>
+<span>25 درهم</span>
+</div>
+<!-- GIFTS -->
+<div class="product-card gifts gifts" data-name="طقم هدية" data-price="300">
+<img src="assets/images/p8.jpg">
+<h3>طقم هدية</h3>
+<span>129 درهم</span>
+</div>
+<div class="product-card gifts gifts" data-name="طقم هدية" data-price="300">
+<img src="assets/images/p9.jpg">
+<h3>طقم هدية</h3>
+<span>149 درهم</span>
+</div>
+<div class="product-card gifts gifts" data-name="طقم هدية" data-price="300">
+<img src="assets/images/p10.jpg">
+<h3>طقم هدية</h3>
+<span>79 درهم</span>
+</div>
+</div>
+
+<div class="popup" id="popup">
+<div class="popup-content">
+<h3 id="popup-name"></h3>
+<label>اللون:</label>
+<select id="color">
+<option>ذهبي</option>
+<option>فضي</option>
+<option>أسود</option>
+</select>
+<label>الكمية:</label>
+<input type="number" id="qty" value="1" min="1">
+<button onclick="orderNow()">تأكيد الطلب</button>
+<button onclick="closePopup()">إلغاء</button>
+</div>
+</div>
+
+<script>
+let allProducts = document.querySelectorAll(".product-card");
+let selectedProduct = null;
+
+// NAVIGATION
+function goCategory(cat){
+allProducts.forEach(p=>{
+p.style.display = p.classList.contains(cat) ? "block" : "none";
+});
+document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+}
+
+// FILTER
+function filter(cat){
+allProducts.forEach(p=>{
+if(cat=="all"){p.style.display="block"}
+else{p.style.display = p.classList.contains(cat) ? "block" : "none"}
+});
+document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));
+event.target.classList.add('active');
+}
+
+// SEARCH
+function searchProduct(val){
+val = val.toLowerCase();
+allProducts.forEach(p=>{
+let name = p.dataset.name.toLowerCase();
+p.style.display = name.includes(val) ? "block" : "none";
+});
+}
+
+// POPUP
+allProducts.forEach(p=>{
+p.addEventListener("click", ()=>{
+selectedProduct = p;
+document.getElementById("popup-name").innerText = p.dataset.name;
+document.getElementById("popup").style.display="flex";
+});
+});
+function closePopup(){document.getElementById("popup").style.display="none"}
+
+// ORDER WHATSAPP
+function orderNow(){
+let name = selectedProduct.dataset.name;
+let price = selectedProduct.dataset.price;
+let color = document.getElementById("color").value;
+let qty = document.getElementById("qty").value;
+
+let msg = `سلام، بغيت نطلب:
+المنتج: ${name}
+الثمن: ${price} درهم
+اللون: ${color}
+الكمية: ${qty}`;
+
+window.open(`https://wa.me/212XXXXXXXXX?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>
