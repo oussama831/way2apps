@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔼 SORT (TRIER)</title>
+</head>
+
+<body style="margin:0; font-family:Arial; background:#f5f7fb; direction:rtl;">
+
+<!-- HEADER -->
+<header style="background:#0f172a; color:white; text-align:center; padding:40px;">
+  <h1>🔼 SORT (TRIER)</h1>
+  <p>ترتيب البيانات في Excel</p>
+</header>
+
+<div style="max-width:900px; margin:auto; padding:20px;">
+
+  <!-- EXPLANATION -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+    <h2>🧠 الشرح</h2>
+    <p>
+      SORT كتستعمل لترتيب البيانات (تصاعدياً أو تنازلياً) في Excel.
+    </p>
+  </div>
+
+  <!-- SYNTAX -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+    <h2>📌 الصيغة</h2>
+    <code>=SORT(array, [sort_index], [order])</code>
+  </div>
+
+  <!-- VIDEO -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+
+    <h2>🎥 فيديو شرح</h2>
+
+    <iframe width="100%" height="315"
+      src="https://www.youtube.com/embed/ZgWCXVKIkfc"
+      title="Excel SORT Tutorial"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+
+    <p style="color:gray; font-size:13px;">
+      🎯 شرح دالة SORT في Excel
+    </p>
+
+  </div>
+
+  <!-- INTERACTIVE EXAMPLE -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+
+    <h2>📊 مثال تفاعلي</h2>
+
+    <p>ترتيب درجات الطلاب:</p>
+
+    <button onclick="sortAsc()" style="padding:12px 18px; background:#14b8a6; color:white; border:none; border-radius:10px;">
+      🔼 تصاعدي
+    </button>
+
+    <button onclick="sortDesc()" style="padding:12px 18px; background:#ef4444; color:white; border:none; border-radius:10px;">
+      🔽 تنازلي
+    </button>
+
+    <div id="result" style="margin-top:15px; font-size:18px;"></div>
+
+  </div>
+
+  <!-- EXAMPLE -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+    <h2>📊 مثال Excel</h2>
+    <p>=SORT(A2:B10,2,1)</p>
+  </div>
+
+  <!-- BACK -->
+  <a href="/ma/tools/excel/" style="text-decoration:none;">
+    <button style="padding:12px 18px; background:#3b82f6; color:white; border:none; border-radius:10px;">
+      🔙 الرجوع
+    </button>
+  </a>
+
+</div>
+
+<script>
+
+const students = [
+  {name:"أحمد", grade:12},
+  {name:"محمد", grade:8},
+  {name:"سارة", grade:15},
+  {name:"يوسف", grade:9}
+];
+
+function show(data){
+  let result = document.getElementById("result");
+  result.innerHTML = "";
+  data.forEach(s=>{
+    result.innerHTML += "📌 " + s.name + " - " + s.grade + "<br>";
+  });
+}
+
+function sortAsc(){
+  let sorted = [...students].sort((a,b)=>a.grade - b.grade);
+  show(sorted);
+}
+
+function sortDesc(){
+  let sorted = [...students].sort((a,b)=>b.grade - a.grade);
+  show(sorted);
+}
+
+</script>
+
+</body>
+</html>
