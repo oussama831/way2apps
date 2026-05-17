@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Pivot Tables</title>
+</head>
+
+<body style="margin:0; font-family:Arial; background:#f5f7fb; direction:rtl;">
+
+<!-- HEADER -->
+<header style="background:#0f172a; color:white; text-align:center; padding:40px;">
+  <h1>📊 Pivot Tables</h1>
+  <p>تحليل البيانات بطريقة احترافية في Excel</p>
+</header>
+
+<div style="max-width:900px; margin:auto; padding:20px;">
+
+  <!-- EXPLANATION -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+    <h2>🧠 الشرح</h2>
+    <p>
+      Pivot Table هي أداة قوية في Excel كتحول البيانات الكبيرة إلى ملخصات سهلة الفهم (تقارير وإحصائيات).
+    </p>
+  </div>
+
+  <!-- USE CASES -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+    <h2>📌 فين كنستعملو Pivot؟</h2>
+    <ul>
+      <li>📊 تحليل المبيعات</li>
+      <li>👨‍🎓 تحليل نتائج الطلاب</li>
+      <li>💰 تقارير مالية</li>
+      <li>📈 إحصائيات سريعة</li>
+    </ul>
+  </div>
+
+  <!-- VIDEO -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+
+    <h2>🎥 فيديو شرح</h2>
+
+    <iframe width="100%" height="315"
+      src="https://www.youtube.com/embed/QODSYuOrB8A"
+      title="Excel Pivot Table Tutorial"
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
+
+    <p style="color:gray; font-size:13px;">
+      🎯 شرح Pivot Tables في Excel
+    </p>
+
+  </div>
+
+  <!-- SIMPLE DEMO -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+
+    <h2>📊 مثال مبسط</h2>
+
+    <p>نفترض عندك مبيعات:</p>
+
+    <pre style="background:#111827; color:#00ffcc; padding:15px; border-radius:10px;">
+Product | Sales
+A       | 100
+B       | 200
+A       | 150
+B       | 50
+    </pre>
+
+    <p>Pivot Table غادي يعطيك:</p>
+
+    <pre style="background:#111827; color:#00ffcc; padding:15px; border-radius:10px;">
+A = 250
+B = 250
+    </pre>
+
+  </div>
+
+  <!-- INTERACTIVE -->
+  <div style="background:white; padding:20px; border-radius:16px; margin-bottom:15px;">
+
+    <h2>📊 تجربة بسيطة</h2>
+
+    <button onclick="showPivot()" style="padding:12px 18px; background:#14b8a6; color:white; border:none; border-radius:10px;">
+      🔄 عرض Pivot مثال
+    </button>
+
+    <div id="result" style="margin-top:15px; font-size:18px; font-weight:bold;"></div>
+
+  </div>
+
+  <!-- BACK -->
+  <a href="../index.html" style="text-decoration:none;">
+    <button style="padding:12px 18px; background:#3b82f6; color:white; border:none; border-radius:10px;">
+      🔙 الرجوع
+    </button>
+  </a>
+
+</div>
+
+<script>
+
+function showPivot(){
+
+  let data = {
+    "A": 250,
+    "B": 250
+  };
+
+  let result = document.getElementById("result");
+  result.innerHTML = "";
+
+  for(let key in data){
+    result.innerHTML += "📊 " + key + " = " + data[key] + "<br>";
+  }
+
+}
+
+</script>
+
+</body>
+</html>
