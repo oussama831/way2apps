@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📌 INDEX / MATCH</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+  direction:rtl;
+}
+
+header{
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:45px 20px;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:25px;
+}
+
+.lesson{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom:20px;
+}
+
+h2{
+  color:#0f172a;
+}
+
+.code{
+  background:#0f172a;
+  color:#22c55e;
+  padding:15px;
+  border-radius:12px;
+  direction:ltr;
+  overflow:auto;
+  margin:15px 0;
+}
+
+.example{
+  background:#eef2ff;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+table th,
+table td{
+  border:1px solid #ddd;
+  padding:12px;
+  text-align:center;
+}
+
+table th{
+  background:#1e293b;
+  color:white;
+}
+
+.note{
+  background:#fef9c3;
+  padding:15px;
+  border-radius:12px;
+  margin-top:20px;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 20px;
+  background:#3b82f6;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+}
+
+.btn:hover{
+  opacity:0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📌 INDEX / MATCH</h1>
+  <p>تعلم البحث المتقدم في Excel</p>
+</header>
+
+<div class="container">
+
+  <div class="lesson">
+
+    <h2>📘 ما هي INDEX ؟</h2>
+
+    <p>
+      دالة INDEX ترجع قيمة من جدول حسب رقم السطر أو العمود.
+    </p>
+
+    <div class="code">
+=INDEX(A1:A5,3)
+    </div>
+
+    <div class="example">
+      ✅ ترجع القيمة الموجودة في السطر الثالث.
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>📘 ما هي MATCH ؟</h2>
+
+    <p>
+      دالة MATCH تبحث عن موقع قيمة داخل جدول.
+    </p>
+
+    <div class="code">
+=MATCH("Ali",A1:A5,0)
+    </div>
+
+    <div class="example">
+      ✅ ترجع رقم السطر الذي يوجد فيه Ali.
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>🧠 استعمال INDEX مع MATCH</h2>
+
+    <p>
+      يمكن دمج الدالتين للقيام ببحث قوي ومرن.
+    </p>
+
+    <div class="code">
+=INDEX(B1:B5,MATCH("Ali",A1:A5,0))
+    </div>
+
+    <div class="example">
+      ✅ تبحث عن Ali في العمود A
+      <br><br>
+      ✅ ثم ترجع القيمة المقابلة من العمود B
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>📊 مثال عملي</h2>
+
+    <table>
+
+      <tr>
+        <th>الاسم</th>
+        <th>النقطة</th>
+      </tr>
+
+      <tr>
+        <td>Ali</td>
+        <td>15</td>
+      </tr>
+
+      <tr>
+        <td>Sara</td>
+        <td>18</td>
+      </tr>
+
+      <tr>
+        <td>Youssef</td>
+        <td>12</td>
+      </tr>
+
+    </table>
+
+    <div class="code">
+=INDEX(B2:B4,MATCH("Sara",A2:A4,0))
+    </div>
+
+    <div class="example">
+      🎯 النتيجة: 18
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>⚡ لماذا INDEX / MATCH أفضل من VLOOKUP ؟</h2>
+
+    <table>
+
+      <tr>
+        <th>VLOOKUP</th>
+        <th>INDEX / MATCH</th>
+      </tr>
+
+      <tr>
+        <td>بحث محدود</td>
+        <td>مرن جداً</td>
+      </tr>
+
+      <tr>
+        <td>يبحث يمين فقط</td>
+        <td>يبحث يمين ويسار</td>
+      </tr>
+
+      <tr>
+        <td>أبطأ مع البيانات الكبيرة</td>
+        <td>أسرع</td>
+      </tr>
+
+    </table>
+
+    <div class="note">
+      💡 INDEX / MATCH من أهم الدوال المطلوبة في العمل والتحليل.
+    </div>
+
+    <a href="../index.html" class="btn">
+      ⬅ الرجوع
+    </a>
+
+  </div>
+
+</div>
+
+</body>
+</html>
