@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morocco Tools 🇲🇦</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+}
+
+/* TOPBAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  background:#111827;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.logo{
+  font-weight:bold;
+}
+
+/* SEARCH */
+.searchBox{
+  display:flex;
+  justify-content:center;
+  padding:20px;
+}
+
+.searchBox input{
+  width:50%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  outline:none;
+}
+
+/* LAYOUT */
+.container{
+  display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#111827;
+  height:100vh;
+  position:sticky;
+  top:0;
+  padding:20px;
+}
+
+.sidebar a{
+  display:block;
+  color:white;
+  text-decoration:none;
+  margin:10px 0;
+  opacity:0.8;
+  cursor:pointer;
+}
+
+.sidebar a:hover{
+  opacity:1;
+}
+
+/* CONTENT */
+.content{
+  flex:1;
+  padding:20px;
+}
+
+/* FILTERS */
+.filters{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.filters button{
+  margin:5px;
+  padding:8px 10px;
+  border:none;
+  border-radius:8px;
+  background:#1f2937;
+  color:white;
+  cursor:pointer;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
+
+/* CARD */
+.card{
+  background:#1f2937;
+  padding:15px;
+  border-radius:12px;
+  transition:0.3s;
+  cursor:pointer;
+  text-decoration:none;
+  color:white;
+  display:block;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:45px;
+  height:45px;
+  margin-bottom:10px;
+}
+
+/* BADGE */
+.badge{
+  font-size:12px;
+  background:#10b981;
+  padding:3px 8px;
+  border-radius:6px;
+  display:inline-block;
+  margin-bottom:5px;
+}
+
+/* MOBILE */
+.menuBtn{
+  display:none;
+  background:#1f2937;
+  border:none;
+  color:white;
+  padding:8px 10px;
+  border-radius:8px;
+}
+
+@media(max-width:768px){
+  .container{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+    height:auto;
+    display:none;
+  }
+
+  .sidebar.active{
+    display:block;
+  }
+
+  .searchBox input{
+    width:90%;
+  }
+
+  .menuBtn{
+    display:block;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">🇲🇦 Morocco Tools</div>
+  <button class="menuBtn" onclick="toggleMenu()">☰ Menu</button>
+</div>
+
+<!-- SEARCH -->
+<div class="searchBox">
+  <input type="text" placeholder="ابحث على أداة..." />
+</div>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <a onclick="filterCategory('all')">🏠 كل الأدوات / All Tools</a>
+  <a onclick="filterCategory('finance')">💰 المال / Finance</a>
+  <a onclick="filterCategory('study')">🎓  الدراسة / Study</a>
+  <a onclick="filterCategory('excel')">📊 إكسل / Excel</a>
+  <a onclick="filterCategory('daily')">📱 يومي / Daily</a>
+  <a onclick="filterCategory('learn')">💻 تعلم الإعلاميات / Learn IT</a>
+
+  <hr>
+  <a href="../index.html">🏠 الرئيسية / Home</a>
+
+</aside>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- FILTERS -->
+<div class="filters">
+  <button onclick="filterCategory('all')">الكل</button>
+  <button onclick="filterCategory('finance')">المال</button>
+  <button onclick="filterCategory('study')">الدراسة</button>
+  <button onclick="filterCategory('excel')">Excel</button>
+  <button onclick="filterCategory('daily')">الحياة</button>
+  <button onclick="filterCategory('learn')">تعلم الإعلاميات</button>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+<!-- FINANCE -->
+<a href="../ma/tools/salary/index.html" class="card" data-category="finance">
+  <img src="../ma/assets/icons/salary.png">
+  <span class="badge">مهم</span>
+  <h3>حاسبة الراتب المغربي</h3>
+  <p>brut → net CNSS + IGR + AMO</p>
+</a>
+
+<a href="../ma/tools/cnss/index.html" class="card" data-category="finance">
+  <img src="../ma/assets/icons/cnss.png">
+  <h3>حاسبة CNSS</h3>
+</a>
+
+<a href="../ma/tools/currency/index.html" class="card" data-category="finance">
+  <img src="../ma/assets/icons/currency.png">
+  <h3>تحويل العملات</h3>
+</a>
+
+<!-- STUDY -->
+<a href="../ma/tools/grade/index.html" class="card" data-category="study">
+  <img src="../ma/assets/icons/grade.png">
+  <h3>حساب المعدل</h3>
+</a>
+
+<!-- EXCEL -->
+<a href="../ma/tools/excel/index.html" class="card" data-category="excel">
+  <img src="../ma/assets/icons/excel.png">
+  <h3> تعلم إكسل (Excel)</h3>
+</a>
+
+<!-- DAILY -->
+<a href="../ma/tools/qr/index.html" class="card" data-category="daily">
+  <img src="../ma/assets/icons/qr.png">
+  <h3>مولد QR</h3>
+</a>
+
+<a href="../ma/tools/ocr/index.html" class="card" data-category="daily">
+  <img src="../ma/assets/icons/ocr.png">
+  <h3>تحويل صورة إلى نص</h3>
+</a>
+
+<!-- LEARN -->
+<a href="../ma/tools/informatique/index.html" class="card" data-category="learn">
+  <img src="../ma/assets/icons/learn.png">
+  <h3>تعلم الإعلاميات</h3>
+</a>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+// SEARCH
+const searchInput = document.querySelector(".searchBox input");
+const cards = document.querySelectorAll(".card");
+
+searchInput.addEventListener("input", () => {
+  const val = searchInput.value.toLowerCase();
+
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(val) ? "block" : "none";
+  });
+});
+
+// FILTER
+function filterCategory(cat){
+  cards.forEach(card => {
+    if(cat === "all" || card.dataset.category === cat){
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+// MOBILE MENU
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+</script>
+
+</body>
+</html>
