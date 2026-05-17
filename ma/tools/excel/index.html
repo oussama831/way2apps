@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 تعلم إكسل (Excel)</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+  direction:rtl;
+}
+
+header{
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:45px 20px;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:25px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;
+}
+
+.card{
+  background:white;
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  transition:0.25s;
+  text-decoration:none;
+  color:#1e1e1e;
+  display:block;
+  border-left:4px solid #14b8a6;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+}
+
+.card h3{
+  margin:0;
+}
+
+.card p{
+  color:#64748b;
+}
+
+/* COLORS */
+.basics{border-color:#22c55e;}
+.logique{border-color:#facc15;}
+.recherche{border-color:#3b82f6;}
+.data{border-color:#a855f7;}
+.text{border-color:#f97316;}
+.date{border-color:#a3a3a3;}
+.advanced{border-color:#ef4444;}
+
+.search{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  margin-bottom:20px;
+}
+
+.section-title{
+  margin:25px 0 10px;
+  font-weight:bold;
+  color:#0f172a;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+  <h1>📊 تعلم إكسل (Excel)</h1>
+  <p>من الصفر إلى الاحتراف</p>
+</header>
+
+<div class="container">
+
+<!-- SEARCH -->
+<input class="search" type="text" id="search"
+onkeyup="filterCards()"
+placeholder="🔍 ابحث عن درس...">
+
+<!-- BASICS -->
+<div class="section-title">🟢 الأساسيات</div>
+<div class="grid">
+
+  <a class="card basics" href="./basics/sum/index.html">
+    <h3>➕ SOMME (SUM)</h3>
+    <p>جمع الأرقام</p>
+  </a>
+
+  <a class="card basics" href="./basics/average/index.html">
+    <h3>📊 MOYENNE (AVERAGE)</h3>
+    <p>حساب المعدل</p>
+  </a>
+
+  <a class="card basics" href="./basics/count/index.html">
+    <h3>🧮 NB (COUNT)</h3>
+    <p>عدّ القيم</p>
+  </a>
+
+</div>
+
+<!-- LOGIC -->
+<div class="section-title">🟡 المنطق</div>
+<div class="grid">
+
+  <a class="card logique" href="./logique/if/index.html">
+    <h3>🧠 SI (IF)</h3>
+    <p>شرط منطقي</p>
+  </a>
+
+  <a class="card logique" href="./logique/and-or/index.html">
+    <h3>🔗 AND / OR (et / ou)</h3>
+    <p>شروط متعددة</p>
+  </a>
+
+</div>
+
+<!-- RECHERCHE -->
+<div class="section-title">🔵 البحث</div>
+<div class="grid">
+
+  <a class="card recherche" href="./recherche/vlookup/index.html">
+    <h3>🔎 RECHERCHEV (VLOOKUP)</h3>
+    <p>البحث في الجداول</p>
+  </a>
+
+  <a class="card recherche" href="./recherche/index-match/index.html">
+    <h3>📌 INDEX / MATCH</h3>
+    <p>بحث متقدم</p>
+  </a>
+
+</div>
+
+<!-- DATA -->
+<div class="section-title">🟣 البيانات</div>
+<div class="grid">
+
+  <a class="card data" href="./data/filter/index.html">
+    <h3>🔽 FILTRE (FILTER)</h3>
+    <p>تصفية البيانات</p>
+  </a>
+
+  <a class="card data" href="./data/sort/index.html">
+    <h3>🔼 TRIER (SORT)</h3>
+    <p>ترتيب البيانات</p>
+  </a>
+
+</div>
+
+<!-- TEXT -->
+<div class="section-title">🟠 النصوص</div>
+<div class="grid">
+
+  <a class="card text" href="./text/concat/index.html">
+    <h3>🔗 CONCATENER (CONCAT)</h3>
+    <p>دمج النصوص</p>
+  </a>
+
+</div>
+
+<!-- DATE -->
+<div class="section-title">🟤 التاريخ</div>
+<div class="grid">
+
+  <a class="card date" href="./date/today/index.html">
+    <h3>📅 AUJOURDHUI (TODAY)</h3>
+    <p>التاريخ الحالي</p>
+  </a>
+
+</div>
+
+<!-- ADVANCED -->
+<!-- ADVANCED -->
+<div class="section-title">🔴 المتقدم</div>
+
+<div class="grid">
+
+  <a class="card advanced" href="../excel/advanced/index.html">
+    <h3>🧠 Advanced Excel</h3>
+    <p>VBA - Pivot Tables - Dashboards</p>
+  </a>
+
+</div>
+ <!-- BACK -->
+  <a href="../../index.html" style="text-decoration:none;">
+    <button style="padding:12px 18px; background:#ef4444; color:white; border:none; border-radius:10px;">
+      🔙 الرجوع
+    </button>
+  </a>
+</div>
+
+<script>
+
+function filterCards(){
+
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+
+    card.style.display =
+    card.innerText.toLowerCase().includes(input)
+    ? "block"
+    : "none";
+
+  });
+
+}
+
+</script>
+
+</body>
+</html>
