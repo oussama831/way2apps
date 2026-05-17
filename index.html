@@ -9,98 +9,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.min.js"></script>
 <script>
   pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.worker.min.js';
 </script>
-
 <!-- Tesseract OCR -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 <!-- QR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
-
-
-<!-- Styles -->
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-body{background:#f4f4f8;color:#333;line-height:1.6;}
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#1e90ff;color:#fff;position:sticky;top:0;z-index:100;}
-.navbar .logo{font-size:1.5rem;font-weight:bold;}
-.nav-links{display:flex;gap:15px;list-style:none;}
-.nav-links li a{color:#fff;font-weight:500;transition:.3s;text-decoration:none;}
-.nav-links li a:hover{color:#ffeb3b;}
-.dark-mode-toggle{background:none;border:none;font-size:1.2rem;cursor:pointer;color:#fff;}
-.hero{text-align:center;padding:60px 20px;background:linear-gradient(135deg,#1e90ff,#3742fa);color:#fff;}
-.hero h1{font-size:2.5rem;margin-bottom:20px;}
-.section{padding:50px 20px;max-width:1200px;margin:0 auto;}
-.section h2{text-align:center;margin-bottom:30px;color:#1e90ff;font-size:2rem;}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
-.card{background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.1);padding:20px;text-align:center;transition:transform .3s,box-shadow .3s;}
-.card:hover{transform:translateY(-5px);box-shadow:0 12px 25px rgba(0,0,0,0.2);}
-.card img{width:80px;margin-bottom:15px;}
-.card h3{margin-bottom:10px;color:#3742fa;}
-button.launch-btn{width:100%;padding:10px;background:#1e90ff;color:#fff;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
-button.launch-btn:hover{background:#3742fa;}
-footer{text-align:center;padding:20px;background:#1e90ff;color:#fff;margin-top:50px;}
-body.dark-mode{background:#121212;color:#ddd;}
-body.dark-mode .navbar{background:#1b1b1b;}
-body.dark-mode .nav-links li a{color:#ddd;}
-body.dark-mode .nav-links li a:hover{color:#ffeb3b;}
-body.dark-mode .hero{background:linear-gradient(135deg,#0d0d0d,#1b1b1b);}
-body.dark-mode .card{background:#1f1f1f;box-shadow:0 8px 20px rgba(0,0,0,0.5);}
-body.dark-mode .card h3{color:#1e90ff;}
-body.dark-mode button.launch-btn{background:#3742fa;}
-body.dark-mode button.launch-btn:hover{background:#1e90ff;}
-@media (max-width:768px){.hero h1{font-size:2rem;}.nav-links{flex-direction:column;gap:10px;}}
-.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.7);opacity:0;transition:opacity .3s;}
-.modal.show{display:block;opacity:1;}
-.modal-content{background-color:#fff;margin:5% auto;padding:20px;border-radius:12px;width:90%;max-width:500px;position:relative;transform:translateY(-20px);transition:transform .3s;}
-.modal.show .modal-content{transform:translateY(0);}
-body.dark-mode .modal-content{background:#1f1f1f;color:#ddd;}
-.modal .close{color:#aaa;position:absolute;top:10px;right:20px;font-size:28px;cursor:pointer;}
-.modal .close:hover{color:#000;}
-input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
-.result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
-.buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-</style>
-<style>
-.modal .close:hover{color:#000;}
-input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
-.result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
-.buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-</style>
-<style>
-.modal .close:hover{color:#000;}
-input, select{padding:8px;margin:5px 0;width:100%;border-radius:6px;border:1px solid #ccc;}
-.result{margin-top:10px;font-weight:bold;white-space:pre-wrap;}
-.buttons{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-
-/* --- MODAL NOTES --- */
-modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);font-family:Arial,sans-serif;}
-.modal-content{background-color:#fff;margin:6% auto;padding:25px 30px;border-radius:15px;width:90%;max-width:500px;box-shadow:0 8px 20px rgba(0,0,0,0.4);position:relative;transform:translateY(-60px);opacity:0;transition:all 0.4s ease-in-out;}
-.modal.show .modal-content{transform:translateY(0);opacity:1;}
-.close{color:#aaa;float:right;font-size:28px;font-weight:bold;cursor:pointer;transition:color 0.2s;}
-.close:hover{color:#000;}
-.modal-content h2{text-align:center;font-size:1.7em;margin-top:0;color:#333;text-shadow:0 1px 2px rgba(0,0,0,0.2);}
-.input-row{display:flex;gap:8px;align-items:center;margin:8px 0;}
-.input-row input{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:1em;}
-.input-row input:focus{border-color:#28a745;box-shadow:0 0 6px rgba(40,167,69,0.4);outline:none;}
-.deleteRowBtn{background:#dc3545;color:#fff;border:none;border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:bold;font-size:0.9em;transition:0.3s;}
-.deleteRowBtn:hover{background:#c82333;transform:scale(1.1);}
-#addRowBtn{margin:10px 0;padding:8px 12px;border:none;border-radius:8px;background:#0d6efd;color:#fff;cursor:pointer;font-weight:bold;transition:0.3s;}
-#addRowBtn:hover{background:#0b5ed7;transform:scale(1.05);}
-.modal-content button{width:48%;padding:12px 0;margin:10px 1%;border:none;border-radius:10px;cursor:pointer;font-weight:bold;font-size:1em;transition:all 0.3s ease;box-shadow:0 3px 8px rgba(0,0,0,0.25);}
-#calcBtn{background:linear-gradient(90deg,#28a745,#20c997);color:#fff;}
-#calcBtn:hover{background:linear-gradient(90deg,#20c997,#28a745);transform:translateY(-3px) scale(1.03);box-shadow:0 6px 12px rgba(0,0,0,0.35);}
-#clearBtn{background:linear-gradient(90deg,#dc3545,#e4606d);color:#fff;}
-#clearBtn:hover{background:linear-gradient(90deg,#e4606d,#dc3545);transform:translateY(-3px) scale(1.03);box-shadow:0 6px 12px rgba(0,0,0,0.35);}
-#gradeResult{margin-top:18px;padding:14px;border-radius:10px;background-color:#f7f7f7;text-align:center;font-weight:bold;font-size:1.15em;color:#333;box-shadow:inset 0 1px 3px rgba(0,0,0,0.1);}
-</style>
-
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDSZNR07XT"></script>
@@ -111,104 +32,464 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
   gtag('config', 'G-BDSZNR07XT');
 </script>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Way2Apps Home</title>
+<style>
+:root {
+  --primary: #0a1628;
+  --accent: #00c2a8;
+  --accent2: #ff6b35;
+  --accent3: #7c3aed;
+  --surface: #ffffff;
+  --surface2: #f0f4f8;
+  --text: #0a1628;
+  --text-muted: #64748b;
+  --card-bg: #ffffff;
+  --nav-bg: #0a1628;
+  --hero-from: #0a1628;
+  --hero-to: #0d2545;
+  --border: #e2e8f0;
+  --shadow: 0 4px 24px rgba(10,22,40,0.10);
+  --shadow-hover: 0 12px 40px rgba(0,194,168,0.18);
+  --footer-bg: #0a1628;
+  --btn-bg: #00c2a8;
+  --btn-hover: #00a88f;
+  --modal-bg: #ffffff;
+}
 
-  <!-- CSS Ramadan Buttons -->
-  <style>
-   /* Ramadan Buttons */
+body.dark-mode {
+  --primary: #e2e8f0;
+  --surface: #0f172a;
+  --surface2: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --card-bg: #1e293b;
+  --nav-bg: #070e1c;
+  --border: #334155;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --modal-bg: #1e293b;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--surface2);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  height: 64px;
+  background: var(--nav-bg);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+}
+
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+.nav-links li a {
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.82rem;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-links li a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+.dark-mode-toggle {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+.dark-mode-toggle:hover { background: rgba(255,255,255,0.16); }
+
+/* ── RAMADAN BUTTONS ── */
 .ramadan-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  padding: 12px 20px;
-  background: #1e90ff;         /* أزرق صافي */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 999;               /* يكون فوق كلشي */
-  
-  position: sticky;           /* باش يبقا ثابت مع scroll */
-  top: 60px;                  /* المسافة من Navbar حسب حجم navbar */
-  margin: 0;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--nav-bg);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 64px;
+  z-index: 199;
   flex-wrap: nowrap;
 }
-
-/* Buttons */
 .ramadan-btn {
-  padding: 12px 28px;
-  border-radius: 10px;
+  padding: 9px 22px;
+  border-radius: 8px;
   color: white;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 0.85rem;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: all 0.25s;
+  font-family: 'DM Sans', sans-serif;
 }
+.ramadan-btn.english { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+.ramadan-btn.arabic  { background: linear-gradient(135deg, #10b981, #34d399); }
+.ramadan-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
 
-.ramadan-btn.english {
-  background: linear-gradient(135deg, #1a73e8, #4285f4);
-}
-
-.ramadan-btn.arabic {
-  background: linear-gradient(135deg, #34a853, #66bb6a);
-}
-
-.ramadan-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0,0,0,0.3);
-}
-
-/* Responsive: على الموبايل يطيحو تحت بعض */
 @media (max-width: 500px) {
-  .ramadan-buttons {
-    flex-direction: column;
-    gap: 10px;
-    top: 50px;   /* تعديل المسافة للموبايل */
-  }
-  .ramadan-btn {
-    flex: 1 1 100%;
-    justify-content: center;
-  }
+  .ramadan-buttons { flex-direction: column; gap: 8px; top: 58px; }
+  .ramadan-btn { justify-content: center; }
 }
 
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 80px 24px 90px;
+  background: linear-gradient(145deg, var(--hero-from), var(--hero-to));
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(0,194,168,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(124,58,237,0.10) 0%, transparent 70%);
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.2;
+  position: relative;
+  letter-spacing: -0.5px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-sub {
+  margin-top: 16px;
+  color: #94a3b8;
+  font-size: 1rem;
+  position: relative;
+}
 
-  </style>
+/* ── SECTIONS ── */
+.section {
+  padding: 60px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section h2 {
+  font-family: 'Syne', sans-serif;
+  text-align: center;
+  margin-bottom: 36px;
+  color: var(--text);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.section h2::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 8px auto 0;
+}
+
+/* ── CARDS ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 28px 20px 22px;
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent);
+}
+.card:hover::before { transform: scaleX(1); }
+
+.card img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin-bottom: 14px;
+  border-radius: 12px;
+}
+.card h3 {
+  margin-bottom: 14px;
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+button.launch-btn, a.launch-btn {
+  display: block;
+  width: 100%;
+  padding: 9px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 6px;
+}
+button.launch-btn:hover, a.launch-btn:hover {
+  background: var(--btn-hover);
+  transform: scale(1.02);
+}
+a.launch-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+a.launch-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  background: var(--footer-bg);
+  color: #64748b;
+  margin-top: 60px;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── MODALS ── */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: rgba(5,10,20,0.75);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.modal.show { display: block; opacity: 1; }
+
+.modal-content {
+  background: var(--modal-bg);
+  margin: 5% auto;
+  padding: 28px 30px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  transform: translateY(-20px);
+  transition: transform 0.3s;
+}
+.modal.show .modal-content { transform: translateY(0); }
+
+.modal .close {
+  color: var(--text-muted);
+  position: absolute;
+  top: 16px; right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.modal .close:hover { color: var(--text); }
+
+.modal-content h2, .modal-content h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+
+input, select, textarea {
+  padding: 10px 12px;
+  margin: 5px 0 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,194,168,0.12);
+}
+
+label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-top: 6px;
+}
+
+.modal button {
+  padding: 10px 18px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 6px 4px 0 0;
+  transition: background 0.2s, transform 0.15s;
+}
+.modal button:hover { background: var(--btn-hover); transform: scale(1.02); }
+
+.result {
+  margin-top: 12px;
+  font-weight: 500;
+  white-space: pre-wrap;
+  padding: 12px 14px;
+  background: var(--surface2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.buttons { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+
+/* Grade Modal specific */
+.input-row { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.input-row input { flex: 1; margin: 0; }
+.deleteRowBtn {
+  background: #ef4444 !important;
+  padding: 7px 11px !important;
+  font-size: 0.8rem !important;
+  margin: 0 !important;
+}
+.deleteRowBtn:hover { background: #dc2626 !important; }
+#addRowBtn { background: #6366f1 !important; }
+#addRowBtn:hover { background: #4f46e5 !important; }
+#calcBtn { background: linear-gradient(90deg, var(--accent), #00a88f) !important; }
+#clearBtn { background: linear-gradient(90deg, #ef4444, #f87171) !important; }
+#gradeResult {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* Dark mode inputs */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .nav-links { display: none; }
+  .navbar { padding: 0 16px; }
+}
+</style>
 </head>
-
+<body>
 
 <nav class="navbar">
-<div class="logo">Way2Apps</div>
-<ul class="nav-links">
-<li><a href="#top-apps">Top Apps</a></li>
-
-<li><a href="ma/learn-informatics/index.html">Learn informatics (بالعربية) </a></li>
-<li><a href="apps/learn-Arabic.html">Learn Arabic (تعلم العربية) </a></li>
-<li><a href="ma/learn-darija.html">Learn darija (تعلم الدارجة) </a></li>
-<li><a href="way2apps.com">Sawal qbl matchri (سؤال قبل ما تشري) </a></li>
-<li><a href="#family">Family</a></li>
-<li><a href="#student">Student</a></li>
-<li><a href="#fun">Fun</a></li>
-<li><a href="#languages">Languages</a></li>
-<li><a href="#info">Info</a></li>
-</ul>
-
-<button class="dark-mode-toggle">🌙</button>
-</nav>
-<!-- Ramadan Buttons -->
-  <div class="ramadan-buttons">
-    <a href="/ramadan" class="ramadan-btn english">🌙 Ramadan Guide (English) <span class="arrow">➜</span></a>
-    <a href="ma/ramadan-guide/index.html" class="ramadan-btn arabic">🌙 Ramadan Guide (Arabic) <span class="arrow">➜</span></a>
-  </div>
+  <div class="logo">Way<span>2</span>Apps</div>
+  <ul class="nav-links">
+    <li><a href="#top-apps">Top Apps</a></li>
+    <li><a href="ma/index.html">Morocco Tools 🇲🇦</a></li>
+    <li><a href="javascript:void(0)">Learn Informatics</a></li>
+    <li><a href="apps/learn-Arabic.html">Learn Arabic</a></li>
+    <li><a href="javascript:void(0)">Learn Darija</a></li>
+    <li><a href="#family">Family</a></li>
+    <li><a href="#student">Student</a></li>
+    <li><a href="#fun">Fun</a></li>
+    <li><a href="#languages">Languages</a></li>
+    <li><a href="#info">Info</a></li>
+  </ul>
+  <button class="dark-mode-toggle">🌙</button>
 </nav>
 
 <header class="hero">
-<h1>All your smart, useful, and fun web applications — in one place.</h1>
+  <h1>One platform. <em>Smart tools</em>, useful apps, and fun experiences — all in one place.</h1>
+  <p class="hero-sub">Discover tools built to make everyday life easier.</p>
 </header>
 
 <!-- Top Apps -->
@@ -221,49 +502,42 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
       <button class="launch-btn" onclick="openModal('ageModal')">Launch</button>
       <a href="apps/age-calculator.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/grade-Modal.png" alt="Global Grade Calculator">
       <h3>Global Grade Calculator</h3>
       <button class="launch-btn" onclick="openModal('gradeModal')">Launch</button>
       <a href="apps/global-grade-calculator.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/image-text.png" alt="Convert Image to Text">
       <h3>Convert Image to Text</h3>
       <button class="launch-btn" onclick="openModal('imageTextModal')">Launch</button>
       <a href="apps/convert-image-to-text.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/qr-Container.png" alt="Convert Text to QR">
       <h3>Convert Text to QR</h3>
       <button class="launch-btn" onclick="openModal('qrContainerModal')">Launch</button>
       <a href="apps/text-to-qr.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/calories.png" alt="Calories Calculator">
       <h3>Calories Calculator</h3>
       <button class="launch-btn" onclick="openModal('caloriesModal')">Launch</button>
       <a href="apps/calories-calculator.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/bmi.png" alt="BMI Checker">
       <h3>BMI Checker</h3>
       <button class="launch-btn" onclick="openModal('bmiModal')">Launch</button>
       <a href="apps/bmi-checker.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/cry.png" alt="Baby Cry Analyzer">
       <h3>Baby Cry Analyzer</h3>
       <button class="launch-btn" onclick="openModal('cryModal')">Launch</button>
       <a href="apps/baby-cry-analyzer.html" class="launch-btn">Learn More</a>
     </div>
-
     <div class="card">
       <img src="assets/images/child-growth.png" alt="Child Growth">
       <h3>Child Growth</h3>
@@ -272,6 +546,7 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
     </div>
   </div>
 </section>
+
 <!-- Fun -->
 <section id="fun" class="section">
   <h2>Fun Apps</h2>
@@ -287,62 +562,66 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
 
 <!-- Languages -->
 <section id="languages" class="section">
-<h2>Language Learning</h2>
-<div class="card-grid">
-<div class="card"><img src="assets/images/personality.png"><h3>Personality</h3><button class="launch-btn" onclick="openModal('personalityModal')">Launch</button></div>
-<div class="card"><img src="assets/images/fun-profile.png"><h3>Fun Profile</h3><button class="launch-btn" onclick="openModal('funProfileModal')">Launch</button></div>
-<div class="card"><img src="assets/images/planets.png"><h3>Planets Explorer</h3><button class="launch-btn" onclick="openModal('planetsModal')">Launch</button></div>
-</div>
+  <h2>Language Learning</h2>
+  <div class="card-grid">
+    <div class="card"><img src="assets/images/personality.png"><h3>Personality</h3><button class="launch-btn" onclick="openModal('personalityModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/fun-profile.png"><h3>Fun Profile</h3><button class="launch-btn" onclick="openModal('funProfileModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/planets.png"><h3>Planets Explorer</h3><button class="launch-btn" onclick="openModal('planetsModal')">Launch</button></div>
+  </div>
 </section>
 
 <!-- Info -->
 <section id="info" class="section">
-<h2>News & Info</h2>
-<div class="card-grid">
-<div class="card"><img src="assets/images/news.png"><h3>News & Info</h3><button class="launch-btn" onclick="openModal('newsModal')">Launch</button></div>
-</div>
+  <h2>News & Info</h2>
+  <div class="card-grid">
+    <div class="card"><img src="assets/images/news.png"><h3>News & Info</h3><button class="launch-btn" onclick="openModal('newsModal')">Launch</button></div>
+  </div>
 </section>
+
 <!-- Family -->
 <section id="family" class="section">
-<h2>Family Apps</h2>
-<div class="card-grid">
-<div class="card"><img src="assets/images/baby.png"><h3>Baby Milestone</h3><button class="launch-btn" onclick="openModal('babyModal')">Launch</button></div>
-<div class="card"><img src="assets/images/health.png"><h3>Health Tracker</h3><button class="launch-btn" onclick="openModal('healthModal')">Launch</button></div>
-</div>
+  <h2>Family Apps</h2>
+  <div class="card-grid">
+    <div class="card"><img src="assets/images/baby.png"><h3>Baby Milestone</h3><button class="launch-btn" onclick="openModal('babyModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/health.png"><h3>Health Tracker</h3><button class="launch-btn" onclick="openModal('healthModal')">Launch</button></div>
+  </div>
 </section>
 
 <!-- Student -->
 <section id="student" class="section">
-<h2>Student Apps</h2>
-<div class="card-grid">
-<div class="card"><img src="assets/images/text-tools.png"><h3>Text Tools Hub</h3><button class="launch-btn" onclick="openModal('textToolsModal')">Launch</button></div>
-<div class="card"><img src="assets/images/data.png"><h3>Data Visualizer</h3><button class="launch-btn" onclick="openModal('dataModal')">Launch</button></div>
-<div class="card"><img src="assets/images/3d.png"><h3>3D PDF Generator</h3><button class="launch-btn" onclick="openModal('pdf3DModal')">Launch</button></div>
-<div class="card"><img src="assets/images/quiz.png"><h3>Quiz Game</h3><button class="launch-btn" onclick="openModal('quizModal')">Launch</button></div>
-</div>
+  <h2>Student Apps</h2>
+  <div class="card-grid">
+    <div class="card"><img src="assets/images/text-tools.png"><h3>Text Tools Hub</h3><button class="launch-btn" onclick="openModal('textToolsModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/data.png"><h3>Data Visualizer</h3><button class="launch-btn" onclick="openModal('dataModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/3d.png"><h3>3D PDF Generator</h3><button class="launch-btn" onclick="openModal('pdf3DModal')">Launch</button></div>
+    <div class="card"><img src="assets/images/quiz.png"><h3>Quiz Game</h3><button class="launch-btn" onclick="openModal('quizModal')">Launch</button></div>
+  </div>
 </section>
 
+<!-- ═══════════════════════════════════════ MODALS ═══════════════════════════════════════ -->
 
-<!-- Modals (Top Apps) -->
+<!-- Age Calculator Modal -->
 <div id="ageModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('ageModal')">&times;</span>
-<h3>Age Calculator</h3>
-<label>Birth Date:</label><input type="date" id="birthDate">
-<label>Current Date:</label><input type="date" id="currentDate" value="">
-<button onclick="calculateAge()">Calculate</button>
-<p class="result" id="ageResult"></p>
-</div>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('ageModal')">&times;</span>
+    <h3>Age Calculator</h3>
+    <label>Birth Date:</label><input type="date" id="birthDate">
+    <label>Current Date:</label><input type="date" id="currentDate">
+    <button onclick="calculateAge()">Calculate</button>
+    <p class="result" id="ageResult"></p>
+  </div>
 </div>
 
-
+<!-- Image to Text Modal -->
 <div id="imageTextModal" class="modal">
-<div class="modal-content"><span class="close" onclick="closeModal('imageTextModal')">&times;</span>
-<h3>Image to Text</h3>
-<input type="file" id="imageFile" accept="image/*">
-<button onclick="extractImageText()">Extract Text</button>
-<p class="result" id="imageResult"></p>
-<button id="downloadImageText" style="display:none;" onclick="downloadText('imageResult','image_text.txt')">Download as .txt</button>
-</div>
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('imageTextModal')">&times;</span>
+    <h3>Image to Text</h3>
+    <input type="file" id="imageFile" accept="image/*">
+    <button onclick="extractImageText()">Extract Text</button>
+    <p class="result" id="imageResult"></p>
+    <button id="downloadImageText" style="display:none;" onclick="downloadText('imageResult','image_text.txt')">Download as .txt</button>
+  </div>
 </div>
 
 <!-- Text Tools Hub Modal -->
@@ -350,22 +629,18 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
   <div class="modal-content">
     <span class="close" onclick="closeModal('textToolsModal')">&times;</span>
     <h3>Text Tools Hub</h3>
-
     <textarea id="textInput" rows="6" placeholder="Paste your text here..." oninput="updateCounter()"></textarea>
-    <p id="textCounter">Words: 0 | Characters: 0</p>
-
+    <p id="textCounter" style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">Words: 0 | Characters: 0</p>
     <div class="buttons">
       <button onclick="toUpper()">UPPERCASE</button>
       <button onclick="toLower()">lowercase</button>
       <button onclick="capitalizeText()">Capitalize</button>
       <button onclick="removeExtraSpaces()">Clean Text</button>
       <button onclick="removeDuplicateLines()">Remove Duplicates</button>
-      <button onclick="textToSlug()">Text → Slug</button>
-      <button onclick="clearText()">Clear</button>
+      <button onclick="textToSlug()">→ Slug</button>
+      <button onclick="clearText()" style="background:#ef4444;">Clear</button>
     </div>
-
     <p class="result" id="textResult"></p>
-
     <div class="buttons">
       <button onclick="copyResult('textResult')">Copy</button>
       <button onclick="downloadText('textResult','text-tools.txt')">Download</button>
@@ -373,76 +648,50 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
   </div>
 </div>
 
-
 <!-- Calories Calculator Modal -->
 <div id="caloriesModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('caloriesModal')">&times;</span>
     <h3>Calories Calculator</h3>
-
-    <label>Weight (kg):</label>
-    <input type="number" id="weight" placeholder="Ex: 70" min="1" max="300">
-
-    <label>Height (cm):</label>
-    <input type="number" id="height" placeholder="Ex: 175" min="50" max="250">
-
-    <label>Age:</label>
-    <input type="number" id="ageCal" placeholder="Ex: 25" min="1" max="120">
-
-    <button onclick="calculateCalories()" class="launch-btn">Calculate</button>
-
+    <label>Weight (kg):</label><input type="number" id="weight" placeholder="Ex: 70" min="1" max="300">
+    <label>Height (cm):</label><input type="number" id="height" placeholder="Ex: 175" min="50" max="250">
+    <label>Age:</label><input type="number" id="ageCal" placeholder="Ex: 25" min="1" max="120">
+    <button onclick="calculateCalories()">Calculate</button>
     <p class="result" id="caloriesResult"></p>
   </div>
 </div>
-
 
 <!-- BMI Checker Modal -->
 <div id="bmiModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('bmiModal')">&times;</span>
     <h3>BMI Checker</h3>
-    <label>Weight (kg):</label>
-    <input type="number" id="bmiWeight" placeholder="Enter your weight">
-    <label>Height (cm):</label>
-    <input type="number" id="bmiHeight" placeholder="Enter your height">
+    <label>Weight (kg):</label><input type="number" id="bmiWeight" placeholder="Enter your weight">
+    <label>Height (cm):</label><input type="number" id="bmiHeight" placeholder="Enter your height">
     <button onclick="calculateBMI()">Check BMI</button>
     <p class="result" id="bmiResult"></p>
   </div>
 </div>
 
+<!-- Child Growth Modal -->
 <div id="childGrowthModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('childGrowthModal')">&times;</span>
     <h3>Child Growth Tracker</h3>
-
     <label>Gender:</label>
-    <select id="childGender">
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
-
-    <label>Birth Date:</label>
-    <input type="date" id="childBirth">
-
-    <label>Measurement Date:</label>
-    <input type="date" id="childMeasure" value="">
-
-    <label>Weight (kg):</label>
-    <input type="number" id="childWeight">
-
-    <label>Height (cm):</label>
-    <input type="number" id="childHeight">
-
+    <select id="childGender"><option value="male">Male</option><option value="female">Female</option></select>
+    <label>Birth Date:</label><input type="date" id="childBirth">
+    <label>Measurement Date:</label><input type="date" id="childMeasure">
+    <label>Weight (kg):</label><input type="number" id="childWeight">
+    <label>Height (cm):</label><input type="number" id="childHeight">
     <button onclick="addMeasurement()">Add Measurement</button>
-    <button onclick="resetMeasurements()">Reset</button>
-
+    <button onclick="resetMeasurements()" style="background:#ef4444;">Reset</button>
     <div id="childGrowthReport" style="margin-top:15px;">
       <p class="result" id="childGrowthResult"></p>
       <p id="childGrowthStatus"></p>
       <p id="childGrowthAdvice"></p>
       <canvas id="growthChart" width="400" height="250"></canvas>
     </div>
-
     <button onclick="exportGrowthPDF()">Download PDF</button>
   </div>
 </div>
@@ -452,26 +701,16 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
   <div class="modal-content">
     <span class="close" onclick="closeModal('babyModal')">&times;</span>
     <h3>Baby Milestone Tracker</h3>
-
-    <label>Baby Name:</label>
-    <input type="text" id="babyName" placeholder="Enter baby name">
-
-    <label>Birth Date:</label>
-    <input type="date" id="babyBirth">
-
-    <label>Milestone Date:</label>
-    <input type="date" id="milestoneDate">
-
+    <label>Baby Name:</label><input type="text" id="babyName" placeholder="Enter baby name">
+    <label>Birth Date:</label><input type="date" id="babyBirth">
+    <label>Milestone Date:</label><input type="date" id="milestoneDate">
     <label>Milestone Description:</label>
     <textarea id="milestoneDesc" rows="4" placeholder="Describe the milestone..."></textarea>
-
     <button onclick="addBabyMilestone()">Add Milestone</button>
-    <button onclick="resetBabyMilestones()">Reset</button>
-
+    <button onclick="resetBabyMilestones()" style="background:#ef4444;">Reset</button>
     <div id="babyMilestoneReport" style="margin-top:15px;">
       <p class="result" id="babyMilestoneList"></p>
     </div>
-
     <button onclick="exportBabyMilestonesPDF()">Download PDF</button>
   </div>
 </div>
@@ -481,40 +720,31 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
   <div class="modal-content">
     <span class="close" onclick="closeModal('cryModal')">&times;</span>
     <h3>Baby Cry Analyzer</h3>
-
-    <!-- Upload or Record -->
     <label>Select Audio File:</label>
     <input type="file" id="audioFile" accept="audio/*">
     <br><br>
     <button id="recordBtn">🎤 Record Cry</button>
     <button id="stopRecordBtn" disabled>⏹ Stop</button>
-
     <br><br>
     <button id="analyzeBtn">Analyze Cry</button>
-
     <div class="result" id="cryResult"></div>
-
-    <h4>Analysis History</h4>
+    <h4 style="margin-top:14px;font-family:'Syne',sans-serif;font-size:0.95rem;">Analysis History</h4>
     <div class="result" id="cryHistory" style="max-height:200px;overflow:auto;"></div>
-
     <button id="exportPdfBtn">Export PDF</button>
   </div>
 </div>
 
 <!-- Global Grade Calculator Modal -->
-<!-- Global Grade Calculator Modal -->
 <div id="gradeModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('gradeModal')">&times;</span>
-    <h2 id="title">🌍 Global Grade Calculator</h2>
-
+    <h2>🌍 Global Grade Calculator</h2>
     <select id="gradeSystem">
       <option value="20">/20</option>
       <option value="10">/10</option>
       <option value="100">/100</option>
       <option value="4">GPA (4.0)</option>
     </select>
-
     <div id="gradesContainer">
       <div class="input-row">
         <input type="number" placeholder="Grade" min="0" class="grade">
@@ -522,722 +752,332 @@ modal {display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:1
         <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
       </div>
     </div>
-
     <button id="addRowBtn" onclick="addGradeRow()">+ Add Grade</button>
     <button onclick="calculateGlobalGrade()" id="calcBtn">Calculate</button>
     <button onclick="clearGrades()" id="clearBtn">Clear</button>
-
     <div id="gradeResult"></div>
   </div>
 </div>
 
-
+<!-- QR Modal -->
 <div id="qrContainerModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal('qrContainerModal')">&times;</span>
     <h2>QR Code Generator & Scanner</h2>
     <input type="text" id="qrInput" placeholder="Enter text or URL">
-    <br>
-    <button id="generateBtn">Generate QR</button>
-    <button id="downloadBtn">Download QR</button>
-    <button id="scanBtn">Scan QR</button>
-    <div id="qrCode"></div>
-    <video id="video" class="hidden"></video>
-    <div id="scanResult"></div>
+    <div class="buttons">
+      <button id="generateBtn">Generate QR</button>
+      <button id="downloadBtn">Download QR</button>
+      <button id="scanBtn">Scan QR</button>
+    </div>
+    <div id="qrCode" style="margin-top:16px;"></div>
+    <video id="video" style="display:none;width:100%;border-radius:8px;margin-top:10px;"></video>
+    <div id="scanResult" style="margin-top:10px;font-weight:600;color:var(--accent);"></div>
   </div>
 </div>
 
 <footer>© 2025 Way2Apps | All Rights Reserved</footer>
 
 <script>
-document.querySelector('.dark-mode-toggle').addEventListener('click',()=>document.body.classList.toggle('dark-mode'));
-document.getElementById('currentDate').value=new Date().toISOString().split('T')[0];
+// Dark mode
+document.querySelector('.dark-mode-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
 
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-window.onclick=function(event){document.querySelectorAll('.modal').forEach(modal=>{if(event.target==modal)modal.classList.remove('show');});}
-
-// Age Calculator
-function calculateAge(){
-  const b=document.getElementById('birthDate').value;
-  const c=document.getElementById('currentDate').value;
-  if(!b||!c){alert('Enter dates');return;}
-  const bd=new Date(b),cd=new Date(c);
-  let y=cd.getFullYear()-bd.getFullYear(),m=cd.getMonth()-bd.getMonth(),d=cd.getDate()-bd.getDate();
-  if(d<0){m--;d+=new Date(cd.getFullYear(),cd.getMonth(),0).getDate();}
-  if(m<0){y--;m+=12;}
-  document.getElementById('ageResult').innerText=`${y} ans ${m} mois ${d} jours`;
-}
-
-
-// Copy text
-function copyResult(id){
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
-}
-
-// Download text as file
-function downloadText(elementId, filename){
-  const text = document.getElementById(elementId).innerText;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-}
-
-
-// Copy result
-function copyResult(id){
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
-}
-
-// Download result
-function downloadText(elementId, filename){
-  const text = document.getElementById(elementId).innerText;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-}
-
-// Modal open/close
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-window.onclick=function(event){document.querySelectorAll('.modal').forEach(modal=>{if(event.target==modal)modal.classList.remove('show');});}
-
-
-
-// Copy & Download
-function copyResult(id){
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
-}
-
-function downloadText(elementId, filename){
-  const text = document.getElementById(elementId).innerText;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = filename;
-  link.click();
-}
+// Init current date
+document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
 
 // Modal functions
-function openModal(id){document.getElementById(id).classList.add('show');}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
-window.onclick = function(event){
-  document.querySelectorAll('.modal').forEach(modal=>{
-    if(event.target==modal) modal.classList.remove('show');
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+window.onclick = function(event) {
+  document.querySelectorAll('.modal').forEach(modal => {
+    if (event.target == modal) modal.classList.remove('show');
   });
 };
 
+// Age Calculator
+function calculateAge() {
+  const b = document.getElementById('birthDate').value;
+  const c = document.getElementById('currentDate').value;
+  if (!b || !c) { alert('Enter dates'); return; }
+  const bd = new Date(b), cd = new Date(c);
+  let y = cd.getFullYear() - bd.getFullYear();
+  let m = cd.getMonth() - bd.getMonth();
+  let d = cd.getDate() - bd.getDate();
+  if (d < 0) { m--; d += new Date(cd.getFullYear(), cd.getMonth(), 0).getDate(); }
+  if (m < 0) { y--; m += 12; }
+  document.getElementById('ageResult').innerText = `${y} years ${m} months ${d} days`;
+}
+
 // Image to Text
-function extractImageText(){
-  const file=document.getElementById('imageFile').files[0];
-  if(!file){alert('Select an image');return;}
-  document.getElementById('imageResult').innerText="Processing...";
-  Tesseract.recognize(file,'eng',{logger:m=>console.log(m)}).then(({data:{text}})=>{
-    document.getElementById('imageResult').innerText=text;
-    document.getElementById('downloadImageText').style.display='inline-block';
+function extractImageText() {
+  const file = document.getElementById('imageFile').files[0];
+  if (!file) { alert('Select an image'); return; }
+  document.getElementById('imageResult').innerText = "Processing...";
+  Tesseract.recognize(file, 'eng', { logger: m => console.log(m) }).then(({ data: { text } }) => {
+    document.getElementById('imageResult').innerText = text;
+    document.getElementById('downloadImageText').style.display = 'inline-block';
   });
 }
 
-// Word & Character Counter
-function updateCounter(){
+// Text Tools
+function updateCounter() {
   const t = document.getElementById('textInput').value;
   const words = t.trim().split(/\s+/).filter(Boolean).length;
-  const chars = t.length;
-  document.getElementById('textCounter').innerText = `Words: ${words} | Characters: ${chars}`;
+  document.getElementById('textCounter').innerText = `Words: ${words} | Characters: ${t.length}`;
 }
-
-// Clear Text
-function clearText(){
+function clearText() {
   document.getElementById('textInput').value = '';
   document.getElementById('textResult').innerText = '';
   document.getElementById('textCounter').innerText = 'Words: 0 | Characters: 0';
 }
-
-// Convert text to UPPERCASE
-function toUpper(){
-  const t = document.getElementById('textInput').value;
-  document.getElementById('textResult').innerText = t.toUpperCase();
-}
-
-// Convert text to lowercase
-function toLower(){
-  const t = document.getElementById('textInput').value;
-  document.getElementById('textResult').innerText = t.toLowerCase();
-}
-
-// Capitalize each word
-function capitalizeText(){
-  const t = document.getElementById('textInput').value;
+function toUpper() { document.getElementById('textResult').innerText = document.getElementById('textInput').value.toUpperCase(); }
+function toLower() { document.getElementById('textResult').innerText = document.getElementById('textInput').value.toLowerCase(); }
+function capitalizeText() {
   document.getElementById('textResult').innerText =
-    t.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    document.getElementById('textInput').value.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 }
-
-// Clean Text (remove extra spaces but keep lines)
-function removeExtraSpaces(){
-  const t = document.getElementById('textInput').value;
-  const lines = t.split('\n').map(line => line.replace(/\s+/g,' ').trim());
+function removeExtraSpaces() {
+  const lines = document.getElementById('textInput').value.split('\n').map(l => l.replace(/\s+/g, ' ').trim());
   document.getElementById('textResult').innerText = lines.join('\n');
 }
-
-// Remove duplicate lines (ignore case, trim spaces)
-function removeDuplicateLines(){
-  const t = document.getElementById('textInput').value;
-  const lines = t.split('\n').map(line => line.trim());
-  const uniqueLines = [...new Set(lines.map(line => line.toLowerCase()))];
-  document.getElementById('textResult').innerText = uniqueLines.join('\n');
+function removeDuplicateLines() {
+  const lines = document.getElementById('textInput').value.split('\n').map(l => l.trim());
+  document.getElementById('textResult').innerText = [...new Set(lines.map(l => l.toLowerCase()))].join('\n');
 }
-
-// Convert text to Slug (safe, no errors)
-function textToSlug(){
-  const t = document.getElementById('textInput').value;
-
-  // Normalize text to remove accents
-  const normalized = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-  // Keep only letters, numbers, dash, and spaces
-  const cleaned = normalized.replace(/[^a-zA-Z0-9\s-]/g, '');
-
-  // Replace multiple spaces with a single dash and convert to lowercase
-  const slug = cleaned.trim().replace(/\s+/g, '-').toLowerCase();
-
+function textToSlug() {
+  const normalized = document.getElementById('textInput').value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const slug = normalized.replace(/[^a-zA-Z0-9\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase();
   document.getElementById('textResult').innerText = slug;
 }
 
-// Copy result to clipboard
-function copyResult(id){
-  const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text).then(()=>alert("Copied!"));
+// Copy & Download
+function copyResult(id) {
+  navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => alert("Copied!"));
 }
-
-// Download result as .txt file
-function downloadText(elementId, filename){
-  const text = document.getElementById(elementId).innerText;
-  const blob = new Blob([text], { type: 'text/plain' });
+function downloadText(elementId, filename) {
+  const blob = new Blob([document.getElementById(elementId).innerText], { type: 'text/plain' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = filename;
   link.click();
 }
 
-// Download Text
-function downloadText(elementId, filename){
-  const text=document.getElementById(elementId).innerText;
-  const blob=new Blob([text],{type:'text/plain'});
-  const link=document.createElement('a');
-  link.href=URL.createObjectURL(blob);
-  link.download=filename;
-  link.click();
+// Calories
+function calculateCalories() {
+  const w = parseFloat(document.getElementById('weight').value);
+  const h = parseFloat(document.getElementById('height').value);
+  const a = parseFloat(document.getElementById('ageCal').value);
+  if (isNaN(w) || isNaN(h) || isNaN(a) || w <= 0 || h <= 0 || a <= 0) { alert('Enter valid values'); return; }
+  const calories = 10 * w + 6.25 * h - 5 * a + 5;
+  document.getElementById('caloriesResult').innerText = `Estimated BMR: ${calories.toFixed(0)} kcal/day`;
 }
 
-// Copy
-function copyResult(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>alert("Copied!"));}
-
-// Export Text
-function exportText(id){const text=document.getElementById(id).innerText; const blob=new Blob([text],{type:"text/plain;charset=utf-8"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download="result.txt"; link.click();}
-
-// Calories Calculator
-function calculateCalories(){
-  const w=parseFloat(document.getElementById('weight').value);
-  const h=parseFloat(document.getElementById('height').value);
-  const a=parseFloat(document.getElementById('ageCal').value);
-
-  if(isNaN(w)||isNaN(h)||isNaN(a)||w<=0||h<=0||a<=0){
-    alert('Enter valid values'); 
-    return;
-  }
-
-  const calories = 10*w + 6.25*h - 5*a + 5; // BMR for men
-  document.getElementById('caloriesResult').innerText = `Calories: ${calories.toFixed(0)} kcal/day`;
-}
-
-// فتح وإغلاق المودال
-function openModal(id){
-  document.getElementById(id).classList.add('show');
-}
-function closeModal(id){
-  document.getElementById(id).classList.remove('show');
-}
-window.onclick = function(event){
-  document.querySelectorAll('.modal').forEach(modal => {
-    if(event.target == modal) modal.classList.remove('show');
-  });
-}
-
-// حساب BMI
-function calculateBMI(){
+// BMI
+function calculateBMI() {
   const weight = parseFloat(document.getElementById('bmiWeight').value);
-  const height = parseFloat(document.getElementById('bmiHeight').value) / 100; // تحويل cm إلى m
-
-  if(isNaN(weight) || isNaN(height) || height === 0){
-    alert('Enter valid values!');
-    return;
-  }
-
+  const height = parseFloat(document.getElementById('bmiHeight').value) / 100;
+  if (isNaN(weight) || isNaN(height) || height === 0) { alert('Enter valid values!'); return; }
   const bmi = weight / (height * height);
-  let category = '';
-
-  if(bmi < 18.5) category = 'Underweight';
-  else if(bmi < 24.9) category = 'Normal weight';
-  else if(bmi < 29.9) category = 'Overweight';
-  else category = 'Obesity';
-
+  let category = bmi < 18.5 ? 'Underweight' : bmi < 24.9 ? 'Normal weight' : bmi < 29.9 ? 'Overweight' : 'Obesity';
   document.getElementById('bmiResult').innerText = `BMI: ${bmi.toFixed(1)} (${category})`;
 }
 
-
 // Child Growth
-let growthData = [];
-let growthChart = null;
-
-// WHO Growth Standards (simplified example)
+let growthData = [], growthChart = null;
 const whoGrowth = {
   male: {0:{weight:3.3,height:49.9},1:{weight:4.5,height:54.7},2:{weight:5.6,height:58.4},3:{weight:6.4,height:61.4},6:{weight:7.9,height:67.6},12:{weight:9.6,height:76.1},24:{weight:12.2,height:87.8},36:{weight:14.3,height:96.1}},
   female: {0:{weight:3.2,height:49.1},1:{weight:4.2,height:53.7},2:{weight:5.1,height:57.1},3:{weight:5.8,height:59.8},6:{weight:7.3,height:65.7},12:{weight:9.1,height:74.0},24:{weight:11.5,height:85.7},36:{weight:13.9,height:95.0}}
 };
-
 function addMeasurement() {
   const gender = document.getElementById('childGender').value;
   const b = document.getElementById('childBirth').value;
   const m = document.getElementById('childMeasure').value;
   const w = parseFloat(document.getElementById('childWeight').value);
   const h = parseFloat(document.getElementById('childHeight').value);
-
-  if(!b || !m || isNaN(w) || isNaN(h)) { alert('Enter all valid values'); return; }
-
+  if (!b || !m || isNaN(w) || isNaN(h)) { alert('Enter all valid values'); return; }
   const bd = new Date(b), md = new Date(m);
-  if(md < bd){ alert('Measurement date must be after birth'); return; }
-
-  let y = md.getFullYear() - bd.getFullYear();
-  let mo = md.getMonth() - bd.getMonth();
-  let d = md.getDate() - bd.getDate();
-  if(d < 0){ mo--; d += new Date(md.getFullYear(), md.getMonth(),0).getDate(); }
-  if(mo < 0){ y--; mo += 12; }
-  const ageMonths = y*12 + mo;
-
-  const heightM = h/100;
-  const bmi = w / (heightM*heightM);
-
-  // WHO comparison
+  if (md < bd) { alert('Measurement date must be after birth'); return; }
+  let y = md.getFullYear() - bd.getFullYear(), mo = md.getMonth() - bd.getMonth(), d = md.getDate() - bd.getDate();
+  if (d < 0) { mo--; d += new Date(md.getFullYear(), md.getMonth(), 0).getDate(); }
+  if (mo < 0) { y--; mo += 12; }
+  const ageMonths = y * 12 + mo, bmi = w / ((h / 100) ** 2);
   const who = whoGrowth[gender];
-  let nearestAge = Object.keys(who).reduce((prev,curr)=>Math.abs(curr-ageMonths)<Math.abs(prev-ageMonths)?curr:prev);
-  const whoWeight = who[nearestAge].weight;
-  const whoHeight = who[nearestAge].height;
-
-  let status='', advice='';
-  if(w < whoWeight*0.9 || h < whoHeight*0.95) {
-    status = 'Below Average';
-    advice = 'Underweight: Encourage healthy growth, consult pediatrician.';
-  } else if(w <= whoWeight*1.1 && h <= whoHeight*1.05) {
-    status = 'Normal';
-    advice = 'Growth is on track.';
-  } else {
-    status = 'Above Average';
-    advice = 'Overweight/Risk of Obesity: Monitor diet and activity.';
-  }
-
-  growthData.push({ageMonths, weight:w, height:h, bmi, status, advice});
-
-  const latest = growthData[growthData.length-1];
-  document.getElementById('childGrowthResult').innerText = 
-    `Age: ${latest.ageMonths} months\nWeight: ${latest.weight} kg\nHeight: ${latest.height} cm\nBMI: ${latest.bmi.toFixed(1)}\nWHO Avg Weight: ${whoWeight} kg, Height: ${whoHeight} cm`;
-  
+  const nearestAge = Object.keys(who).reduce((prev, curr) => Math.abs(curr - ageMonths) < Math.abs(prev - ageMonths) ? curr : prev);
+  const whoWeight = who[nearestAge].weight, whoHeight = who[nearestAge].height;
+  let status = '', advice = '';
+  if (w < whoWeight * 0.9 || h < whoHeight * 0.95) { status = 'Below Average'; advice = 'Underweight: Encourage healthy growth, consult pediatrician.'; }
+  else if (w <= whoWeight * 1.1 && h <= whoHeight * 1.05) { status = 'Normal'; advice = 'Growth is on track.'; }
+  else { status = 'Above Average'; advice = 'Overweight/Risk of Obesity: Monitor diet and activity.'; }
+  growthData.push({ ageMonths, weight: w, height: h, bmi, status, advice });
+  const latest = growthData[growthData.length - 1];
+  document.getElementById('childGrowthResult').innerText = `Age: ${latest.ageMonths} months\nWeight: ${latest.weight} kg\nHeight: ${latest.height} cm\nBMI: ${latest.bmi.toFixed(1)}\nWHO Avg Weight: ${whoWeight} kg, Height: ${whoHeight} cm`;
   const statusEl = document.getElementById('childGrowthStatus');
   statusEl.innerText = `Growth Status: ${latest.status}`;
-  statusEl.style.color = (latest.status==='Normal')?'green':(latest.status==='Below Average')?'orange':'red';
-
+  statusEl.style.color = latest.status === 'Normal' ? '#10b981' : latest.status === 'Below Average' ? '#f59e0b' : '#ef4444';
   document.getElementById('childGrowthAdvice').innerText = `Advice: ${latest.advice}`;
-
   renderGrowthChart(gender);
 }
-
 function renderGrowthChart(gender) {
   const ctx = document.getElementById('growthChart').getContext('2d');
-  const labels = growthData.map(d=>`${d.ageMonths} mo`);
-  const weightData = growthData.map(d=>d.weight);
-  const heightData = growthData.map(d=>d.height);
-
-  const who = whoGrowth[gender];
-  const whoLabels = Object.keys(who);
-  const whoWeightLine = whoLabels.map(m=>who[m].weight);
-  const whoHeightLine = whoLabels.map(m=>who[m].height);
-
-  if(growthChart) growthChart.destroy();
-
-  growthChart = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels: labels,
-      datasets:[
-        {label:'Weight (kg)', data: weightData, borderColor: 'blue', backgroundColor:'transparent', tension:0.3, pointRadius:6},
-        {label:'Height (cm)', data: heightData, borderColor:'green', backgroundColor:'transparent', tension:0.3, pointRadius:6},
-        {label:'WHO Avg Weight', data: whoWeightLine, borderColor:'blue', borderDash:[5,5], fill:false, tension:0.1, pointRadius:0},
-        {label:'WHO Avg Height', data: whoHeightLine, borderColor:'green', borderDash:[5,5], fill:false, tension:0.1, pointRadius:0}
+  if (growthChart) growthChart.destroy();
+  growthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: growthData.map(d => `${d.ageMonths} mo`),
+      datasets: [
+        { label: 'Weight (kg)', data: growthData.map(d => d.weight), borderColor: '#00c2a8', backgroundColor: 'transparent', tension: 0.3, pointRadius: 6 },
+        { label: 'Height (cm)', data: growthData.map(d => d.height), borderColor: '#7c3aed', backgroundColor: 'transparent', tension: 0.3, pointRadius: 6 }
       ]
     },
-    options:{responsive:true, scales:{y:{beginAtZero:true}}}
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
 }
-
 function resetMeasurements() {
-  if(confirm('Reset all measurements?')) {
+  if (confirm('Reset all measurements?')) {
     growthData = [];
-    if(growthChart) growthChart.destroy();
-    document.getElementById('childGrowthResult').innerText = '';
-    document.getElementById('childGrowthStatus').innerText = '';
-    document.getElementById('childGrowthAdvice').innerText = '';
+    if (growthChart) growthChart.destroy();
+    ['childGrowthResult', 'childGrowthStatus', 'childGrowthAdvice'].forEach(id => document.getElementById(id).innerText = '');
   }
 }
-
 function exportGrowthPDF() {
   const report = document.getElementById('childGrowthReport');
-  if (!report) { alert('No report to export'); return; }
-
   html2canvas(report).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
-    });
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
     pdf.save('ChildGrowthReport.pdf');
   });
 }
 
-
-
-// ==========================
-// Baby Milestone Data
-// ==========================
+// Baby Milestones
 let babyMilestones = [];
-
-// ==========================
-// Add Milestone
-// ==========================
 function addBabyMilestone() {
   const name = document.getElementById('babyName').value.trim();
   const birth = document.getElementById('babyBirth').value;
   const date = document.getElementById('milestoneDate').value;
   const desc = document.getElementById('milestoneDesc').value.trim();
-
-  if (!name || !birth || !date || !desc) {
-    alert('Please fill all fields');
-    return;
-  }
-
-  const milestone = { name, birth, date, desc };
-  babyMilestones.push(milestone);
-
+  if (!name || !birth || !date || !desc) { alert('Please fill all fields'); return; }
+  babyMilestones.push({ name, birth, date, desc });
   renderBabyMilestones();
 }
-
-// ==========================
-// Reset Milestones
-// ==========================
 function resetBabyMilestones() {
-  if (confirm('Reset all milestones?')) {
-    babyMilestones = [];
-    renderBabyMilestones();
-  }
+  if (confirm('Reset all milestones?')) { babyMilestones = []; renderBabyMilestones(); }
 }
-
-// ==========================
-// Render Milestone List
-// ==========================
 function renderBabyMilestones() {
   const listEl = document.getElementById('babyMilestoneList');
-  if (babyMilestones.length === 0) {
-    listEl.innerHTML = 'No milestones added yet.';
-    return;
-  }
-  listEl.innerHTML = babyMilestones.map((m, i) => 
-    `<strong>${i+1}. ${m.name}</strong> | Birth: ${m.birth} | Date: ${m.date}<br>Milestone: ${m.desc}<br><hr>`
-  ).join('');
+  listEl.innerHTML = babyMilestones.length === 0 ? 'No milestones added yet.' :
+    babyMilestones.map((m, i) => `<strong>${i + 1}. ${m.name}</strong> | Birth: ${m.birth} | Date: ${m.date}<br>Milestone: ${m.desc}<br><hr>`).join('');
 }
-
-// ==========================
-// Export PDF
-// ==========================
 function exportBabyMilestonesPDF() {
   const report = document.getElementById('babyMilestoneReport');
-  if (!report) { alert('No report to export'); return; }
-
-  // Make sure modal is visible before capturing
-  report.parentElement.style.display = 'block';
-
   html2canvas(report).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
-    });
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
     pdf.save('BabyMilestones.pdf');
   });
 }
-//analyse bebe
-let audioBlob = null;
-let mediaRecorder = null;
-let audioChunks = [];
 
-// تسجيل مباشر
+// Baby Cry Analyzer
+let audioBlob = null, mediaRecorder = null, audioChunks = [];
 document.getElementById('recordBtn').onclick = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   mediaRecorder = new MediaRecorder(stream);
   audioChunks = [];
-
   mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-  mediaRecorder.onstop = () => {
-    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-    alert('Recording saved!');
-  };
-
+  mediaRecorder.onstop = () => { audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); alert('Recording saved!'); };
   mediaRecorder.start();
   document.getElementById('recordBtn').disabled = true;
   document.getElementById('stopRecordBtn').disabled = false;
 };
-
-// إيقاف التسجيل
 document.getElementById('stopRecordBtn').onclick = () => {
   mediaRecorder.stop();
   document.getElementById('recordBtn').disabled = false;
   document.getElementById('stopRecordBtn').disabled = true;
 };
-
-// تحليل الصوت مع تحديد السبب
 document.getElementById('analyzeBtn').onclick = () => {
-  const fileInput = document.getElementById('audioFile').files[0];
-  const file = audioBlob || fileInput;
-  if(!file){ alert('Select or record audio first'); return; }
-
-  // محاكاة التحليل
-  const statusOptions = ['Crying softly', 'Crying loudly', 'Fussy', 'Sleeping'];
-  const causeOptions = ['Comfort/Attention', 'Hungry', 'Thirsty', 'Sleepy', 'Discomfort'];
-
-  const status = statusOptions[Math.floor(Math.random()*statusOptions.length)];
-  const estimation = causeOptions[Math.floor(Math.random()*causeOptions.length)];
-  const duration = (Math.random()*10 + 5).toFixed(2)+'s';
-  const volume = (Math.random()*10).toFixed(2);
-  const pitch = (Math.random()*20).toFixed(2)+' Hz';
-
-  const resultText = `Status: ${status}\nEstimation: ${estimation}`;
+  const file = audioBlob || document.getElementById('audioFile').files[0];
+  if (!file) { alert('Select or record audio first'); return; }
+  const status = ['Crying softly', 'Crying loudly', 'Fussy', 'Sleeping'][Math.floor(Math.random() * 4)];
+  const cause = ['Comfort/Attention', 'Hungry', 'Thirsty', 'Sleepy', 'Discomfort'][Math.floor(Math.random() * 5)];
+  const resultText = `Status: ${status}\nEstimation: ${cause}`;
   document.getElementById('cryResult').innerText = resultText;
-
-  // حفظ التاريخ مع التاريخ والوقت
-  const date = new Date().toLocaleString();
   const historyEl = document.getElementById('cryHistory');
-  historyEl.innerHTML = `<strong>Date:</strong> ${date}<br>${resultText}<br><hr>` + historyEl.innerHTML;
+  historyEl.innerHTML = `<strong>Date:</strong> ${new Date().toLocaleString()}<br>${resultText}<br><hr>` + historyEl.innerHTML;
 };
-
-// تصدير PDF
-document.getElementById('exportPdfBtn').onclick = ()=>{
+document.getElementById('exportPdfBtn').onclick = () => {
   const historyEl = document.getElementById('cryHistory');
-  if(!historyEl.innerText){alert('No analysis history to export'); return;}
-
-  html2canvas(historyEl).then(canvas=>{
-    const imgData = canvas.toDataURL('image/png');
+  if (!historyEl.innerText) { alert('No analysis history to export'); return; }
+  html2canvas(historyEl).then(canvas => {
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-      orientation:'portrait',
-      unit:'px',
-      format:[canvas.width,canvas.height]
-    });
-    pdf.addImage(imgData,'PNG',0,0,canvas.width,canvas.height);
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
     pdf.save('BabyCryAnalysis.pdf');
   });
 };
 
-// فتح وإغلاق المودال (عام لكل المودالات)
-function openModal(id){ document.getElementById(id).classList.add('show'); }
-function closeModal(id){ document.getElementById(id).classList.remove('show'); }
-window.onclick = function(event){
-  document.querySelectorAll('.modal').forEach(modal => {
-    if(event.target == modal) modal.classList.remove('show');
-  });
-}
-
-// إضافة صف جديد
-function addGradeRow(){
-  const container = document.getElementById('gradesContainer');
-  const row = document.createElement('div');
-  row.className = 'input-row';
-  row.innerHTML = `
-    <input type="number" placeholder="Grade" min="0" class="grade">
-    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
-  `;
-  container.appendChild(row);
-}
-
-// حذف صف
-function deleteGradeRow(btn){
-  const row = btn.parentElement;
-  row.remove();
-}
-
-// حساب المعدل العام
-const gradeModal = document.getElementById("gradeModal");
+// Grade Calculator
 const gradesContainer = document.getElementById("gradesContainer");
 const gradeSystem = document.getElementById("gradeSystem");
 const gradeResult = document.getElementById("gradeResult");
-
-// Open/close modal
-function openGradeModal() {
-  gradeModal.style.display = "block";
-  setTimeout(() => gradeModal.classList.add("show"), 10);
-}
-
-function closeGradeModal() {
-  gradeModal.classList.remove("show");
-  setTimeout(() => gradeModal.style.display = "none", 400);
-}
-
-window.onclick = function(event) {
-  if (event.target === gradeModal) closeGradeModal();
-}
-
-// Add new row
 function addGradeRow() {
   const row = document.createElement("div");
-  row.classList.add("input-row");
-  row.innerHTML = `
-    <input type="number" placeholder="Grade" min="0" class="grade">
-    <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-    <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
-  `;
+  row.className = "input-row";
+  row.innerHTML = `<input type="number" placeholder="Grade" min="0" class="grade"><input type="number" placeholder="Coeff" min="1" value="1" class="coeff"><button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>`;
   gradesContainer.appendChild(row);
 }
-
-// Delete specific row
-function deleteGradeRow(btn) {
-  gradesContainer.removeChild(btn.parentElement);
-}
-
-// Calculate grades
+function deleteGradeRow(btn) { btn.parentElement.remove(); }
 function calculateGlobalGrade() {
   const max = parseFloat(gradeSystem.value);
   const grades = [...document.querySelectorAll(".grade")].map(i => parseFloat(i.value));
   const coeffs = [...document.querySelectorAll(".coeff")].map(i => parseFloat(i.value) || 1);
-
   let total = 0, totalCoeff = 0;
-  grades.forEach((g, i) => {
-    if (!isNaN(g)) {
-      total += g * coeffs[i];
-      totalCoeff += coeffs[i];
-    }
-  });
-
-  if (totalCoeff === 0) {
-    gradeResult.innerHTML = "⚠️ Enter at least one grade";
-    return;
-  }
-
+  grades.forEach((g, i) => { if (!isNaN(g)) { total += g * coeffs[i]; totalCoeff += coeffs[i]; } });
+  if (totalCoeff === 0) { gradeResult.innerHTML = "⚠️ Enter at least one grade"; return; }
   const avg = total / totalCoeff;
-  let resultHTML = "";
-
-  if (max === 4) { // GPA
-    resultHTML = `<p><strong>GPA:</strong> ${avg.toFixed(2)} / 4.0</p>`;
-    resultHTML += `<p><strong>Status:</strong> ${avg >= 2 ? "Pass ✅" : "Fail ❌"}</p>`;
+  if (max === 4) {
+    gradeResult.innerHTML = `<p><strong>GPA:</strong> ${avg.toFixed(2)} / 4.0</p><p><strong>Status:</strong> ${avg >= 2 ? "Pass ✅" : "Fail ❌"}</p>`;
   } else {
     const percent = (avg / max) * 100;
-    const status = percent >= 50 ? "Pass ✅" : "Fail ❌";
-    resultHTML = `
-      <p><strong>Average:</strong> ${avg.toFixed(2)} / ${max}</p>
-      <p><strong>Percentage:</strong> ${percent.toFixed(1)}%</p>
-      <p><strong>Status:</strong> ${status}</p>
-    `;
+    gradeResult.innerHTML = `<p><strong>Average:</strong> ${avg.toFixed(2)} / ${max}</p><p><strong>Percentage:</strong> ${percent.toFixed(1)}%</p><p><strong>Status:</strong> ${percent >= 50 ? "Pass ✅" : "Fail ❌"}</p>`;
   }
-
-  gradeResult.innerHTML = resultHTML;
 }
-
-// Clear all
 function clearGrades() {
-  gradesContainer.innerHTML = `
-    <div class="input-row">
-      <input type="number" placeholder="Grade" min="0" class="grade">
-      <input type="number" placeholder="Coeff" min="1" value="1" class="coeff">
-      <button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button>
-    </div>
-  `;
+  gradesContainer.innerHTML = `<div class="input-row"><input type="number" placeholder="Grade" min="0" class="grade"><input type="number" placeholder="Coeff" min="1" value="1" class="coeff"><button class="deleteRowBtn" onclick="deleteGradeRow(this)">🗑️</button></div>`;
   gradeResult.innerHTML = "";
 }
 
-//QR
-const qrBtn = document.getElementById("generateBtn");
-const downloadBtn = document.getElementById("downloadBtn");
-const scanBtn = document.getElementById("scanBtn");
-const qrInput = document.getElementById("qrInput");
-const qrCodeDiv = document.getElementById("qrCode");
-const video = document.getElementById("video");
-const scanResult = document.getElementById("scanResult");
-
+// QR Code
 let qr;
-
-// Generate QR
-qrBtn.addEventListener("click", () => {
-  const text = qrInput.value.trim();
-  if(!text){ alert("Enter text or URL!"); return; }
-  qrCodeDiv.innerHTML = "";
-  qr = new QRCode(qrCodeDiv, { text: text, width:180, height:180, colorDark:"#000", colorLight:"#fff", correctLevel:QRCode.CorrectLevel.H });
+document.getElementById("generateBtn").addEventListener("click", () => {
+  const text = document.getElementById("qrInput").value.trim();
+  if (!text) { alert("Enter text or URL!"); return; }
+  document.getElementById("qrCode").innerHTML = "";
+  qr = new QRCode(document.getElementById("qrCode"), { text, width: 180, height: 180, colorDark: "#000", colorLight: "#fff", correctLevel: QRCode.CorrectLevel.H });
 });
-
-// Download QR
-downloadBtn.addEventListener("click", () => {
-  if(!qrCodeDiv.querySelector("img")) { alert("Generate QR first!"); return; }
-  const img = qrCodeDiv.querySelector("img").src;
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const img = document.querySelector("#qrCode img");
+  if (!img) { alert("Generate QR first!"); return; }
   const a = document.createElement("a");
-  a.href = img;
-  a.download = "QRCode.png";
-  a.click();
+  a.href = img.src; a.download = "QRCode.png"; a.click();
 });
-
-// Scan QR
 let html5QrCode;
-scanBtn.addEventListener("click", () => {
-  scanResult.innerHTML = "";
-  video.classList.remove("hidden");
+document.getElementById("scanBtn").addEventListener("click", () => {
+  document.getElementById("scanResult").innerHTML = "";
+  document.getElementById("video").style.display = "block";
   html5QrCode = new Html5Qrcode("video");
   Html5Qrcode.getCameras().then(cameras => {
-    if(cameras && cameras.length){
-      html5QrCode.start(cameras[0].id, {fps:10, qrbox:250}, qrCodeMessage => {
-        scanResult.innerHTML = `<strong>QR Content:</strong> ${qrCodeMessage}`;
+    if (cameras && cameras.length) {
+      html5QrCode.start(cameras[0].id, { fps: 10, qrbox: 250 }, msg => {
+        document.getElementById("scanResult").innerHTML = `<strong>QR Content:</strong> ${msg}`;
         html5QrCode.stop();
-        video.classList.add("hidden");
+        document.getElementById("video").style.display = "none";
       }).catch(err => console.error(err));
     }
   }).catch(err => console.error(err));
 });
-
-
-// ==========================
-// Modal Functions
-// ==========================
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
-}
-
-window.onclick = function(event) {
-  document.querySelectorAll('.modal').forEach(modal => {
-    if (event.target == modal) modal.classList.remove('show');
-  });
-}
-
 </script>
-
-
-
 </body>
 </html>
-
