@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>📊 Dashboard Excel</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+  direction:rtl;
+  color:#1e293b;
+}
+
+header{
+  background:#0f172a;
+  color:white;
+  padding:40px 20px;
+  text-align:center;
+}
+
+header h1{
+  margin:0;
+  font-size:34px;
+}
+
+header p{
+  color:#cbd5e1;
+  margin-top:10px;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:25px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:18px;
+}
+
+.card{
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  transition:0.25s;
+  border-left:5px solid #3b82f6;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card h3{
+  margin-top:0;
+  color:#0f172a;
+}
+
+.big-number{
+  font-size:38px;
+  font-weight:bold;
+  margin-top:10px;
+  color:#2563eb;
+}
+
+.progress{
+  width:100%;
+  height:12px;
+  background:#e2e8f0;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  background:#22c55e;
+}
+
+.table-box{
+  background:white;
+  margin-top:25px;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+table th{
+  background:#0f172a;
+  color:white;
+  padding:12px;
+}
+
+table td{
+  padding:12px;
+  border-bottom:1px solid #e2e8f0;
+  text-align:center;
+}
+
+.status{
+  padding:6px 12px;
+  border-radius:30px;
+  font-size:14px;
+  color:white;
+}
+
+.success{
+  background:#22c55e;
+}
+
+.pending{
+  background:#f59e0b;
+}
+
+.danger{
+  background:#ef4444;
+}
+
+.chart{
+  margin-top:25px;
+  background:white;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+
+.bar{
+  margin:15px 0;
+}
+
+.bar-title{
+  margin-bottom:8px;
+}
+
+.bar-line{
+  height:16px;
+  background:#e2e8f0;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  border-radius:20px;
+}
+
+.blue{
+  background:#3b82f6;
+}
+
+.green{
+  background:#22c55e;
+}
+
+.orange{
+  background:#f97316;
+}
+
+.purple{
+  background:#8b5cf6;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  margin-top:40px;
+  color:#64748b;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>📊 Excel Dashboard</h1>
+  <p>لوحة تحكم احترافية بالإكسل</p>
+</header>
+
+<div class="container">
+
+<!-- TOP CARDS -->
+<div class="grid">
+
+  <div class="card">
+    <h3>💰 الأرباح</h3>
+    <div class="big-number">$12,500</div>
+
+    <div class="progress">
+      <span style="width:85%"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛒 المبيعات</h3>
+    <div class="big-number">1,240</div>
+
+    <div class="progress">
+      <span style="width:70%"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👥 العملاء</h3>
+    <div class="big-number">320</div>
+
+    <div class="progress">
+      <span style="width:60%"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📦 الطلبات</h3>
+    <div class="big-number">540</div>
+
+    <div class="progress">
+      <span style="width:90%"></span>
+    </div>
+  </div>
+
+</div>
+
+<!-- TABLE -->
+<div class="table-box">
+
+  <h2>📋 آخر العمليات</h2>
+
+  <table>
+
+    <tr>
+      <th>العميل</th>
+      <th>المنتج</th>
+      <th>السعر</th>
+      <th>الحالة</th>
+    </tr>
+
+    <tr>
+      <td>أحمد</td>
+      <td>Laptop</td>
+      <td>$900</td>
+      <td><span class="status success">مكتمل</span></td>
+    </tr>
+
+    <tr>
+      <td>سارة</td>
+      <td>Phone</td>
+      <td>$450</td>
+      <td><span class="status pending">قيد المعالجة</span></td>
+    </tr>
+
+    <tr>
+      <td>محمد</td>
+      <td>Printer</td>
+      <td>$200</td>
+      <td><span class="status danger">ملغي</span></td>
+    </tr>
+
+  </table>
+
+</div>
+
+<!-- CHART -->
+<div class="chart">
+
+  <h2>📈 إحصائيات المبيعات</h2>
+
+  <div class="bar">
+    <div class="bar-title">يناير</div>
+
+    <div class="bar-line">
+      <div class="bar-fill blue" style="width:70%"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="bar-title">فبراير</div>
+
+    <div class="bar-line">
+      <div class="bar-fill green" style="width:90%"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="bar-title">مارس</div>
+
+    <div class="bar-line">
+      <div class="bar-fill orange" style="width:55%"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="bar-title">أبريل</div>
+
+    <div class="bar-line">
+      <div class="bar-fill purple" style="width:80%"></div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 Excel Dashboard - Way2Apps
+</footer>
+
+</body>
+</html>a<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Dashboard</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+  direction:rtl;
+}
+
+/* HEADER */
+header{
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:40px 20px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:15px;
+}
+
+/* CARD */
+.card{
+  background:white;
+  padding:18px;
+  border-radius:15px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  text-decoration:none;
+  color:#111;
+  transition:0.3s;
+  border-left:4px solid #3b82f6;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.section-title{
+  margin:25px 0 10px;
+  color:#0f172a;
+  font-weight:bold;
+}
+
+/* YOUTUBE SECTION */
+.youtube-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:15px;
+}
+
+.video{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.video iframe{
+  width:100%;
+  height:200px;
+  border:none;
+}
+
+.video p{
+  padding:10px;
+  margin:0;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📊 My Dashboard</h1>
+  <p>Tools + Learning + Videos</p>
+</header>
+
+<div class="container">
+
+<!-- TOOLS -->
+<div class="section-title">🧰 Tools</div>
+<div class="grid">
+
+  <a class="card" href="javascript:void(0)">
+    <h3>📌 INDEX / MATCH</h3>
+    <p>Search in Excel tables</p>
+  </a>
+
+  <a class="card" href="javascript:void(0)">
+    <h3>🔗 AND / OR</h3>
+    <p>Logical conditions</p>
+  </a>
+
+</div>
+
+<!-- PROJECTS -->
+<div class="section-title">🚀 Projects</div>
+<div class="grid">
+
+  <a class="card" href="javascript:void(0)">
+    <h3>📁 Project 1</h3>
+    <p>Simple dashboard</p>
+  </a>
+
+  <a class="card" href="javascript:void(0)">
+    <h3>📁 Project 2</h3>
+    <p>Advanced tools</p>
+  </a>
+
+</div>
+
+<!-- YOUTUBE -->
+<div class="section-title">🎥 YouTube Videos</div>
+<div class="youtube-grid">
+
+  <div class="video">
+    <iframe src="https://www.youtube.com/embed/QODSYuOrB8A"></iframe>
+    <p>Video 1 - Tutorial</p>
+  </div>
+
+  <div class="video">
+    <iframe src="https://www.youtube.com/embed/QODSYuOrB8A"></iframe>
+    <p>Video 2 - Learning</p>
+  </div>
+
+  <div class="video">
+    <iframe src="https://www.youtube.com/embed/QODSYuOrB8A"></iframe>
+    <p>Video 3 - Tips</p>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
