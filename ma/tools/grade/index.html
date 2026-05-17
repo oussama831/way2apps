@@ -1,0 +1,596 @@
+<!-- ========================= -->
+<!-- GLOBAL GRADE CALCULATOR -->
+<!-- ========================= -->
+
+<!-- CARD -->
+<div class="card">
+
+  <div class="tool-icon">
+    🎓
+  </div>
+
+  <h3>
+    حاسبة المعدل الدراسي
+  </h3>
+
+  <p>
+    احسب معدلك بسهولة باستعمال المعاملات وأنظمة التنقيط المختلفة.
+  </p>
+
+  <div class="tags">
+
+    <span>📊 النظام /20</span>
+    <span>🧮 المتوسط</span>
+    <span>🇲🇦 الطالب</span>
+
+  </div>
+
+  <button class="launch-btn"
+  onclick="openModal('gradeModal')">
+
+    🚀 فتح الأداة
+
+  </button>
+
+</div>
+
+<!-- MODAL -->
+<div id="gradeModal" class="modal">
+
+  <div class="modal-content">
+
+    <span class="close"
+    onclick="closeModal('gradeModal')">
+
+      &times;
+
+    </span>
+
+    <h2>
+      🌍 حاسبة المعدل الدراسي
+    </h2>
+
+    <p class="subtitle">
+      أداة ذكية للطلبة وحساب المعدل ونظام GPA
+    </p>
+
+    <hr>
+
+    <!-- SELECT -->
+    <label>
+      📊 اختيار النظام:
+    </label>
+
+    <select id="gradeSystem">
+
+      <option value="20">/20</option>
+      <option value="10">/10</option>
+      <option value="100">/100</option>
+      <option value="4">GPA (4.0)</option>
+
+    </select>
+
+    <br><br>
+
+    <!-- INPUTS -->
+    <div id="gradesContainer">
+
+      <div class="input-row">
+
+        <input type="number"
+        placeholder="الدرجة"
+        class="grade">
+
+        <input type="number"
+        placeholder="المعامل (1)"
+        value="1"
+        class="coeff">
+
+        <button class="deleteRowBtn"
+        onclick="deleteGradeRow(this)">
+
+          🗑️
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+
+      <button onclick="addGradeRow()">
+        ➕ إضافة نقطة جديدة
+      </button>
+
+      <button onclick="calculateGlobalGrade()">
+        📊 حساب المعدل
+      </button>
+
+      <button onclick="clearGrades()">
+        🧹 مسح الكل
+      </button>
+
+    </div>
+
+    <hr>
+
+    <!-- RESULT -->
+    <div id="gradeResult">
+
+      <h2>---</h2>
+
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-container">
+
+      <div id="progressBar"></div>
+
+    </div>
+
+  </div>
+
+</div>
+<hr>
+<!-- BACK -->
+  <a href="../../index.html" style="text-decoration:none;">
+    <button style="padding:12px 18px; background:#3b82f6; color:white; border:none; border-radius:10px;">
+      🔙 الرجوع
+    </button>
+  </a>
+</center>
+<!-- ========================= -->
+<!-- STYLE -->
+<!-- ========================= -->
+
+<style>
+
+/* CARD */
+.card{
+
+  background:white;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 0 15px rgba(0,0,0,0.08);
+  text-align:center;
+  max-width:320px;
+  margin:auto;
+  transition:0.3s;
+
+}
+
+.card:hover{
+
+  transform:translateY(-5px);
+
+}
+
+/* ICON */
+.tool-icon{
+
+  font-size:60px;
+  margin-bottom:10px;
+
+}
+
+/* TEXT */
+.card h3{
+
+  margin:10px 0;
+
+}
+
+.card p{
+
+  color:gray;
+  font-size:14px;
+
+}
+
+/* TAGS */
+.tags{
+
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:15px 0;
+
+}
+
+.tags span{
+
+  background:#f2f5ff;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:13px;
+
+}
+
+/* BUTTON */
+.launch-btn{
+
+  padding:12px 18px;
+  border:none;
+  border-radius:10px;
+  background:#2d6cdf;
+  color:white;
+  cursor:pointer;
+  font-size:15px;
+  transition:0.3s;
+
+}
+
+.launch-btn:hover{
+
+  opacity:0.9;
+  transform:scale(1.03);
+
+}
+
+/* MODAL */
+.modal{
+
+  display:none;
+  position:fixed;
+  z-index:999;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+
+}
+
+/* MODAL CONTENT */
+.modal-content{
+
+  background:white;
+  margin:5% auto;
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:600px;
+  text-align:center;
+  animation:fadeIn 0.3s ease;
+
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+
+  from{
+
+    transform:translateY(-20px);
+    opacity:0;
+
+  }
+
+  to{
+
+    transform:translateY(0);
+    opacity:1;
+
+  }
+
+}
+
+/* CLOSE */
+.close{
+
+  float:right;
+  font-size:30px;
+  cursor:pointer;
+  color:#666;
+
+}
+
+.close:hover{
+
+  color:red;
+
+}
+
+/* SUBTITLE */
+.subtitle{
+
+  color:gray;
+
+}
+
+/* INPUT ROW */
+.input-row{
+
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+
+}
+
+/* INPUTS */
+input,
+select{
+
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  width:100%;
+  max-width:180px;
+
+}
+
+/* BUTTONS */
+.buttons{
+
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+
+}
+
+.buttons button{
+
+  padding:12px 16px;
+  border:none;
+  border-radius:10px;
+  background:#2d6cdf;
+  color:white;
+  cursor:pointer;
+
+}
+
+/* DELETE */
+.deleteRowBtn{
+
+  background:#e74c3c;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:12px;
+
+}
+
+/* RESULT */
+#gradeResult{
+
+  margin-top:20px;
+
+}
+
+/* PROGRESS */
+.progress-container{
+
+  width:100%;
+  background:#eee;
+  border-radius:20px;
+  overflow:hidden;
+  height:20px;
+  margin-top:20px;
+
+}
+
+#progressBar{
+
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#2d6cdf,#00c896);
+  transition:0.4s;
+
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+  .input-row{
+
+    flex-direction:column;
+    align-items:center;
+
+  }
+
+}
+
+</style>
+
+<!-- ========================= -->
+<!-- SCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+// OPEN
+function openModal(id){
+
+  document.getElementById(id).style.display = "block";
+
+}
+
+// CLOSE
+function closeModal(id){
+
+  document.getElementById(id).style.display = "none";
+
+}
+
+// OUTSIDE CLICK
+window.onclick = function(event){
+
+  let modal = document.getElementById("gradeModal");
+
+  if(event.target == modal){
+
+    modal.style.display = "none";
+
+  }
+
+}
+
+// ADD ROW
+function addGradeRow(){
+
+  let row = document.createElement("div");
+
+  row.className = "input-row";
+
+  row.innerHTML = `
+
+    <input type="number"
+    placeholder="Grade"
+    class="grade">
+
+    <input type="number"
+    placeholder="Coeff"
+    value="1"
+    class="coeff">
+
+    <button class="deleteRowBtn"
+    onclick="deleteGradeRow(this)">
+      🗑️
+    </button>
+
+  `;
+
+  document.getElementById("gradesContainer")
+  .appendChild(row);
+
+}
+
+// DELETE
+function deleteGradeRow(btn){
+
+  btn.parentElement.remove();
+
+}
+
+// CLEAR
+function clearGrades(){
+
+  document.getElementById("gradesContainer").innerHTML = `
+
+    <div class="input-row">
+
+      <input type="number"
+      placeholder="Grade"
+      class="grade">
+
+      <input type="number"
+      placeholder="Coeff"
+      value="1"
+      class="coeff">
+
+      <button class="deleteRowBtn"
+      onclick="deleteGradeRow(this)">
+        🗑️
+      </button>
+
+    </div>
+
+  `;
+
+  document.getElementById("gradeResult")
+  .innerHTML = "<h2>---</h2>";
+
+  document.getElementById("progressBar")
+  .style.width = "0%";
+
+}
+
+// CALCULATE
+function calculateGlobalGrade(){
+
+  let grades =
+  document.querySelectorAll(".grade");
+
+  let coeffs =
+  document.querySelectorAll(".coeff");
+
+  let total = 0;
+  let totalCoeff = 0;
+
+  for(let i=0;i<grades.length;i++){
+
+    let g = parseFloat(grades[i].value);
+    let c = parseFloat(coeffs[i].value);
+
+    if(!isNaN(g) && !isNaN(c)){
+
+      total += g*c;
+      totalCoeff += c;
+
+    }
+
+  }
+
+  if(totalCoeff === 0){
+
+    alert("Enter grades");
+
+    return;
+
+  }
+
+  let result = total / totalCoeff;
+
+  let system = parseFloat(
+    document.getElementById("gradeSystem").value
+  );
+
+  let percent = (result/system)*100;
+
+  let mention = "❌ Failed";
+  let color = "#e74c3c";
+
+  if(percent >= 90){
+
+    mention = "🏆 Excellent";
+    color = "#00c896";
+
+  }
+
+  else if(percent >= 75){
+
+    mention = "🥇 Very Good";
+    color = "#2d6cdf";
+
+  }
+
+  else if(percent >= 60){
+
+    mention = "🥈 Good";
+    color = "#f39c12";
+
+  }
+
+  else if(percent >= 50){
+
+    mention = "🥉 Pass";
+    color = "#999";
+
+  }
+
+  document.getElementById("gradeResult")
+  .innerHTML = `
+
+    <h2 style="color:${color};">
+
+      ${result.toFixed(2)} / ${system}
+
+    </h2>
+
+    <p>${mention}</p>
+
+  `;
+
+  document.getElementById("progressBar")
+  .style.width = percent + "%";
+
+}
+
+</script>
