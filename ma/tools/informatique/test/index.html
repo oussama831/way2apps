@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار الأمن السيبراني - نهائي</title>
+<style>
+body { font-family: Arial, sans-serif; direction: rtl; background:#f4f6f8; margin:0; }
+.container { max-width:900px; margin:40px auto; background:white; padding:30px; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.15);}
+h1 { color:#1a5bb8; text-align:center; margin-bottom:20px; }
+label { display:block; margin:10px 0; }
+input[type="text"] { width:100%; padding:10px; margin-top:10px; border-radius:6px; border:1px solid #ccc; }
+.quiz-question { margin-bottom:20px; padding:15px; border-radius:8px; display:none; transition: background 0.5s; }
+.correct { background:#d4edda; }
+.wrong { background:#f8d7da; }
+#timer, #totalTimer { font-weight:bold; text-align:center; margin:10px 0; font-size:18px; }
+#timer { padding:5px; border-radius:6px; color:white; }
+#progressBarContainer { width:100%; background:#ddd; border-radius:6px; margin-bottom:20px; height:20px; }
+#progressBar { width:0%; height:100%; background:#1a5bb8; border-radius:6px; transition: width 0.3s; }
+button { background:#1a5bb8; color:white; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; font-size:16px; margin-top:20px; display:block; }
+button:hover { background:#0f3f85; }
+#result { margin-top:20px; font-weight:bold; text-align:center; font-size:18px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>اختبار الأمن السيبراني - نهائي</h1>
+
+<label>أدخل اسمك الكامل:</label>
+<input type="text" id="fullname" placeholder="الاسم الكامل">
+
+<div id="totalTimer">الوقت الإجمالي المتبقي: 10:00</div>
+<div id="timer" style="background:#28a745;">الوقت المتبقي للسؤال: 60s</div>
+
+<div id="progressBarContainer">
+  <div id="progressBar"></div>
+</div>
+
+<form id="quizForm">
+<div id="questionsContainer"></div>
+
+<div id="result"></div>
+<button type="button" id="nextBtn" onclick="nextQuestion()">التالي</button>
+</form>
+
+<!-- أصوات -->
+<audio id="soundCorrect" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+<audio id="soundWrong" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"></audio>
+
+<script>
+// قائمة الأسئلة
+const allQuestions = [
+{q:"ما الهدف الأساسي من حماية الأنظمة الإلكترونية؟", options:["إبطاء الأجهزة","الحفاظ على سرية وسلامة المعلومات","إزالة الملفات غير مهمة"], answer:1},
+{q:"أي من التالي يمثل خطراً على الأمن الرقمي؟", options:["تحديث نظام التشغيل","برامج ضارة أو هجمات إلكترونية","نسخ احتياطية"], answer:1},
+{q:"ما المقصود بالمصادقة؟", options:["التأكد من هوية المستخدم","حماية البيانات عند النقل","حذف الملفات الغير مهمة"], answer:0},
+{q:"أي من الممارسات التالية تحافظ على قوة كلمة المرور؟", options:["استخدام كلمة قصيرة وسهلة","كلمة مرور معقدة وفريدة لكل حساب","كتابة كلمات المرور على ورقة"], answer:1},
+{q:"الغرض من التشفير هو:", options:["حماية البيانات","تحسين أداء النظام","تسريع الإنترنت"], answer:0},
+{q:"أي نوع من الهجمات يعتمد على إرسال رسائل مزيفة لخداع المستخدم؟", options:["التصيد الاحتيالي","النسخ الاحتياطي","تحديث التطبيقات"], answer:0},
+{q:"ما الهدف من النسخ الاحتياطي للبيانات؟", options:["حذف الملفات القديمة","الاحتفاظ بنسخة من البيانات","مشاركة كلمة المرور"], answer:1},
+{q:"كيف تحمي جهازك من الفيروسات؟", options:["فتح ملفات مجهولة","تثبيت برامج مكافحة الفيروسات","مشاركة كلمات المرور"], answer:1},
+{q:"ما هو الجدار الناري؟", options:["أداة حماية الشبكة","أداة لتسريع الإنترنت","أداة لتحرير الصور"], answer:0},
+{q:"الأمن السيبراني في المؤسسات يعني:", options:["حماية أنظمة وبيانات الشركة","زيادة المبيعات","تصميم موقع إلكتروني"], answer:0},
+];
+
+// اختيار 10 أسئلة عشوائية
+let selectedQuestions = allQuestions.sort(()=>0.5-Math.random()).slice(0,10);
+selectedQuestions.forEach(sq=>{
+    sq.options = sq.options.map((opt,i)=>({opt,i})).sort(()=>0.5-Math.random());
+});
+
+const container = document.getElementById("questionsContainer");
+selectedQuestions.forEach((item,index)=>{
+    const div = document.createElement("div");
+    div.className = "quiz-question";
+    div.id = "q"+index;
+    let html = `<label>${index+1}. ${item.q}</label>`;
+    item.options.forEach((o)=> {
+        html += `<input type="radio" name="q${index}" value="${o.i}"> ${o.opt}<br>`;
+    });
+    div.innerHTML = html;
+    container.appendChild(div);
+});
+
+let currentQuestion = 0;
+let score = 0;
+const questionTime = 60;
+let questionTimer, totalTimer;
+let totalTime = 10*60;
+
+const timerEl = document.getElementById("timer");
+const totalTimerEl = document.getElementById("totalTimer");
+const progressBar = document.getElementById("progressBar");
+const soundCorrect = document.getElementById("soundCorrect");
+const soundWrong = document.getElementById("soundWrong");
+
+function updateProgressBar(){ progressBar.style.width = ((currentQuestion)/selectedQuestions.length*100)+"%"; }
+function showQuestion(index){
+    document.querySelectorAll(".quiz-question").forEach((q,i)=>{
+        q.style.display = (i===index) ? "block" : "none";
+        q.classList.remove("correct","wrong");
+    });
+    updateProgressBar();
+    startQuestionTimer();
+}
+function startQuestionTimer(){
+    let timeLeft = questionTime;
+    setTimerColor(timeLeft);
+    timerEl.innerText = `الوقت المتبقي للسؤال: ${timeLeft}s`;
+    clearInterval(questionTimer);
+    questionTimer = setInterval(()=>{
+        timeLeft--;
+        setTimerColor(timeLeft);
+        timerEl.innerText = `الوقت المتبقي للسؤال: ${timeLeft}s`;
+        if(timeLeft<=0){ clearInterval(questionTimer); }
+    },1000);
+}
+function setTimerColor(time){
+    if(time>30) timerEl.style.background="#28a745";
+    else if(time>10) timerEl.style.background="#ffc107";
+    else timerEl.style.background="#dc3545";
+}
+function startTotalTimer(){
+    totalTimer = setInterval(()=>{
+        totalTime--;
+        let minutes = Math.floor(totalTime/60);
+        let seconds = totalTime%60;
+        totalTimerEl.innerText = `الوقت الإجمالي المتبقي: ${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        if(totalTime<=0){ clearInterval(totalTimer); clearInterval(questionTimer); finishQuiz(); }
+    },1000);
+}
+
+function nextQuestion(){
+    const fullname = document.getElementById("fullname").value.trim() || "المستخدم";
+    const selected = document.querySelector('input[name="q'+currentQuestion+'"]:checked');
+    if(!selected){ alert("الرجاء اختيار إجابة قبل المتابعة"); return; }
+
+    const correctIndex = selectedQuestions[currentQuestion].answer;
+    if(parseInt(selected.value)===correctIndex){ soundCorrect.play(); score++; } 
+    else { soundWrong.play(); }
+
+    if(currentQuestion === selectedQuestions.length-1){ finishQuiz(); return; }
+    currentQuestion++;
+    showQuestion(currentQuestion);
+}
+
+function finishQuiz(){
+    const fullname = document.getElementById("fullname").value.trim() || "المستخدم";
+    if(score === selectedQuestions.length){
+        const cid = "CYB-2026-"+Math.floor(Math.random()*9000+1000);
+        window.location.href = "generate.html?name="+encodeURIComponent(fullname)+"&cid="+cid;
+    } else {
+        document.getElementById("questionsContainer").style.display="none";
+        document.getElementById("nextBtn").style.display="none";
+        timerEl.style.display="none";
+        totalTimerEl.style.display="none";
+        progressBar.style.width="100%";
+        document.getElementById("result").innerHTML = `${fullname}، لم تجتاز الاختبار بنجاح. نتيجتك: ${score} من ${selectedQuestions.length}. حاول مرة أخرى!`;
+    }
+}
+
+showQuestion(currentQuestion);
+startTotalTimer();
+</script>
+</div>
+</body>
+</html>
