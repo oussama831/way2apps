@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔗 AND / OR (ET / OU)</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+  direction:rtl;
+}
+
+header{
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:45px 20px;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:25px;
+}
+
+.lesson{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom:20px;
+}
+
+h2{
+  color:#0f172a;
+}
+
+.code{
+  background:#0f172a;
+  color:#22c55e;
+  padding:15px;
+  border-radius:12px;
+  direction:ltr;
+  overflow:auto;
+  margin:15px 0;
+}
+
+.example{
+  background:#eef2ff;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+table th,
+table td{
+  border:1px solid #ddd;
+  padding:12px;
+  text-align:center;
+}
+
+table th{
+  background:#1e293b;
+  color:white;
+}
+
+.note{
+  background:#fef9c3;
+  padding:15px;
+  border-radius:12px;
+  margin-top:20px;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 20px;
+  background:#3b82f6;
+  color:white;
+  text-decoration:none;
+  border-radius:12px;
+}
+
+.btn:hover{
+  opacity:0.9;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🔗 AND / OR (ET / OU)</h1>
+  <p>تعلم الشروط المتعددة في Excel</p>
+</header>
+
+<div class="container">
+
+  <div class="lesson">
+
+    <h2>📘 ما هي AND ؟</h2>
+
+    <p>
+      دالة AND ترجع TRUE فقط إذا كانت جميع الشروط صحيحة.
+    </p>
+
+    <div class="code">
+=AND(A1&gt;10,B1&lt;5)
+    </div>
+
+    <div class="example">
+      ✅ إذا كان A1 أكبر من 10 و B1 أقل من 5 → TRUE
+      <br>
+      ❌ إذا شرط واحد غلط → FALSE
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>📘 ما هي OR ؟</h2>
+
+    <p>
+      دالة OR ترجع TRUE إذا كان شرط واحد فقط صحيح.
+    </p>
+
+    <div class="code">
+=OR(A1&gt;10,B1&lt;5)
+    </div>
+
+    <div class="example">
+      ✅ إذا تحقق شرط واحد فقط → TRUE
+      <br>
+      ❌ إذا جميع الشروط خاطئة → FALSE
+    </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>📊 مقارنة بين AND و OR</h2>
+
+    <table>
+
+      <tr>
+        <th>الحالة</th>
+        <th>AND</th>
+        <th>OR</th>
+      </tr>
+
+      <tr>
+        <td>كل الشروط صحيحة</td>
+        <td>TRUE</td>
+        <td>TRUE</td>
+      </tr>
+
+      <tr>
+        <td>شرط واحد صحيح</td>
+        <td>FALSE</td>
+        <td>TRUE</td>
+      </tr>
+
+      <tr>
+        <td>كل الشروط خاطئة</td>
+        <td>FALSE</td>
+        <td>FALSE</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>🧠 استعمال AND داخل IF</h2>
+
+    <div class="code">
+=IF(AND(A1&gt;=10,B1&gt;=10),"نجاح","راسب")
+    </div>
+
+    <p>
+      إذا كانت النقطتين أكبر أو تساوي 10 → نجاح
+    </p>
+
+  </div>
+
+  <div class="lesson">
+
+    <h2>🧠 استعمال OR داخل IF</h2>
+
+    <div class="code">
+=IF(OR(A1&gt;=10,B1&gt;=10),"نجاح","راسب")
+    </div>
+
+    <p>
+      إذا كانت نقطة واحدة فقط أكبر من 10 → نجاح
+    </p>
+
+    <div class="note">
+      💡 AND تحتاج جميع الشروط صحيحة.
+      <br><br>
+      💡 OR تحتاج شرط واحد فقط.
+    </div>
+
+    <a href="https://www.way2apps.com/ma/tools/excel/index.html" class="btn">
+      ⬅ الرجوع
+    </a>
+
+  </div>
+
+</div>
+
+</body>
+</html>
