@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2Apps - مقدمة الأمن السيبراني</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary:   #0a1628;
+  --accent:    #00c2a8;
+  --accent2:   #ff6b35;
+  --accent3:   #7c3aed;
+  --surface:   #ffffff;
+  --surface2:  #f0f4f8;
+  --text:      #0a1628;
+  --text-muted:#64748b;
+  --border:    #e2e8f0;
+  --card-bg:   #ffffff;
+  --shadow-h:  0 14px 40px rgba(0,194,168,0.18);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--surface2);
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  height: 64px;
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.navbar .logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+}
+.navbar .logo span { color: var(--accent); }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+.breadcrumb a {
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.2s;
+}
+.breadcrumb a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.breadcrumb span { color: #334155; }
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 80px 24px 90px;
+  background: linear-gradient(145deg, #0a1628 0%, #0d2545 60%, #0a1628 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 55% at 10% 50%, rgba(0,194,168,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 90% 30%, rgba(124,58,237,0.10) 0%, transparent 65%);
+}
+.hero-badge {
+  display: inline-block;
+  padding: 5px 16px;
+  background: rgba(0,194,168,0.15);
+  border: 1px solid rgba(0,194,168,0.35);
+  border-radius: 20px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  position: relative;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--accent), #38d9c0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  margin-top: 16px;
+  color: #94a3b8;
+  font-size: 1rem;
+  max-width: 540px;
+  margin-inline: auto;
+  position: relative;
+}
+
+/* ── PILLS NAV ── */
+.pills-wrap {
+  background: var(--primary);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 64px;
+  z-index: 200;
+  padding: 11px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pills-wrap::-webkit-scrollbar { display: none; }
+.pills {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  min-width: max-content;
+  margin: 0 auto;
+}
+.pill {
+  padding: 7px 16px;
+  background: rgba(255,255,255,0.06);
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-family: 'Cairo', sans-serif;
+}
+.pill:hover { color: #fff; background: rgba(0,194,168,0.18); border-color: var(--accent); }
+.pill.active { color: #fff; background: rgba(0,194,168,0.22); border-color: var(--accent); }
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── SECTION HEADING ── */
+.section { padding: 56px 0 0; }
+.section-header { margin-bottom: 28px; }
+.section-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-header h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  display: block;
+}
+.section-header p { color: var(--text-muted); margin-top: 8px; font-size: 0.9rem; }
+
+/* ── INTRO CARD ── */
+.intro-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  padding: 32px 36px;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.9;
+  box-shadow: 0 2px 16px rgba(10,22,40,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.intro-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+}
+.intro-card p { margin-bottom: 14px; }
+.intro-card p:last-child { margin-bottom: 0; }
+.highlight {
+  background: rgba(0,194,168,0.08);
+  border-right: 3px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── VIDEO ── */
+.video-wrap {
+  background: var(--card-bg);
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(10,22,40,0.10);
+  margin-top: 12px;
+}
+.video-wrap iframe {
+  width: 100%;
+  height: 440px;
+  display: block;
+  border: none;
+}
+
+/* ── GLOSSARY ── */
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+.term {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 22px 20px;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.term::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s;
+}
+.term:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-h);
+  border-color: var(--accent);
+}
+.term:hover::before { transform: scaleX(1); }
+.term h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  direction: ltr;
+  text-align: left;
+}
+.term p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── CTA BANNER ── */
+.cta-banner {
+  margin-top: 60px;
+  background: linear-gradient(135deg, #0a1628, #0d2545);
+  border-radius: 22px;
+  padding: 52px 36px;
+  text-align: center;
+  border: 1px solid rgba(0,194,168,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(0,194,168,0.08) 0%, transparent 70%);
+}
+.cta-banner h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 800;
+  color: #fff;
+  position: relative;
+  margin-bottom: 10px;
+}
+.cta-banner p { color: #94a3b8; font-size: 0.9rem; position: relative; margin-bottom: 26px; }
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 40px;
+  background: linear-gradient(135deg, var(--accent), #00a88f);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: 0.3s;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,194,168,0.35);
+  font-family: 'Cairo', sans-serif;
+}
+.cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 32px rgba(0,194,168,0.45); }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 22px;
+  background: var(--primary);
+  color: #475569;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 56px 20px 64px; }
+  .intro-card { padding: 22px 20px; }
+  .video-wrap iframe { height: 220px; }
+  .cta-banner { padding: 34px 18px; }
+  .breadcrumb span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="logo" href="../../../index.html">Way<span>2</span>Apps</a>
+  <div class="breadcrumb">
+    <a href="../index.html">الأمن السيبراني</a>
+    <span>/</span>
+    <a href="#" style="color:#fff;border-color:rgba(0,194,168,0.4);">مقدمة</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">📘 الدرس الأول</div>
+  <h1>مقدمة في<br><em>الأمن السيبراني</em></h1>
+  <p>تعلم أساسيات حماية الأنظمة والشبكات والبيانات من الهجمات الرقمية</p>
+</header>
+
+<!-- PILLS NAV -->
+<div class="pills-wrap">
+  <div class="pills">
+    <a class="pill" href="../index.html">🏠 الرئيسية</a>
+    <a class="pill active" href="index.html">📘 مقدمة</a>
+    <a class="pill" href="../threats/index.html">⚠️ التهديدات</a>
+    <a class="pill" href="../protection/index.html">🛡️ الحماية</a>
+    <a class="pill" href="../network/index.html">🌐 الشبكات</a>
+    <a class="pill" href="../pentest/index.html">💻 اختبار الاختراق</a>
+    <a class="pill" href="../awareness/index.html">📝 التوعية</a>
+    <a class="pill" href="../projects/index.html">🎮 المشاريع</a>
+    <a class="pill" href="../glossary/index.html">📖 Glossary</a>
+    <a class="pill" href="../test/index.html">🏆 الشهادة</a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="section-header">
+      <h2>📘 ما هو الأمن السيبراني؟</h2>
+    </div>
+    <div class="intro-card">
+      <p>
+        الأمن السيبراني هو مجموعة من الممارسات والتقنيات والأدوات التي تهدف إلى <strong>حماية الأنظمة والشبكات والبيانات</strong> من الهجمات الرقمية، الوصول غير المصرح به، أو التلف.
+      </p>
+      <div class="highlight">
+        🔐 كل جهاز متصل بالإنترنت هو هدف محتمل — الأمن السيبراني هو درعك الرقمي.
+      </div>
+      <p>
+        في عالم اليوم الرقمي، تزداد أهمية هذا المجال يوماً بعد يوم؛ سواء على مستوى الأفراد لحماية معلوماتهم الشخصية، أو على مستوى الشركات والمؤسسات لضمان استمرارية أعمالها وحماية بيانات عملائها.
+      </p>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section class="section">
+    <div class="section-header">
+      <h2>🎥 فيديو تعليمي</h2>
+      <p>شاهد مقدمة مبسطة في عالم الأمن السيبراني</p>
+    </div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="Cybersecurity Intro Video"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="section">
+    <div class="section-header">
+      <h2>📖 المصطلحات الأساسية</h2>
+      <p>تعرف على أهم مفاهيم الأمن السيبراني</p>
+    </div>
+    <div class="glossary-grid">
+
+      <div class="term">
+        <h4>Cybersecurity</h4>
+        <p>الأمن السيبراني — حماية الأنظمة والشبكات والبيانات من الهجمات الرقمية</p>
+      </div>
+
+      <div class="term">
+        <h4>Data Protection</h4>
+        <p>حماية البيانات — تأمين المعلومات الشخصية والسرية من السرقة أو الاختراق</p>
+      </div>
+
+      <div class="term">
+        <h4>Firewall</h4>
+        <p>جدار الحماية — نظام يراقب ويتحكم في حركة الشبكة بناءً على قواعد أمنية</p>
+      </div>
+
+      <div class="term">
+        <h4>Encryption</h4>
+        <p>التشفير — تحويل البيانات إلى صيغة غير مقروءة إلا بمفتاح خاص</p>
+      </div>
+
+      <div class="term">
+        <h4>Authentication</h4>
+        <p>المصادقة — التحقق من هوية المستخدم قبل السماح بالوصول</p>
+      </div>
+
+      <div class="term">
+        <h4>Vulnerability</h4>
+        <p>الثغرة الأمنية — نقطة ضعف في النظام يمكن للمهاجمين استغلالها</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <h2>🏆 جاهز لاختبار معلوماتك؟</h2>
+    <p>اجتز الاختبار واحصل على شهادتك الرقمية بكود QR</p>
+    <a class="cta-btn" href="../test/index.html">احصل على شهادتك ←</a>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Way2Apps — جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
