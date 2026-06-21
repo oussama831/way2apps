@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 Predictor — Way2Apps</title>
+<meta name="description" content="Build your World Cup 2026 bracket from the Round of 32 to the Final. Track the 48 nations chasing the trophy across the United States, Mexico and Canada.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+
+  :root{
+    --bg:#081711;
+    --bg-deep:#04100b;
+    --surface:#0f2419;
+    --surface-2:#13301f;
+    --line:rgba(216,173,90,0.16);
+    --line-strong:rgba(216,173,90,0.32);
+    --gold:#d8ad5a;
+    --gold-bright:#f0c878;
+    --text:#f3eee0;
+    --text-muted:#8fab98;
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-pill:999px;
+    --max:1180px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(216,173,90,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(34,94,63,0.35), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+    margin-bottom:18px;
+  }
+
+  .eyebrow .dot{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--gold-bright);
+    box-shadow:0 0 0 0 rgba(240,200,120,.6);
+    animation:pulse 2.2s infinite;
+  }
+
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(240,200,120,.55); }
+    70%{ box-shadow:0 0 0 9px rgba(240,200,120,0); }
+    100%{ box-shadow:0 0 0 0 rgba(240,200,120,0); }
+  }
+
+  /* ---------- HERO ---------- */
+
+  header.hero{
+    position:relative;
+    overflow:hidden;
+    padding:84px 20px 70px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+
+  .bracket-art{
+    position:absolute;
+    top:50%;
+    right:-40px;
+    transform:translateY(-50%);
+    width:min(46vw, 460px);
+    opacity:.5;
+    pointer-events:none;
+  }
+
+  .bracket-art path{
+    fill:none;
+    stroke:var(--gold);
+    stroke-width:1.4;
+    stroke-linecap:round;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:draw 2.4s ease forwards .2s;
+  }
+
+  .bracket-art circle{
+    fill:var(--gold-bright);
+    opacity:0;
+    animation:fadeIn .6s ease forwards 2.2s;
+    filter:drop-shadow(0 0 6px rgba(240,200,120,.8));
+  }
+
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fadeIn{ to{ opacity:1; } }
+
+  @media (prefers-reduced-motion: reduce){
+    .bracket-art path{ stroke-dashoffset:0; animation:none; }
+    .bracket-art circle{ opacity:1; animation:none; }
+    .eyebrow .dot{ animation:none; }
+  }
+
+  .hero-inner{ position:relative; z-index:1; max-width:760px; margin:0 auto; }
+
+  header.hero h1{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 92px);
+    letter-spacing:.03em;
+    line-height:.95;
+    margin:0 0 18px;
+    color:var(--text);
+  }
+
+  header.hero h1 span{ color:var(--gold-bright); }
+
+  header.hero p.lede{
+    font-size:18px;
+    line-height:1.6;
+    color:var(--text-muted);
+    max-width:540px;
+    margin:0 auto 34px;
+  }
+
+  /* ---------- BUTTONS ---------- */
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:16px 32px;
+    border-radius:var(--radius-pill);
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+
+  .btn svg{ width:16px; height:16px; transition:transform .25s ease; }
+  .btn:hover svg{ transform:translateX(3px); }
+
+  .btn-primary{
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color:var(--bg-deep);
+    box-shadow:0 10px 30px -10px rgba(216,173,90,.55);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 36px -10px rgba(216,173,90,.7); }
+
+  .btn-outline{
+    background:transparent;
+    color:var(--gold-bright);
+    border:1px solid var(--line-strong);
+  }
+  .btn-outline:hover{ background:rgba(216,173,90,.08); border-color:var(--gold); transform:translateY(-2px); }
+
+  /* ---------- LAYOUT ---------- */
+
+  .container{ max-width:var(--max); margin:0 auto; padding:0 20px; }
+
+  section{ padding:70px 0; }
+
+  .section-head{ text-align:center; max-width:600px; margin:0 auto 40px; }
+
+  .section-head .kicker{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:block;
+    margin-bottom:10px;
+  }
+
+  .section-head h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:clamp(30px, 4vw, 42px);
+    letter-spacing:.02em;
+    margin:0 0 12px;
+  }
+
+  .section-head p{ color:var(--text-muted); line-height:1.6; margin:0; }
+
+  /* ---------- PREDICTOR CARD ---------- */
+
+  .predictor-card{
+    background:linear-gradient(160deg, var(--surface), var(--surface-2));
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:48px;
+    display:flex;
+    align-items:center;
+    gap:40px;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+
+  .predictor-card .icon{
+    flex:0 0 auto;
+    width:64px; height:64px;
+    border-radius:16px;
+    background:rgba(216,173,90,.1);
+    border:1px solid var(--line-strong);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .predictor-card .icon svg{ width:30px; height:30px; stroke:var(--gold-bright); }
+
+  .predictor-card .copy{ flex:1 1 320px; }
+
+  .predictor-card h3{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:30px;
+    letter-spacing:.02em;
+    margin:0 0 8px;
+  }
+
+  .predictor-card p{ color:var(--text-muted); margin:0; line-height:1.6; max-width:46ch; }
+
+  /* ---------- TEAMS ---------- */
+
+  .teams{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(170px,1fr));
+    gap:16px;
+  }
+
+  .team{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:22px 18px;
+    text-decoration:none;
+    color:var(--text);
+    text-align:center;
+    transition:transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+
+  .team:hover{
+    transform:translateY(-4px);
+    border-color:var(--line-strong);
+    background:var(--surface-2);
+  }
+
+  .team .host-tag{
+    position:absolute;
+    top:10px; right:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--bg-deep);
+    background:var(--gold-bright);
+    padding:3px 7px;
+    border-radius:6px;
+    font-weight:700;
+  }
+
+  .team .debut-tag{
+    position:absolute;
+    top:10px; left:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+    background:transparent;
+    border:1px solid var(--line-strong);
+    padding:3px 7px;
+    border-radius:6px;
+    font-weight:700;
+  }
+
+  .conf-block{ margin-bottom:40px; }
+  .conf-block:last-child{ margin-bottom:0; }
+
+  .conf-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:16px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .conf-head h3{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:20px;
+    letter-spacing:.03em;
+    margin:0;
+    color:var(--gold-bright);
+  }
+
+  .conf-head span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+
+  .flag{
+    width:64px;
+    height:42px;
+    object-fit:cover;
+    border-radius:7px;
+    border:1px solid var(--line-strong);
+    margin-bottom:12px;
+  }
+
+  .team h3{
+    margin:0;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 20px;
+    text-align:center;
+  }
+
+  footer .brand{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:20px;
+    letter-spacing:.08em;
+    color:var(--gold-bright);
+  }
+
+  footer p{
+    color:var(--text-muted);
+    font-size:13px;
+    line-height:1.7;
+    margin:8px 0 0;
+  }
+
+  @media (max-width:640px){
+    header.hero{ padding:64px 16px 52px; }
+    .predictor-card{ padding:32px 24px; flex-direction:column; text-align:center; }
+    .predictor-card p{ margin:0 auto; }
+    section{ padding:52px 0; }
+  }
+
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+
+  <svg class="bracket-art" viewBox="0 0 340 410" aria-hidden="true">
+    <path d="M0,30 H60 V55 H140"></path>
+    <path d="M0,80 H60 V55"></path>
+    <path d="M0,130 H60 V155 H140"></path>
+    <path d="M0,180 H60 V155"></path>
+    <path d="M0,230 H60 V255 H140"></path>
+    <path d="M0,280 H60 V255"></path>
+    <path d="M0,330 H60 V355 H140"></path>
+    <path d="M0,380 H60 V355"></path>
+    <path d="M140,55 V105 H220"></path>
+    <path d="M140,155 V105"></path>
+    <path d="M140,255 V305 H220"></path>
+    <path d="M140,355 V305"></path>
+    <path d="M220,105 V205 H320"></path>
+    <path d="M220,305 V205"></path>
+    <circle cx="324" cy="205" r="5"></circle>
+  </svg>
+
+  <div class="hero-inner">
+    <p class="eyebrow"><span class="dot"></span> Group Stage Live &middot; USA &middot; Mexico &middot; Canada</p>
+    <h1>WORLD CUP <span>2026</span></h1>
+    <p class="lede">Forty-eight nations, sixteen host cities, one trophy. Build your bracket from the Round of 16 through to the Final and follow every team's road with Way2Apps.</p>
+    <a class="btn btn-primary" href="predictor.html">
+      Build My Bracket
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
+
+<div class="container">
+
+  <section id="predictor">
+    <div class="predictor-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6.3 6.3l2 2M15.7 15.7l2 2M6.3 17.7l2-2M15.7 8.3l2-2"/></svg>
+      </div>
+      <div class="copy">
+        <h3>The World Cup Predictor</h3>
+        <p>Pick your winners at every stage, from the Round of 16 all the way to the Final, and see how your bracket stacks up as the tournament unfolds.</p>
+      </div>
+      <a class="btn btn-outline" href="predictor.html">
+        Open Predictor
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section id="teams">
+    <div class="section-head">
+      <span class="kicker">Nations</span>
+      <h2>All 48 Teams</h2>
+      <p>Every nation that qualified for the 2026 FIFA World Cup, grouped by confederation. Tap any flag for squad notes and history.</p>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>CONCACAF</h3><span>6 Teams &middot; North &amp; Central America</span></div>
+      <div class="teams">
+        <a class="team" href="teams/usa.html"><span class="host-tag">Host</span><img class="flag" src="https://flagcdn.com/w320/us.png" alt="United States flag"><h3>United States</h3></a>
+        <a class="team" href="teams/mexico.html"><span class="host-tag">Host</span><img class="flag" src="https://flagcdn.com/w320/mx.png" alt="Mexico flag"><h3>Mexico</h3></a>
+        <a class="team" href="teams/canada.html"><span class="host-tag">Host</span><img class="flag" src="https://flagcdn.com/w320/ca.png" alt="Canada flag"><h3>Canada</h3></a>
+        <a class="team" href="teams/curacao.html"><span class="debut-tag">New</span><img class="flag" src="https://flagcdn.com/w320/cw.png" alt="Curaçao flag"><h3>Cura&ccedil;ao</h3></a>
+        <a class="team" href="teams/haiti.html"><img class="flag" src="https://flagcdn.com/w320/ht.png" alt="Haiti flag"><h3>Haiti</h3></a>
+        <a class="team" href="teams/panama.html"><img class="flag" src="https://flagcdn.com/w320/pa.png" alt="Panama flag"><h3>Panama</h3></a>
+      </div>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>CONMEBOL</h3><span>6 Teams &middot; South America</span></div>
+      <div class="teams">
+        <a class="team" href="teams/argentina.html"><img class="flag" src="https://flagcdn.com/w320/ar.png" alt="Argentina flag"><h3>Argentina</h3></a>
+        <a class="team" href="teams/brazil.html"><img class="flag" src="https://flagcdn.com/w320/br.png" alt="Brazil flag"><h3>Brazil</h3></a>
+        <a class="team" href="teams/colombia.html"><img class="flag" src="https://flagcdn.com/w320/co.png" alt="Colombia flag"><h3>Colombia</h3></a>
+        <a class="team" href="teams/ecuador.html"><img class="flag" src="https://flagcdn.com/w320/ec.png" alt="Ecuador flag"><h3>Ecuador</h3></a>
+        <a class="team" href="teams/paraguay.html"><img class="flag" src="https://flagcdn.com/w320/py.png" alt="Paraguay flag"><h3>Paraguay</h3></a>
+        <a class="team" href="teams/uruguay.html"><img class="flag" src="https://flagcdn.com/w320/uy.png" alt="Uruguay flag"><h3>Uruguay</h3></a>
+      </div>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>UEFA</h3><span>16 Teams &middot; Europe</span></div>
+      <div class="teams">
+        <a class="team" href="teams/spain.html"><img class="flag" src="https://flagcdn.com/w320/es.png" alt="Spain flag"><h3>Spain</h3></a>
+        <a class="team" href="teams/france.html"><img class="flag" src="https://flagcdn.com/w320/fr.png" alt="France flag"><h3>France</h3></a>
+        <a class="team" href="teams/england.html"><img class="flag" src="https://flagcdn.com/w320/gb-eng.png" alt="England flag"><h3>England</h3></a>
+        <a class="team" href="teams/portugal.html"><img class="flag" src="https://flagcdn.com/w320/pt.png" alt="Portugal flag"><h3>Portugal</h3></a>
+        <a class="team" href="teams/germany.html"><img class="flag" src="https://flagcdn.com/w320/de.png" alt="Germany flag"><h3>Germany</h3></a>
+        <a class="team" href="teams/netherlands.html"><img class="flag" src="https://flagcdn.com/w320/nl.png" alt="Netherlands flag"><h3>Netherlands</h3></a>
+        <a class="team" href="teams/belgium.html"><img class="flag" src="https://flagcdn.com/w320/be.png" alt="Belgium flag"><h3>Belgium</h3></a>
+        <a class="team" href="teams/croatia.html"><img class="flag" src="https://flagcdn.com/w320/hr.png" alt="Croatia flag"><h3>Croatia</h3></a>
+        <a class="team" href="teams/switzerland.html"><img class="flag" src="https://flagcdn.com/w320/ch.png" alt="Switzerland flag"><h3>Switzerland</h3></a>
+        <a class="team" href="teams/austria.html"><img class="flag" src="https://flagcdn.com/w320/at.png" alt="Austria flag"><h3>Austria</h3></a>
+        <a class="team" href="teams/norway.html"><img class="flag" src="https://flagcdn.com/w320/no.png" alt="Norway flag"><h3>Norway</h3></a>
+        <a class="team" href="teams/scotland.html"><img class="flag" src="https://flagcdn.com/w320/gb-sct.png" alt="Scotland flag"><h3>Scotland</h3></a>
+        <a class="team" href="teams/sweden.html"><img class="flag" src="https://flagcdn.com/w320/se.png" alt="Sweden flag"><h3>Sweden</h3></a>
+        <a class="team" href="teams/turkiye.html"><img class="flag" src="https://flagcdn.com/w320/tr.png" alt="Türkiye flag"><h3>T&uuml;rkiye</h3></a>
+        <a class="team" href="teams/bosnia.html"><img class="flag" src="https://flagcdn.com/w320/ba.png" alt="Bosnia and Herzegovina flag"><h3>Bosnia &amp; Herzegovina</h3></a>
+        <a class="team" href="teams/czechia.html"><img class="flag" src="https://flagcdn.com/w320/cz.png" alt="Czechia flag"><h3>Czechia</h3></a>
+      </div>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>CAF</h3><span>10 Teams &middot; Africa</span></div>
+      <div class="teams">
+        <a class="team" href="teams/morocco.html"><img class="flag" src="https://flagcdn.com/w320/ma.png" alt="Morocco flag"><h3>Morocco</h3></a>
+        <a class="team" href="teams/algeria.html"><img class="flag" src="https://flagcdn.com/w320/dz.png" alt="Algeria flag"><h3>Algeria</h3></a>
+        <a class="team" href="teams/cabo-verde.html"><span class="debut-tag">New</span><img class="flag" src="https://flagcdn.com/w320/cv.png" alt="Cabo Verde flag"><h3>Cabo Verde</h3></a>
+        <a class="team" href="teams/ivory-coast.html"><img class="flag" src="https://flagcdn.com/w320/ci.png" alt="Côte d'Ivoire flag"><h3>C&ocirc;te d'Ivoire</h3></a>
+        <a class="team" href="teams/egypt.html"><img class="flag" src="https://flagcdn.com/w320/eg.png" alt="Egypt flag"><h3>Egypt</h3></a>
+        <a class="team" href="teams/ghana.html"><img class="flag" src="https://flagcdn.com/w320/gh.png" alt="Ghana flag"><h3>Ghana</h3></a>
+        <a class="team" href="teams/senegal.html"><img class="flag" src="https://flagcdn.com/w320/sn.png" alt="Senegal flag"><h3>Senegal</h3></a>
+        <a class="team" href="teams/south-africa.html"><img class="flag" src="https://flagcdn.com/w320/za.png" alt="South Africa flag"><h3>South Africa</h3></a>
+        <a class="team" href="teams/tunisia.html"><img class="flag" src="https://flagcdn.com/w320/tn.png" alt="Tunisia flag"><h3>Tunisia</h3></a>
+        <a class="team" href="teams/dr-congo.html"><img class="flag" src="https://flagcdn.com/w320/cd.png" alt="DR Congo flag"><h3>DR Congo</h3></a>
+      </div>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>AFC</h3><span>9 Teams &middot; Asia</span></div>
+      <div class="teams">
+        <a class="team" href="teams/japan.html"><img class="flag" src="https://flagcdn.com/w320/jp.png" alt="Japan flag"><h3>Japan</h3></a>
+        <a class="team" href="teams/australia.html"><img class="flag" src="https://flagcdn.com/w320/au.png" alt="Australia flag"><h3>Australia</h3></a>
+        <a class="team" href="teams/iran.html"><img class="flag" src="https://flagcdn.com/w320/ir.png" alt="Iran flag"><h3>Iran</h3></a>
+        <a class="team" href="teams/jordan.html"><span class="debut-tag">New</span><img class="flag" src="https://flagcdn.com/w320/jo.png" alt="Jordan flag"><h3>Jordan</h3></a>
+        <a class="team" href="teams/south-korea.html"><img class="flag" src="https://flagcdn.com/w320/kr.png" alt="South Korea flag"><h3>South Korea</h3></a>
+        <a class="team" href="teams/qatar.html"><img class="flag" src="https://flagcdn.com/w320/qa.png" alt="Qatar flag"><h3>Qatar</h3></a>
+        <a class="team" href="teams/saudi-arabia.html"><img class="flag" src="https://flagcdn.com/w320/sa.png" alt="Saudi Arabia flag"><h3>Saudi Arabia</h3></a>
+        <a class="team" href="teams/uzbekistan.html"><span class="debut-tag">New</span><img class="flag" src="https://flagcdn.com/w320/uz.png" alt="Uzbekistan flag"><h3>Uzbekistan</h3></a>
+        <a class="team" href="teams/iraq.html"><img class="flag" src="https://flagcdn.com/w320/iq.png" alt="Iraq flag"><h3>Iraq</h3></a>
+      </div>
+    </div>
+
+    <div class="conf-block">
+      <div class="conf-head"><h3>OFC</h3><span>1 Team &middot; Oceania</span></div>
+      <div class="teams">
+        <a class="team" href="teams/new-zealand.html"><img class="flag" src="https://flagcdn.com/w320/nz.png" alt="New Zealand flag"><h3>New Zealand</h3></a>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  <div class="brand">WAY2APPS</div>
+  <p>World Cup 2026 Predictor &amp; Team Hub &middot; Independent fan project, not affiliated with FIFA.</p>
+</footer>
+
+</body>
+</html>
