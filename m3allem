@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M3allem — خصك معلم؟</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Manrope',sans-serif; background:#0a1a0f; color:#e8f0e9; direction:rtl; }
+:root {
+  --gold:#c9a84c; --gold-light:#e8c96a;
+  --gd:#0a1a0f; --gm:#122018; --gc:#162b1e;
+  --tm:#7a9e82; --r:12px;
+}
+
+nav { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; border-bottom:0.5px solid #1e3a26; background:#0a1a0fee; position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--gold); letter-spacing:2px; }
+.nav-sub { font-size:11px; color:var(--tm); margin-top:-4px; }
+.nav-links { display:flex; gap:1.5rem; align-items:center; }
+.nav-link { font-size:13px; color:var(--tm); text-decoration:none; cursor:pointer; transition:color 0.15s; }
+.nav-link:hover { color:var(--gold); }
+.nav-badge { background:var(--gold); color:#0a1a0f; font-size:11px; font-weight:700; padding:5px 14px; border-radius:20px; cursor:pointer; }
+
+.hero { text-align:center; padding:5rem 2rem 3.5rem; background:#0a1a0f; }
+.hero-eyebrow { display:inline-block; background:#1e3a26; color:var(--gold); font-size:11px; font-weight:700; letter-spacing:3px; padding:6px 18px; border-radius:20px; margin-bottom:1.5rem; border:0.5px solid #2a4a32; text-transform:uppercase; }
+.hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,12vw,110px); color:#e8f0e9; line-height:0.92; letter-spacing:2px; }
+.hero h1 span { color:var(--gold); }
+.hero-sub { font-size:16px; color:var(--tm); max-width:520px; margin:1.5rem auto 0; line-height:1.75; }
+.hero-cta { margin-top:2.5rem; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-primary { background:var(--gold); color:#0a1a0f; font-weight:700; font-size:14px; padding:13px 30px; border-radius:8px; border:none; cursor:pointer; font-family:'Manrope',sans-serif; transition:background 0.2s; }
+.btn-primary:hover { background:var(--gold-light); }
+.btn-secondary { background:transparent; color:#e8f0e9; font-size:14px; font-weight:500; padding:13px 30px; border-radius:8px; border:0.5px solid #2a4a32; cursor:pointer; font-family:'Manrope',sans-serif; transition:all 0.2s; }
+.btn-secondary:hover { border-color:var(--gold); color:var(--gold); }
+
+.stats { display:flex; justify-content:center; gap:3rem; padding:1.75rem; flex-wrap:wrap; border-bottom:0.5px solid #1e3a26; border-top:0.5px solid #1e3a26; background:#0c1f12; }
+.stat-item { text-align:center; }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:38px; color:var(--gold); }
+.stat-label { font-size:12px; color:var(--tm); margin-top:2px; }
+
+.section { padding:4rem 2rem; max-width:1000px; margin:0 auto; }
+.section-title { font-family:'Bebas Neue',sans-serif; font-size:38px; color:#e8f0e9; margin-bottom:0.25rem; letter-spacing:1px; }
+.section-sub { font-size:13px; color:var(--tm); margin-bottom:2rem; }
+
+.filter-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+.ftab { background:var(--gc); border:0.5px solid #1e3a26; border-radius:20px; padding:7px 18px; font-size:13px; color:var(--tm); cursor:pointer; transition:all 0.15s; font-family:'Manrope',sans-serif; }
+.ftab.active, .ftab:hover { background:var(--gold); color:#0a1a0f; border-color:var(--gold); font-weight:700; }
+
+.services-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:10px; }
+.service-card { background:var(--gc); border:0.5px solid #1e3a26; border-radius:var(--r); padding:1.2rem 1rem; text-align:center; cursor:pointer; transition:border-color 0.15s, transform 0.15s; }
+.service-card:hover { border-color:var(--gold); transform:translateY(-2px); }
+.service-card.hidden { display:none; }
+.svc-icon { font-size:28px; margin-bottom:8px; }
+.svc-name { font-size:13px; font-weight:500; color:#e8f0e9; }
+.svc-desc { font-size:11px; color:var(--tm); margin-top:4px; }
+
+.cities-section { padding:4rem 2rem; background:var(--gm); }
+.cities-inner { max-width:1000px; margin:0 auto; }
+.cities-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(175px,1fr)); gap:10px; margin-top:1.5rem; }
+.city-card { background:var(--gc); border:0.5px solid #1e3a26; border-radius:var(--r); padding:1.1rem 1.1rem; display:flex; align-items:center; gap:10px; }
+.city-card.soon { opacity:0.55; }
+.city-dot { width:10px; height:10px; border-radius:50%; background:#4ade80; flex-shrink:0; }
+.city-dot.soon { background:#2a4a32; }
+.city-name { font-size:14px; font-weight:500; color:#e8f0e9; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.city-status { font-size:11px; color:var(--tm); margin-top:2px; }
+.city-badge { font-size:10px; font-weight:700; background:#1e3a26; color:var(--gold); border:0.5px solid #2a4a32; padding:2px 8px; border-radius:20px; white-space:nowrap; }
+
+.craftsmen-section { padding:4rem 2rem; }
+.craftsmen-inner { max-width:1000px; margin:0 auto; }
+.craftsmen-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr)); gap:12px; margin-top:1.5rem; }
+.craftsman-card { background:var(--gc); border:0.5px solid #1e3a26; border-radius:var(--r); padding:1.2rem; display:flex; flex-direction:column; gap:10px; }
+.craftsman-header { display:flex; align-items:center; gap:10px; }
+.craftsman-avatar { width:42px; height:42px; border-radius:50%; background:#1e3a26; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:var(--gold); flex-shrink:0; }
+.craftsman-name { font-size:14px; font-weight:500; color:#e8f0e9; }
+.craftsman-trade { font-size:12px; color:var(--tm); }
+.craftsman-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.badge { font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#1e3a26; color:var(--gold); border:0.5px solid #2a4a32; }
+.badge.zone { color:var(--tm); }
+.wa-btn { display:flex; align-items:center; justify-content:center; gap:7px; background:#1a3a22; border:0.5px solid #25a244; color:#4ade80; font-size:12px; font-weight:600; padding:9px; border-radius:8px; cursor:pointer; text-decoration:none; width:100%; font-family:'Manrope',sans-serif; transition:background 0.2s; }
+.wa-btn:hover { background:#1e4a2a; }
+.wa-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; flex-shrink:0; }
+
+.how-section { padding:4rem 2rem; background:var(--gm); }
+.how-inner { max-width:1000px; margin:0 auto; }
+.how-steps { display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:14px; margin-top:1.5rem; }
+.step-card { background:var(--gc); border:0.5px solid #1e3a26; border-radius:var(--r); padding:1.5rem; }
+.step-num { font-family:'Bebas Neue',sans-serif; font-size:48px; color:#1e3a26; line-height:1; margin-bottom:10px; }
+.step-title { font-size:15px; font-weight:500; color:#e8f0e9; margin-bottom:6px; }
+.step-desc { font-size:13px; color:var(--tm); line-height:1.65; }
+
+.waitlist-section { padding:6rem 2rem; text-align:center; background:#0a1a0f; }
+.waitlist-inner { max-width:480px; margin:0 auto; }
+.waitlist-inner h2 { font-family:'Bebas Neue',sans-serif; font-size:46px; color:#e8f0e9; margin-bottom:0.5rem; }
+.waitlist-inner h2 span { color:var(--gold); }
+.waitlist-inner p { font-size:14px; color:var(--tm); margin-bottom:2rem; line-height:1.75; }
+.form-tabs { display:flex; background:var(--gc); border-radius:8px; padding:4px; gap:4px; border:0.5px solid #1e3a26; margin-bottom:0.75rem; }
+.form-tab { flex:1; padding:9px; border-radius:6px; border:none; font-size:13px; font-weight:500; cursor:pointer; background:transparent; color:var(--tm); transition:all 0.2s; font-family:'Manrope',sans-serif; }
+.form-tab.active { background:var(--gold); color:#0a1a0f; }
+.form-fields { display:flex; flex-direction:column; gap:10px; }
+.form-input, .form-select { background:var(--gc); border:0.5px solid #2a4a32; border-radius:8px; padding:13px 16px; font-size:14px; color:#e8f0e9; font-family:'Manrope',sans-serif; width:100%; outline:none; transition:border-color 0.2s; }
+.form-input:focus, .form-select:focus { border-color:var(--gold); }
+.form-input::placeholder { color:var(--tm); }
+.form-select { appearance:none; cursor:pointer; }
+.form-select option { background:#162b1e; }
+.extra-fields { display:none; flex-direction:column; gap:10px; }
+.extra-fields.show { display:flex; }
+
+footer { padding:2rem; text-align:center; border-top:0.5px solid #1e3a26; background:#0a1a0f; }
+.footer-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--gold); }
+.footer-text { font-size:12px; color:var(--tm); margin-top:6px; }
+.footer-link { color:var(--gold); text-decoration:none; }
+
+@media(max-width:600px){
+  .nav-links { display:none; }
+  .hero h1 { font-size:64px; }
+  .stats { gap:1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-logo">M3ALLEM</div>
+    <div class="nav-sub">by Way2Apps</div>
+  </div>
+  <div class="nav-links">
+    <a class="nav-link" onclick="document.getElementById('services-sec').scrollIntoView({behavior:'smooth'})">الخدمات</a>
+    <a class="nav-link" onclick="document.getElementById('cities-sec').scrollIntoView({behavior:'smooth'})">المدن</a>
+    <a class="nav-link" onclick="document.getElementById('craftsmen-sec').scrollIntoView({behavior:'smooth'})">المعلمين</a>
+  </div>
+  <div class="nav-badge" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">سجل الآن</div>
+</nav>
+
+<section class="hero">
+  <span class="hero-eyebrow">🇲🇦 خدمات المنزل — المغرب</span>
+  <h1>خصك<br><span>معلم؟</span></h1>
+  <p class="hero-sub">ربط مباشر مع أفضل الحرفيين في منطقتك — صباغ، سباك، كهربائي، نجار وأكثر. تواصل عبر واتساب فالحال، بلا وسيط.</p>
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">سجل اهتمامك</button>
+    <button class="btn-secondary" onclick="document.getElementById('craftsmen-sec').scrollIntoView({behavior:'smooth'})">شوف الحرفيين</button>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">نوع خدمة</div></div>
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">عمولة — مباشر</div></div>
+  <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">مدينة مغربية</div></div>
+  <div class="stat-item"><div class="stat-num">واتساب</div><div class="stat-label">تواصل فوري</div></div>
+</div>
+
+<section class="section" id="services-sec">
+  <div class="section-title">الخدمات</div>
+  <div class="section-sub">اختار الفئة لي كتهمك</div>
+  <div class="filter-tabs">
+    <span class="ftab active" onclick="filterServices('all',this)">الكل</span>
+    <span class="ftab" onclick="filterServices('bina',this)">بناء وإصلاح</span>
+    <span class="ftab" onclick="filterServices('kahrab',this)">كهرباء وتقنية</span>
+    <span class="ftab" onclick="filterServices('tbkh',this)">تشطيب وديكور</span>
+    <span class="ftab" onclick="filterServices('ndhafa',this)">نظافة ومتنوع</span>
+  </div>
+  <div class="services-grid" id="services-grid">
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🎨</div><div class="svc-name">صباغة</div><div class="svc-desc">داخلي وخارجي</div></div>
+    <div class="service-card" data-cat="bina"><div class="svc-icon">🔧</div><div class="svc-name">سباكة</div><div class="svc-desc">تسربات وتركيب</div></div>
+    <div class="service-card" data-cat="kahrab"><div class="svc-icon">⚡</div><div class="svc-name">كهرباء</div><div class="svc-desc">أعطال وتركيب</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🪵</div><div class="svc-name">نجارة</div><div class="svc-desc">أبواب وأثاث</div></div>
+    <div class="service-card" data-cat="kahrab"><div class="svc-icon">❄️</div><div class="svc-name">كلماتيسة</div><div class="svc-desc">تركيب وصيانة</div></div>
+    <div class="service-card" data-cat="bina"><div class="svc-icon">🧱</div><div class="svc-name">بناء وترميم</div><div class="svc-desc">توسعة وإصلاح</div></div>
+    <div class="service-card" data-cat="bina"><div class="svc-icon">🔒</div><div class="svc-name">قفلاتي</div><div class="svc-desc">أقفال وأبواب</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🛁</div><div class="svc-name">زليج وكارو</div><div class="svc-desc">تركيب وإصلاح</div></div>
+    <div class="service-card" data-cat="kahrab"><div class="svc-icon">📡</div><div class="svc-name">دش وأنتيني</div><div class="svc-desc">تركيب وتوجيه</div></div>
+    <div class="service-card" data-cat="kahrab"><div class="svc-icon">🌐</div><div class="svc-name">WiFi وشبكات</div><div class="svc-desc">تركيب وإعداد</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🪟</div><div class="svc-name">فيتراج</div><div class="svc-desc">نوافذ وبلكونات</div></div>
+    <div class="service-card" data-cat="ndhafa"><div class="svc-icon">🧹</div><div class="svc-name">تنظيف</div><div class="svc-desc">منازل ومكاتب</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🛋️</div><div class="svc-name">تنجيد</div><div class="svc-desc">أرائك وكراسي</div></div>
+    <div class="service-card" data-cat="bina"><div class="svc-icon">🚿</div><div class="svc-name">حمام وبيوت ما</div><div class="svc-desc">تجديد كامل</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🏠</div><div class="svc-name">جبس وتشطيب</div><div class="svc-desc">سقف وجدران</div></div>
+    <div class="service-card" data-cat="tbkh"><div class="svc-icon">🪞</div><div class="svc-name">مطبخ وكبلا</div><div class="svc-desc">تركيب وتفصيل</div></div>
+    <div class="service-card" data-cat="bina"><div class="svc-icon">🔨</div><div class="svc-name">حداد</div><div class="svc-desc">مشبك وحواجز</div></div>
+    <div class="service-card" data-cat="ndhafa"><div class="svc-icon">🌿</div><div class="svc-name">تهيئة حديقة</div><div class="svc-desc">تصميم وصيانة</div></div>
+    <div class="service-card" data-cat="kahrab"><div class="svc-icon">📷</div><div class="svc-name">كاميرات مراقبة</div><div class="svc-desc">تركيب وبرمجة</div></div>
+    <div class="service-card" data-cat="ndhafa"><div class="svc-icon">🚛</div><div class="svc-name">نقل أثاث</div><div class="svc-desc">تغليف ونقل</div></div>
+  </div>
+</section>
+
+<section class="cities-section" id="cities-sec">
+  <div class="cities-inner">
+    <div class="section-title">المدن المتاحة</div>
+    <div class="section-sub">نبدا بالرباط الكبير ونتوسعو على المغرب كامل</div>
+    <div class="cities-grid">
+      <div class="city-card"><div class="city-dot"></div><div><div class="city-name">الرباط</div><div class="city-status">متاحة عند الإطلاق</div></div></div>
+      <div class="city-card"><div class="city-dot"></div><div><div class="city-name">سلا</div><div class="city-status">متاحة عند الإطلاق</div></div></div>
+      <div class="city-card"><div class="city-dot"></div><div><div class="city-name">تمارة</div><div class="city-status">متاحة عند الإطلاق</div></div></div>
+      <div class="city-card"><div class="city-dot"></div><div><div class="city-name">الصخيرات</div><div class="city-status">متاحة عند الإطلاق</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">الدار البيضاء <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 2</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">طنجة <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 2</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">مراكش <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 2</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">فاس <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">مكناس <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">أكادير <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">وجدة <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">العرائش <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">القنيطرة <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">تطوان <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">الجديدة <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+      <div class="city-card soon"><div class="city-dot soon"></div><div><div class="city-name">بني ملال <span class="city-badge">قريباً</span></div><div class="city-status">المرحلة 3</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="craftsmen-section" id="craftsmen-sec">
+  <div class="craftsmen-inner">
+    <div class="section-title">معلمين مسجلين</div>
+    <div class="section-sub">نموذج — الحرفيين لي غادي يكونو في المنصة</div>
+    <div class="craftsmen-grid">
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">KA</div><div><div class="craftsman-name">خالد الأمين</div><div class="craftsman-trade">صباغ محترف</div></div></div><div class="craftsman-badges"><span class="badge">صباغة</span><span class="badge zone">الرباط</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">MY</div><div><div class="craftsman-name">محمد اليوسفي</div><div class="craftsman-trade">سباك معتمد</div></div></div><div class="craftsman-badges"><span class="badge">سباكة</span><span class="badge zone">سلا</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">HB</div><div><div class="craftsman-name">حسن البوزيدي</div><div class="craftsman-trade">كهربائي</div></div></div><div class="craftsman-badges"><span class="badge">كهرباء</span><span class="badge zone">تمارة</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">OB</div><div><div class="craftsman-name">عمر البراق</div><div class="craftsman-trade">نجار</div></div></div><div class="craftsman-badges"><span class="badge">نجارة</span><span class="badge zone">الرباط</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">YM</div><div><div class="craftsman-name">يوسف المسعدي</div><div class="craftsman-trade">كلماتيسة</div></div></div><div class="craftsman-badges"><span class="badge">كلماتيسة</span><span class="badge zone">سلا</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">AE</div><div><div class="craftsman-name">أنس العلوي</div><div class="craftsman-trade">شبكات وWiFi</div></div></div><div class="craftsman-badges"><span class="badge">شبكات</span><span class="badge zone">تمارة</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">RN</div><div><div class="craftsman-name">رشيد النجار</div><div class="craftsman-trade">حداد وفيتراج</div></div></div><div class="craftsman-badges"><span class="badge">حداد</span><span class="badge zone">الصخيرات</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+      <div class="craftsman-card"><div class="craftsman-header"><div class="craftsman-avatar">FB</div><div><div class="craftsman-name">فؤاد البكري</div><div class="craftsman-trade">جبس وتشطيب</div></div></div><div class="craftsman-badges"><span class="badge">جبس</span><span class="badge zone">الرباط</span></div><a class="wa-btn" href="#"><span class="wa-dot"></span>تواصل واتساب</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-title">كيفاش خدام؟</div>
+    <div class="section-sub">ثلاث خطوات بسيطة</div>
+    <div class="how-steps">
+      <div class="step-card"><div class="step-num">01</div><div class="step-title">اختار الخدمة</div><div class="step-desc">اختار الحرفة لي محتاجها من القائمة — 20 نوع خدمة متاحة</div></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-title">شوف المعلمين</div><div class="step-desc">شوف البروفايلات والمنطقة والتخصص ديال كل معلم</div></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-title">تواصل مباشرة</div><div class="step-desc">كليك وحد على واتساب — بلا وسيط، بلا عمولة</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-inner">
+    <h2>انضم <span>لقائمة</span><br>الانتظار</h2>
+    <p>سواء كنت تبحث عن حرفي أو أنت معلم تبغي تعرف خدماتك — سجل دابا وغادي نتواصلو معاك أول ما تطلق المنصة</p>
+    <div class="form-tabs">
+      <button class="form-tab active" onclick="switchTab('client',this)">أنا محتاج حرفي</button>
+      <button class="form-tab" onclick="switchTab('craftsman',this)">أنا معلم</button>
+    </div>
+    <div class="form-fields">
+      <input class="form-input" type="text" placeholder="الاسم الكامل" />
+      <input class="form-input" type="tel" placeholder="رقم الهاتف (واتساب)" dir="ltr" />
+      <select class="form-select" id="city-select">
+        <option value="" disabled selected>اختار مدينتك</option>
+        <option>الرباط</option><option>سلا</option><option>تمارة</option><option>الصخيرات</option>
+        <option>الدار البيضاء</option><option>طنجة</option><option>مراكش</option>
+        <option>فاس</option><option>مكناس</option><option>أكادير</option>
+        <option>وجدة</option><option>العرائش</option><option>القنيطرة</option>
+        <option>تطوان</option><option>الجديدة</option><option>بني ملال</option><option>أخرى</option>
+      </select>
+      <div class="extra-fields" id="extra-fields">
+        <select class="form-select">
+          <option value="" disabled selected>نوع خدمتك</option>
+          <option>صباغة</option><option>سباكة</option><option>كهرباء</option>
+          <option>نجارة</option><option>كلماتيسة</option><option>بناء وترميم</option>
+          <option>قفلاتي</option><option>زليج وكارو</option><option>دش وأنتيني</option>
+          <option>WiFi وشبكات</option><option>فيتراج</option><option>تنظيف</option>
+          <option>تنجيد</option><option>حمام وبيوت ما</option><option>جبس وتشطيب</option>
+          <option>مطبخ وكبلا</option><option>حداد</option><option>تهيئة حديقة</option>
+          <option>كاميرات مراقبة</option><option>نقل أثاث</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:15px;" onclick="handleSubmit()">سجل اهتمامك</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">M3ALLEM</div>
+  <div class="footer-text">مشروع من <a class="footer-link" href="https://way2apps.com" target="_blank">Way2Apps</a> — قريباً في المغرب 🇲🇦</div>
+</footer>
+
+<script>
+function filterServices(cat, el) {
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.service-card').forEach(c => {
+    if (cat === 'all' || c.dataset.cat === cat) c.classList.remove('hidden');
+    else c.classList.add('hidden');
+  });
+}
+function switchTab(type, btn) {
+  document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const ef = document.getElementById('extra-fields');
+  if (type === 'craftsman') ef.classList.add('show');
+  else ef.classList.remove('show');
+}
+function handleSubmit() {
+  alert('شكراً! غادي نتواصلو معاك قريباً 🙏');
+}
+</script>
+</body>
+</html>
