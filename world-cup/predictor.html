@@ -309,7 +309,7 @@
 
   .champion{
     display:none;
-    max-width:380px;
+    max-width:420px;
     margin:0 auto 60px;
     padding:40px 32px;
     text-align:center;
@@ -340,8 +340,59 @@
     font-weight:400;
     font-size:42px;
     letter-spacing:.02em;
-    margin:0 0 22px;
+    margin:0 0 10px;
     color:var(--gold-bright);
+  }
+
+  .champion .summary{
+    font-size:12px;
+    font-family:'JetBrains Mono', monospace;
+    color:var(--text-muted);
+    line-height:1.8;
+    margin-bottom:24px;
+    padding:14px 16px;
+    background:rgba(0,0,0,.25);
+    border-radius:10px;
+    border:1px dashed var(--line);
+    text-align:left;
+  }
+
+  .champ-btns{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .btn-share{
+    background:linear-gradient(135deg, #1da1f2, #0d8ed9);
+    color:#fff;
+    border:none;
+    box-shadow:0 6px 20px -8px rgba(29,161,242,.6);
+  }
+  .btn-share:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(29,161,242,.7); }
+
+  .btn-wa{
+    background:linear-gradient(135deg, #25d366, #1aaa52);
+    color:#fff;
+    border:none;
+    box-shadow:0 6px 20px -8px rgba(37,211,102,.5);
+  }
+  .btn-wa:hover{ transform:translateY(-1px); box-shadow:0 10px 24px -8px rgba(37,211,102,.65); }
+
+  .btn-copy{
+    background:transparent;
+    color:var(--gold-bright);
+    border:1px solid var(--line-strong);
+  }
+  .btn-copy:hover{ background:rgba(216,173,90,.08); border-color:var(--gold); transform:translateY(-1px); }
+
+  .copied-toast{
+    display:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--gold-bright);
+    margin-top:8px;
+    letter-spacing:.06em;
   }
 
   /* ---------- FOOTER ---------- */
@@ -392,7 +443,7 @@
     <span class="kicker">Predictor</span>
     <h1>Build Your Bracket</h1>
     <p>Pick a winner in every matchup to send them through. Work your way from the Round of 32 to the Final and crown your champion.</p>
-    <p class="data-note">Field of 32 based on current group standings (updated June 21, 2026): top 2 of each group, plus the 8 best third-place teams by points so far. Kickoff times are the official Round of 32 to Final schedule, shown in Morocco/CET local time.</p>
+    <p class="data-note">Official Round of 32 matchups confirmed · Kickoff times in Morocco/GMT+1 · R16 onwards: TBD after results</p>
 
     <div class="progress" id="progress">
       <div class="step active" data-len="32"><span class="dot"></span><span class="label">R32</span></div>
@@ -435,13 +486,29 @@
 
 <div class="champion" id="champ">
   <svg class="trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 21h8M12 17v4M7 4h10v3a5 5 0 0 1-10 0V4ZM7 5H4a3 3 0 0 0 3 4M17 5h3a3 3 0 0 1-3 4"/></svg>
-  <span class="kicker">Champion</span>
+  <span class="kicker">My World Cup 2026 Prediction</span>
   <img id="winner-flag" src="" alt="">
   <h1 id="winner"></h1>
-  <button class="btn btn-primary" onclick="location.reload()" type="button">
-    Predict Again
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>
-  </button>
+  <div class="summary" id="summary"></div>
+  <div class="champ-btns">
+    <button class="btn btn-wa" onclick="shareWhatsApp()" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.866 2C6.409 2 2 6.41 2 11.866a9.836 9.836 0 0 0 1.39 5.12L2 22l5.19-1.36A9.837 9.837 0 0 0 11.866 22C17.322 22 22 17.59 22 12.134 22 6.409 17.322 2 11.866 2zm0 18a7.986 7.986 0 0 1-4.083-1.12l-.293-.174-3.037.796.812-2.96-.191-.304A7.986 7.986 0 0 1 3.866 12.134C3.866 7.409 7.409 4 11.866 4 16.591 4 20 7.409 20 12.134 20 16.591 16.591 20 11.866 20z"/></svg>
+      Share on WhatsApp
+    </button>
+    <button class="btn btn-share" onclick="shareTwitter()" type="button">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.633 5.903-5.633zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Share on X
+    </button>
+    <button class="btn btn-copy" onclick="copyResult()" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy Result
+    </button>
+    <button class="btn btn-outline" onclick="location.reload()" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>
+      Predict Again
+    </button>
+  </div>
+  <p class="copied-toast" id="toast">✓ Copied to clipboard!</p>
 </div>
 
 <footer>
@@ -452,22 +519,22 @@
 <script>
 
 let current = [
-  ["Mexico","mx"], ["Korea Republic","kr"],
-  ["Canada","ca"], ["Switzerland","ch"],
-  ["Brazil","br"], ["Morocco","ma"],
-  ["USA","us"], ["Australia","au"],
-  ["Germany","de"], ["Ivory Coast","ci"],
-  ["Netherlands","nl"], ["Japan","jp"],
-  ["IR Iran","ir"], ["Belgium","be"],
-  ["Spain","es"], ["Uruguay","uy"],
-  ["Norway","no"], ["France","fr"],
-  ["Argentina","ar"], ["Austria","at"],
-  ["Colombia","co"], ["Congo DR","cd"],
-  ["England","gb-eng"], ["Ghana","gh"],
-  ["Scotland","gb-sct"], ["Paraguay","py"],
-  ["Sweden","se"], ["Portugal","pt"],
-  ["Czechia","cz"], ["Bosnia and Herzegovina","ba"],
-  ["New Zealand","nz"], ["Saudi Arabia","sa"]
+  ["South Africa","za"], ["Canada","ca"],
+  ["Brazil","br"],       ["Japan","jp"],
+  ["Germany","de"],      ["Paraguay","py"],
+  ["Netherlands","nl"],  ["Morocco","ma"],
+  ["Ivory Coast","ci"],  ["Norway","no"],
+  ["France","fr"],       ["Sweden","se"],
+  ["Mexico","mx"],       ["Ecuador","ec"],
+  ["England","gb-eng"],  ["DR Congo","cd"],
+  ["Belgium","be"],      ["Senegal","sn"],
+  ["USA","us"],          ["Bosnia","ba"],
+  ["Spain","es"],        ["Austria","at"],
+  ["Portugal","pt"],     ["Croatia","hr"],
+  ["Switzerland","ch"],  ["Algeria","dz"],
+  ["Australia","au"],    ["Egypt","eg"],
+  ["Argentina","ar"],    ["Cape Verde","cv"],
+  ["Colombia","co"],     ["Ghana","gh"]
 ];
 
 let winners = [];
@@ -531,6 +598,8 @@ function updateProgress(len){
   });
 }
 
+let pickLog = []; // track all picks for the summary
+
 function choose(index, el){
   const match = el.closest(".match");
   match.querySelectorAll(".team").forEach(t=>{
@@ -540,16 +609,17 @@ function choose(index, el){
   el.classList.remove("locked");
   el.classList.add("picked");
 
+  const picked = current[index];
+  const opponent = current[index % 2 === 0 ? index+1 : index-1];
+  pickLog.push({ round: current.length, winner: picked[0], loser: opponent[0] });
+
   winners.push(current[index]);
 
   if(winners.length === current.length/2){
-
     const finishedRoundId = roundByLength[current.length];
     document.getElementById(finishedRoundId).classList.add("round-done");
-
     current = [...winners];
     winners = [];
-
     if(current.length > 1){
       draw(current, boxByLength[current.length]);
     } else {
@@ -558,14 +628,50 @@ function choose(index, el){
   }
 }
 
+function buildSummaryText(teamName){
+  const labels = { 32:"R32", 16:"R16", 8:"QF", 4:"SF", 2:"Final" };
+  return pickLog
+    .filter(p => p.winner === teamName)
+    .map(p => `${labels[p.round]}: ${p.winner} def. ${p.loser}`)
+    .join("\n");
+}
+
+function buildShareText(teamName){
+  return `🏆 My #WorldCup2026 prediction:\n\n${teamName} wins it all!\n\nMy picks:\n${buildSummaryText(teamName)}\n\n⚽ way2apps.com/world-cup/predictor.html`;
+}
+
 function showChampion(team){
   document.querySelectorAll(".step").forEach(s=>s.classList.add("done"));
   const champ = document.getElementById("champ");
   document.getElementById("winner-flag").src = `https://flagcdn.com/w320/${team[1]}.png`;
   document.getElementById("winner-flag").alt = `${team[0]} flag`;
   document.getElementById("winner").innerHTML = team[0];
+  const summaryLines = buildSummaryText(team[0]);
+  document.getElementById("summary").innerHTML = summaryLines.replace(/\n/g, "<br>");
   champ.style.display = "block";
+  champ._team = team;
   champ.scrollIntoView({ behavior:"smooth", block:"center" });
+}
+
+function shareWhatsApp(){
+  const team = document.getElementById("champ")._team;
+  const text = encodeURIComponent(buildShareText(team[0]));
+  window.open(`https://wa.me/?text=${text}`, "_blank");
+}
+
+function shareTwitter(){
+  const team = document.getElementById("champ")._team;
+  const text = encodeURIComponent(buildShareText(team[0]));
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, "_blank");
+}
+
+function copyResult(){
+  const team = document.getElementById("champ")._team;
+  navigator.clipboard.writeText(buildShareText(team[0])).then(()=>{
+    const toast = document.getElementById("toast");
+    toast.style.display = "block";
+    setTimeout(()=>{ toast.style.display="none"; }, 2500);
+  });
 }
 
 draw(current, "r32");
